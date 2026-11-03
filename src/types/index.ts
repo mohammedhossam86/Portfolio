@@ -192,3 +192,4 @@ export interface SiteMetadata {
   author: string;
   twitterHandle?: string;
 }
+
