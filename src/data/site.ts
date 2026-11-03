@@ -57,3 +57,4 @@ export const socialLinks: SocialLink[] = [
     label: "Download CV",
   },
 ];
+

@@ -70,3 +70,4 @@ export const projects: Project[] = [
     date: "2025-02",
   },
 ];
+

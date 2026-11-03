@@ -20,3 +20,4 @@ export const heroData: HeroData = {
   resumeUrl: "/cv.pdf",
   avatarUrl: "/images/avatar.png", // TODO: add your photo
 };
+
