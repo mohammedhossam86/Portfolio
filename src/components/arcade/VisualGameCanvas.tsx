@@ -19,14 +19,17 @@ import {
 export default function VisualGameCanvas() {
   const [level, setLevel] = useState<GameLevel>(0);
   const [showAStarTrail, setShowAStarTrail] = useState(true);
-  const gameRef = useRef<TomAndJerryGame>(new TomAndJerryGame(0));
-  const [gameState, setGameState] = useState<GameState>(
-    gameRef.current.getState()
+  const gameRef = useRef<TomAndJerryGame | null>(null);
+  if (!gameRef.current) {
+    gameRef.current = new TomAndJerryGame(0, false);
+  }
+  const [gameState, setGameState] = useState<GameState>(() =>
+    gameRef.current!.getState()
   );
 
   const resetGame = useCallback(
     (lvl: GameLevel) => {
-      const g = new TomAndJerryGame(lvl);
+      const g = new TomAndJerryGame(lvl, true);
       gameRef.current = g;
       setLevel(lvl);
       setGameState(g.getState());
@@ -35,6 +38,7 @@ export default function VisualGameCanvas() {
   );
 
   const move = useCallback((dir: "up" | "down" | "left" | "right") => {
+    if (!gameRef.current) return;
     const { state } = gameRef.current.moveRat(dir);
     setGameState({ ...state });
   }, []);
@@ -264,3 +268,4 @@ export default function VisualGameCanvas() {
     </div>
   );
 }
+

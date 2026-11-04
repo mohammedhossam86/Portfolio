@@ -82,7 +82,7 @@ interface Particle {
  * FloatingParticles — grid of subtle animated dots for background depth.
  * Populated client-side in useEffect to avoid SSR/prerender randomness warnings.
  */
-function FloatingParticles({ count = 40 }: { count?: number }) {
+function FloatingParticles({ count = 16 }: { count?: number }) {
   const [particles, setParticles] = useState<Particle[]>([]);
 
   useEffect(() => {

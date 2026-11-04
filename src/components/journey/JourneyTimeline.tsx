@@ -84,6 +84,14 @@ export default function JourneyTimeline() {
       }
 
       // Timeline station navigation when modal is closed
+      if (
+        (e.target as HTMLElement)?.tagName === "INPUT" ||
+        (e.target as HTMLElement)?.tagName === "TEXTAREA" ||
+        (e.target as HTMLElement)?.closest("#arcade")
+      ) {
+        return;
+      }
+
       if (!sectionRef.current) return;
       const rect = sectionRef.current.getBoundingClientRect();
       const isVisible =

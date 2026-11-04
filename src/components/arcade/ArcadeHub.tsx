@@ -1,39 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import dynamic from "next/dynamic";
 import { Gamepad2, Terminal, LayoutGrid, Sparkles, Cpu, Code2, Bot } from "lucide-react";
+import TerminalEmulator from "./TerminalEmulator";
+import VisualGameCanvas from "./VisualGameCanvas";
 
 // =============================================================================
-// Dynamic Imports for Performance & Code Splitting (Principle #2)
+// Arcade Hub — Mohammed Hossam's A* Search Arena
 // =============================================================================
-// Terminal emulator and xterm.js bundle are loaded lazily so initial page load
-// stays ultra-fast with zero SSR blocking.
-// =============================================================================
-
-const TerminalEmulator = dynamic(() => import("./TerminalEmulator"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-[450px] rounded-3xl border border-[var(--color-border)] bg-[#080a10] flex flex-col items-center justify-center gap-3">
-      <div className="w-8 h-8 rounded-full border-2 border-[var(--color-primary)] border-t-transparent animate-spin" />
-      <span className="font-mono text-xs text-slate-400">
-        Booting xterm.js terminal environment...
-      </span>
-    </div>
-  ),
-});
-
-const VisualGameCanvas = dynamic(() => import("./VisualGameCanvas"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-[450px] rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] flex flex-col items-center justify-center gap-3">
-      <div className="w-8 h-8 rounded-full border-2 border-[var(--color-accent)] border-t-transparent animate-spin" />
-      <span className="font-mono text-xs text-slate-400">
-        Initializing 2D grid canvas...
-      </span>
-    </div>
-  ),
-});
 
 export default function ArcadeHub() {
   const [activeMode, setActiveMode] = useState<"terminal" | "visual">("terminal");
@@ -77,7 +51,7 @@ export default function ArcadeHub() {
               }`}
             >
               <Terminal size={16} />
-              CLI Terminal (xterm.js)
+              CLI Terminal
             </button>
             <button
               onClick={() => setActiveMode("visual")}
@@ -105,7 +79,7 @@ export default function ArcadeHub() {
           </span>
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300">
             <Terminal size={13} className="text-purple-400" />
-            xterm.js Web Terminal Emulator
+            High-Performance CLI Terminal
           </span>
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300">
             <Code2 size={13} className="text-amber-400" />
