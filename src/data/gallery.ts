@@ -25,7 +25,7 @@ export const achievementPhotos: AchievementPhoto[] = [
     src: "/images/achievements/3rdplacechampionscoachcodechalleng.jpeg",
     alt: "3rd Place Champions Coach Code Challenge",
     caption: "3rd Place — Code Challenge 🏆",
-    date: "2025-03",
+    date: "2026-10",
     category: "competition",
   },
   {
@@ -33,7 +33,7 @@ export const achievementPhotos: AchievementPhoto[] = [
     src: "/images/achievements/3rdplacechampionscoachcodechalleng1.jpeg",
     alt: "Champions Coach Code Challenge Team",
     caption: "Code Challenge Team",
-    date: "2025-03",
+    date: "2026-10",
     category: "competition",
   },
   {
@@ -41,7 +41,7 @@ export const achievementPhotos: AchievementPhoto[] = [
     src: "/images/achievements/3rdplacechampionscoachcodechalleng2.jpeg",
     alt: "Champions Coach Code Challenge Award",
     caption: "Code Challenge Award Ceremony",
-    date: "2025-03",
+    date: "2026-10",
     category: "competition",
   },
   {

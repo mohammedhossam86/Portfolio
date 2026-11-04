@@ -266,3 +266,4 @@ function MarqueeRow({ photos, onPhotoClick, direction = "left" }: MarqueeRowProp
     </div>
   );
 }
+

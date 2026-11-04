@@ -35,16 +35,6 @@ export const journeyMilestones: JourneyMilestone[] = [
     tags: ["ECPC", "Competitive Programming"],
   },
   {
-    id: "champions-coach",
-    date: "2025-03",
-    title: "3rd Place — Champions Coach Code Challenge 🏆",
-    description:
-      "Won 3rd place in the Champions Coach Code Challenge! Hard work and team synergy paid off.",
-    category: "achievement",
-    imageUrl: "/images/journey/3rdplacechampionscoachcodechalleng.jpeg",
-    tags: ["Competition", "Award", "Problem Solving"],
-  },
-  {
     id: "ecpc-qual-2025",
     date: "2025-10",
     title: "ECPC Qualifications 2025",
@@ -82,5 +72,15 @@ export const journeyMilestones: JourneyMilestone[] = [
       "Started my professional career as a Software Engineer, continuing to build, learn, and contribute.",
     category: "work",
     tags: ["Career", "Software Engineering"],
+  },
+  {
+    id: "champions-coach",
+    date: "2026-10",
+    title: "3rd Place — Champions Coach Code Challenge 🏆",
+    description:
+      "Won 3rd place in the Champions Coach Code Challenge! Hard work and team synergy paid off.",
+    category: "achievement",
+    imageUrl: "/images/journey/3rdplacechampionscoachcodechalleng.jpeg",
+    tags: ["Competition", "Award", "Problem Solving"],
   },
 ];
