@@ -295,3 +295,4 @@ function BlogCard({ post }: { post: BlogPost }) {
     </a>
   );
 }
+
