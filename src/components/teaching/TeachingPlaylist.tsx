@@ -89,6 +89,7 @@ export default function TeachingPlaylist() {
                     fill
                     sizes="(max-width: 1024px) 100vw, 850px"
                     className="object-cover object-center transition-transform duration-700 group-hover:scale-105 opacity-80"
+                    unoptimized
                     priority
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20" />
@@ -182,6 +183,7 @@ export default function TeachingPlaylist() {
                         fill
                         sizes="96px"
                         className="object-cover"
+                        unoptimized
                       />
                       {isCurrent && (
                         <div className="absolute inset-0 bg-[var(--color-primary)]/40 flex items-center justify-center">
@@ -224,3 +226,4 @@ export default function TeachingPlaylist() {
     </section>
   );
 }
+
