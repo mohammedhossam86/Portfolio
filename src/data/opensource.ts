@@ -6,7 +6,7 @@ import { GitLabConfig } from "@/types";
 
 export const gitlabConfig: GitLabConfig = {
   baseUrl: "https://gitlab.com",
-  username: "hossam", // TODO: replace with your actual GitLab username
+  username: "mohammedhossam86",
   accessToken: process.env.GITLAB_ACCESS_TOKEN, // set in .env.local
   maxResults: 20,
 };

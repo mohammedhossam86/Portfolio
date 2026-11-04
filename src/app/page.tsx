@@ -2,6 +2,8 @@ import Navbar from "@/components/layout/Navbar";
 import FloatingSocialDock from "@/components/layout/FloatingSocialDock";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/hero/HeroSection";
+import JourneyTimeline from "@/components/journey/JourneyTimeline";
+import AchievementsGallery from "@/components/gallery/AchievementsGallery";
 
 // =============================================================================
 // Home Page — Single Page Application
@@ -18,20 +20,10 @@ export default function Home() {
         {/* ── Phase 2: Hero Section ── */}
         <HeroSection />
 
-        {/* ── Placeholders for upcoming sections (enables smooth scrolling & active link detection) ── */}
-        <section
-          id="journey"
-          className="min-h-[50vh] flex flex-col items-center justify-center border-t border-[var(--color-border)]/50 px-6 py-20 text-center"
-        >
-          <span className="text-xs uppercase tracking-widest text-[var(--color-primary-light)] font-mono mb-2">
-            Coming Up in Phase 3
-          </span>
-          <h2 className="text-3xl font-bold mb-4">The Interactive Journey (&quot;الرحلة&quot;)</h2>
-          <p className="text-[var(--color-text-secondary)] max-w-lg">
-            Scroll-driven 2D car timeline moving through college milestones, ECPC contests, and graduation.
-          </p>
-        </section>
+        {/* ── Phase 3: The Interactive Journey (2D Car Timeline) ── */}
+        <JourneyTimeline />
 
+        {/* ── Placeholders for Phase 4 & Phase 5 sections ── */}
         <section
           id="projects"
           className="min-h-[50vh] flex flex-col items-center justify-center border-t border-[var(--color-border)]/50 px-6 py-20 text-center"
@@ -84,18 +76,8 @@ export default function Home() {
           </p>
         </section>
 
-        <section
-          id="gallery"
-          className="min-h-[50vh] flex flex-col items-center justify-center border-t border-[var(--color-border)]/50 px-6 py-20 text-center"
-        >
-          <span className="text-xs uppercase tracking-widest text-[var(--color-primary-light)] font-mono mb-2">
-            Coming Up in Phase 3
-          </span>
-          <h2 className="text-3xl font-bold mb-4">Achievements Gallery</h2>
-          <p className="text-[var(--color-text-secondary)] max-w-lg">
-            Smooth 60fps infinite marquee of ECPC contests, hackathons, and graduation moments.
-          </p>
-        </section>
+        {/* ── Phase 3: Achievements Gallery (Infinite Marquee) ── */}
+        <AchievementsGallery />
       </main>
 
       {/* ── Footer ── */}

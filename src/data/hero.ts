@@ -1,14 +1,14 @@
 import { HeroData } from "@/types";
 
 export const heroData: HeroData = {
-  name: "Hossam",
+  name: "Mohammed Hossam",
   headline: "Software Engineer",
   tagline:
     "Building robust backend systems, solving competitive programming challenges, contributing to open source, and teaching the next generation of developers.",
   roles: [
     "Backend Engineer",
-    "Open Source Contributor",
     "Competitive Programmer",
+    "Open Source Contributor",
     "STEM & Robotics Instructor",
   ],
   stats: [
@@ -18,6 +18,5 @@ export const heroData: HeroData = {
     { label: "Projects Built", value: "15+", icon: "Rocket" },
   ],
   resumeUrl: "/cv.pdf",
-  avatarUrl: "/images/avatar.png", // TODO: add your photo
+  avatarUrl: "/images/avatar.png",
 };
-

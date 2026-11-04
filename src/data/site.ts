@@ -3,12 +3,12 @@ import { SiteMetadata, NavItem, SocialLink } from "@/types";
 // ─── Site Metadata (used in layout.tsx for SEO) ──────────────────────────────
 
 export const siteMetadata: SiteMetadata = {
-  title: "Hossam — Software Engineer",
+  title: "Mohammed Hossam — Software Engineer",
   description:
     "Software Engineer specializing in Backend Engineering, Open Source, and Competitive Programming. Portfolio showcasing projects, contributions, and teaching.",
-  url: "https://hossam.dev", // TODO: replace with actual domain
+  url: "https://mohammedhossam.dev",
   ogImage: "/images/og-image.png",
-  author: "Hossam",
+  author: "Mohammed Hossam",
 };
 
 // ─── Navigation Items ────────────────────────────────────────────────────────
@@ -28,33 +28,32 @@ export const navItems: NavItem[] = [
 export const socialLinks: SocialLink[] = [
   {
     platform: "github",
-    url: "https://github.com/hossam", // TODO: replace with actual URL
+    url: "https://github.com/mohammedhossam86",
     label: "GitHub Profile",
   },
   {
     platform: "gitlab",
-    url: "https://gitlab.com/hossam", // TODO: replace with actual URL
+    url: "https://gitlab.com/mohammedhossam86",
     label: "GitLab Profile",
   },
   {
     platform: "linkedin",
-    url: "https://linkedin.com/in/hossam", // TODO: replace with actual URL
+    url: "https://www.linkedin.com/in/mohammed-hossam-6705a1302/",
     label: "LinkedIn Profile",
   },
   {
     platform: "leetcode",
-    url: "https://leetcode.com/hossam", // TODO: replace with actual URL
+    url: "https://leetcode.com/u/mohammedhossam86/", // LeetCode profile
     label: "LeetCode Profile",
   },
   {
     platform: "email",
-    url: "mailto:hossam@example.com", // TODO: replace with actual email
+    url: "mailto:mohammedhossam343@gmail.com",
     label: "Send Email",
   },
   {
     platform: "cv",
-    url: "/cv.pdf", // TODO: add actual CV file to /public
+    url: "/cv.pdf",
     label: "Download CV",
   },
 ];
-
