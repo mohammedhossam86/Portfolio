@@ -155,3 +155,4 @@ export default function TopDownCar({ className = "", isDriving = true }: TopDown
     </div>
   );
 }
+

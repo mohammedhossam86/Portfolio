@@ -25,3 +25,4 @@ export const aboutData: AboutData = {
     { label: "Students Mentored", value: "200+" },
   ],
 };
+
