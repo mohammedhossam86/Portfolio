@@ -14,12 +14,14 @@ export const siteMetadata: SiteMetadata = {
 // ─── Navigation Items ────────────────────────────────────────────────────────
 
 export const navItems: NavItem[] = [
-  { label: "Home", href: "#hero", icon: "Home" },
-  { label: "Journey", href: "#journey", icon: "Route" },
+  { label: "About", href: "#about", icon: "User" },
+  { label: "Skills", href: "#skills", icon: "Code2" },
+  { label: "Experience", href: "#journey", icon: "Route" },
   { label: "Projects", href: "#projects", icon: "FolderKanban" },
   { label: "Open Source", href: "#opensource", icon: "GitMerge" },
   { label: "Arcade", href: "#arcade", icon: "Gamepad2" },
   { label: "Teaching", href: "#teaching", icon: "GraduationCap" },
+  { label: "Contact", href: "#contact", icon: "Mail" },
 ];
 
 // ─── Social Links (Floating Dock) ────────────────────────────────────────────

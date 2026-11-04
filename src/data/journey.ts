@@ -15,6 +15,15 @@ export const journeyMilestones: JourneyMilestone[] = [
     tags: ["University", "CS", "Beginnings"],
   },
   {
+    id: "ai-trainer",
+    date: "2023-02 - Present",
+    title: "AI Trainer & Evaluator — Outlier & Alignerr",
+    description:
+      "Working as a Freelance AI Trainer and Evaluator helping train and fine-tune frontier Large Language Models (LLMs) via RLHF. Designing complex algorithmic coding tasks in Python and C++, evaluating model reasoning steps, and assessing software correctness.",
+    category: "work",
+    tags: ["Outlier", "Alignerr", "AI Training", "RLHF", "Code Quality"],
+  },
+  {
     id: "ecpc-qual-2023",
     date: "2023-10",
     title: "ECPC Qualifications 2023",

@@ -1,121 +1,58 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { journeyMilestones } from "@/data/journey";
 import { JourneyMilestone } from "@/types";
-import { formatDate } from "@/lib/utils";
-import MilestoneStation from "./MilestoneStation";
-import SvgCar from "./SvgCar";
+import TopDownCar from "./TopDownCar";
 import {
+  Compass,
+  Sparkles,
+  Trophy,
+  Briefcase,
+  GraduationCap,
+  Images,
+  X,
   ChevronLeft,
   ChevronRight,
-  Compass,
-  Flag,
-  Sparkles,
-  X,
-  Trophy,
-  Images,
-  Award,
+  ExternalLink,
+  Flame,
+  Bot,
 } from "lucide-react";
 
 export default function JourneyTimeline() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const totalMilestones = journeyMilestones.length;
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isDriving, setIsDriving] = useState(false);
+  // ─── Track Vertical Scroll Progress for the Car ───────────────────────────
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 70%", "end 70%"],
+  });
 
-  // ─── Modal State for Details & Multi-Image Gallery ─────────────────────────
-  const [selectedMilestone, setSelectedMilestone] =
-    useState<JourneyMilestone | null>(null);
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 80,
+    damping: 20,
+    restDelta: 0.001,
+  });
+
+  // Car Y position mapped from 0% to ~95% of road height
+  const carTopPercent = useTransform(smoothProgress, [0, 1], ["0%", "92%"]);
+
+  // ─── Modal State for Multi-Photo Gallery ───────────────────────────────────
+  const [selectedMilestone, setSelectedMilestone] = useState<JourneyMilestone | null>(null);
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
 
-  const openMilestoneModal = (milestone: JourneyMilestone) => {
+  const openModal = (milestone: JourneyMilestone) => {
     setSelectedMilestone(milestone);
     setActivePhotoIdx(0);
   };
 
-  const closeMilestoneModal = () => {
+  const closeModal = () => {
     setSelectedMilestone(null);
     setActivePhotoIdx(0);
   };
 
-  // ─── Direct Station Change ────────────────────────────────────────────────
-  const goToStation = useCallback(
-    (newIndex: number) => {
-      const clamped = Math.max(0, Math.min(totalMilestones - 1, newIndex));
-      if (clamped !== activeIndex) {
-        setIsDriving(true);
-        setActiveIndex(clamped);
-        setTimeout(() => setIsDriving(false), 500);
-      }
-    },
-    [activeIndex, totalMilestones]
-  );
-
-  // ─── Keyboard Navigation ──────────────────────────────────────────────────
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Close modal on Escape
-      if (e.key === "Escape" && selectedMilestone) {
-        closeMilestoneModal();
-        return;
-      }
-
-      if (selectedMilestone) {
-        // Modal image navigation
-        const photos =
-          selectedMilestone.images ||
-          (selectedMilestone.imageUrl ? [selectedMilestone.imageUrl] : []);
-        if (photos.length > 1) {
-          if (e.key === "ArrowRight") {
-            e.preventDefault();
-            setActivePhotoIdx((prev) => (prev + 1) % photos.length);
-          } else if (e.key === "ArrowLeft") {
-            e.preventDefault();
-            setActivePhotoIdx((prev) =>
-              prev === 0 ? photos.length - 1 : prev - 1
-            );
-          }
-        }
-        return;
-      }
-
-      // Timeline station navigation when modal is closed
-      if (
-        (e.target as HTMLElement)?.tagName === "INPUT" ||
-        (e.target as HTMLElement)?.tagName === "TEXTAREA" ||
-        (e.target as HTMLElement)?.closest("#arcade")
-      ) {
-        return;
-      }
-
-      if (!sectionRef.current) return;
-      const rect = sectionRef.current.getBoundingClientRect();
-      const isVisible =
-        rect.top < window.innerHeight * 0.75 &&
-        rect.bottom > window.innerHeight * 0.25;
-      if (!isVisible) return;
-
-      if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
-        e.preventDefault();
-        goToStation(activeIndex + 1);
-      } else if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
-        e.preventDefault();
-        goToStation(activeIndex - 1);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeIndex, goToStation, selectedMilestone]);
-
-  const carProgressPercent =
-    totalMilestones > 1 ? (activeIndex / (totalMilestones - 1)) * 100 : 0;
-
-  // Selected modal photos
   const modalPhotos = selectedMilestone
     ? selectedMilestone.images && selectedMilestone.images.length > 0
       ? selectedMilestone.images
@@ -127,338 +64,297 @@ export default function JourneyTimeline() {
   return (
     <section
       id="journey"
-      ref={sectionRef}
-      className="relative min-h-screen py-20 sm:py-28 overflow-hidden bg-gradient-to-b from-[var(--color-bg-primary)] via-[#0e0e18] to-[var(--color-bg-primary)] border-t border-[var(--color-border)]/50"
+      className="relative py-24 sm:py-32 overflow-hidden border-t border-[var(--color-border)]/50"
     >
-      {/* ── Background Cyber Ambient Glow ── */}
+      {/* ── Background Atmosphere ── */}
       <div
-        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] rounded-full pointer-events-none opacity-20"
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full pointer-events-none opacity-20"
         style={{
           background:
             "radial-gradient(ellipse at center, var(--color-primary), var(--color-accent), transparent 70%)",
-          filter: "blur(90px)",
+          filter: "blur(130px)",
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         {/* ── Section Header ── */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12 sm:mb-16">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/30 text-[var(--color-primary-light)] text-xs font-mono uppercase tracking-wider mb-2">
-              <Compass size={14} />
-              Interactive Career Track
-            </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--color-text-primary)]">
-              The Journey <span className="text-gradient">Timeline</span>
-            </h2>
-            <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mt-2 max-w-xl">
-              From university foundations through competitive programming and honors.
-              Click any station to explore photos and stories, or use <kbd className="px-1.5 py-0.5 rounded bg-[var(--color-bg-tertiary)] border border-[var(--color-border)] text-xs font-mono">←</kbd> <kbd className="px-1.5 py-0.5 rounded bg-[var(--color-bg-tertiary)] border border-[var(--color-border)] text-xs font-mono">→</kbd> keys.
-            </p>
+        <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-24">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/30 text-[var(--color-accent-light)] text-xs font-mono uppercase tracking-wider mb-3">
+            <Compass size={13} />
+            Experience &amp; Career Roadmap
           </div>
-
-          {/* Top Controls */}
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-xs sm:text-sm text-[var(--color-text-muted)] bg-[var(--color-bg-secondary)] px-3 py-1.5 rounded-lg border border-[var(--color-border)]">
-              Station <strong className="text-[var(--color-primary-light)]">{activeIndex + 1}</strong> of {totalMilestones}
-            </span>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => goToStation(activeIndex - 1)}
-                disabled={activeIndex === 0}
-                aria-label="Previous station"
-                className="p-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] text-[var(--color-text-primary)] hover:border-[var(--color-primary)] hover:bg-[var(--color-bg-tertiary)] disabled:opacity-25 disabled:pointer-events-none transition-all shadow-md"
-              >
-                <ChevronLeft size={20} />
-              </button>
-              <button
-                onClick={() => goToStation(activeIndex + 1)}
-                disabled={activeIndex === totalMilestones - 1}
-                aria-label="Next station"
-                className="p-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] text-[var(--color-text-primary)] hover:border-[var(--color-primary)] hover:bg-[var(--color-bg-tertiary)] disabled:opacity-25 disabled:pointer-events-none transition-all shadow-md"
-              >
-                <ChevronRight size={20} />
-              </button>
-            </div>
-          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white">
+            The Interactive <span className="text-gradient">Journey</span>
+          </h2>
+          <p className="text-sm sm:text-base text-slate-400 mt-2 font-mono">
+            Scroll down to drive through my university milestones, AI model training at Outlier, and ECPC competitive programming achievements.
+          </p>
         </div>
 
-        {/* ── Active Milestone Showcase Carousel ── */}
-        <div className="relative mb-14">
-          <div className="overflow-hidden py-4 px-2">
-            <motion.div
-              className="flex items-center justify-start gap-6 sm:gap-8"
-              animate={{
-                x: `calc(50% - ${(activeIndex + 0.5) * 380}px)`,
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 260,
-                damping: 28,
-              }}
-            >
-              {journeyMilestones.map((milestone, idx) => (
-                <MilestoneStation
-                  key={milestone.id}
-                  milestone={milestone}
-                  index={idx}
-                  total={totalMilestones}
-                  isActive={idx === activeIndex}
-                  onSelect={() => goToStation(idx)}
-                  onOpenDetails={() => openMilestoneModal(milestone)}
-                />
-              ))}
-            </motion.div>
-          </div>
-        </div>
+        {/* ── Road & Stations Container ── */}
+        <div ref={containerRef} className="relative min-h-[1400px] py-10">
+          {/* ── The Center Asphalt Highway Road ── */}
+          <div className="absolute left-6 md:left-1/2 top-0 bottom-0 -translate-x-1/2 w-14 sm:w-20 bg-gradient-to-b from-[#090d16] via-[#0f1422] to-[#090d16] border-x-2 border-slate-800/90 shadow-[0_0_30px_rgba(0,0,0,0.8)] z-0 rounded-2xl overflow-hidden">
+            {/* Road Texture Lines */}
+            <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:8px_8px]" />
 
-        {/* ── 2D Highway Track & Car Section ── */}
-        <div className="relative pt-12 pb-6">
-          {/* Track Labels */}
-          <div className="flex items-center justify-between text-xs font-mono text-[var(--color-text-muted)] mb-3 px-2">
-            <span className="flex items-center gap-1.5 text-[var(--color-primary-light)]">
-              <Sparkles size={14} /> University Start (2022)
-            </span>
-            <span className="flex items-center gap-1.5 text-[var(--color-accent-light)]">
-              <Flag size={14} /> Champions Honors (2026)
-            </span>
+            {/* White Shoulder Solid Borders */}
+            <div className="absolute left-1 top-0 bottom-0 w-0.5 bg-slate-600/40" />
+            <div className="absolute right-1 top-0 bottom-0 w-0.5 bg-slate-600/40" />
+
+            {/* Yellow Dashed Center Line */}
+            <div
+              className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-1"
+              style={{
+                backgroundImage:
+                  "repeating-linear-gradient(to bottom, #facc15 0px, #facc15 24px, transparent 24px, transparent 48px)",
+              }}
+            />
           </div>
 
-          {/* Road Base Container */}
-          <div className="relative w-full rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-slate-800 p-3 shadow-2xl">
-            {/* The Asphalt Strip */}
-            <div className="relative h-16 w-full rounded-xl bg-[#090d16] border-y border-slate-700/60 overflow-visible flex items-center px-4">
-              {/* Road Dash Markings */}
-              <div
-                className="absolute inset-0 opacity-40"
-                style={{
-                  backgroundImage:
-                    "repeating-linear-gradient(90deg, #64748b 0px, #64748b 28px, transparent 28px, transparent 56px)",
-                  backgroundSize: "56px 3px",
-                  backgroundPosition: "0 50%",
-                  backgroundRepeat: "repeat-x",
-                }}
-              />
+          {/* ── The Driving 2D Top-Down Car (Moves with Scroll) ── */}
+          <motion.div
+            style={{ top: carTopPercent }}
+            className="absolute left-6 md:left-1/2 -translate-x-1/2 z-20 pointer-events-none transition-transform"
+          >
+            <TopDownCar isDriving={true} />
 
-              {/* Glowing Road Shoulders */}
-              <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-accent)] to-[var(--color-primary)] opacity-60" />
-              <div className="absolute bottom-0 inset-x-0 h-[2px] bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-accent)] to-[var(--color-primary)] opacity-60" />
-
-              {/* Station Markers on road */}
-              <div className="absolute inset-x-0 flex justify-between px-6 pointer-events-none">
-                {journeyMilestones.map((_, i) => (
-                  <div key={i} className="flex flex-col items-center">
-                    <div
-                      className={`w-3.5 h-3.5 rounded-full border-2 transition-all duration-300 ${
-                        i === activeIndex
-                          ? "bg-[var(--color-accent)] border-white shadow-[0_0_12px_var(--color-accent)] scale-125"
-                          : i < activeIndex
-                          ? "bg-[var(--color-primary)] border-[var(--color-primary)]"
-                          : "bg-slate-800 border-slate-600"
-                      }`}
-                    />
-                  </div>
-                ))}
-              </div>
-
-              {/* ── 2D Sports Car Driving on the Road ── */}
-              <motion.div
-                className="absolute z-30 pointer-events-none"
-                animate={{
-                  left: `calc(${carProgressPercent}% - ${carProgressPercent * 1.5}px)`,
-                }}
-                transition={{
-                  type: "spring",
-                  stiffness: 220,
-                  damping: 24,
-                }}
-                style={{
-                  top: "-22px",
-                }}
-              >
-                <SvgCar isDriving={isDriving} />
-              </motion.div>
+            {/* Speed / Progress Pill attached to car */}
+            <div className="absolute -right-20 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-900/90 border border-cyan-500/50 text-[10px] font-mono text-cyan-300 shadow-lg backdrop-blur-md whitespace-nowrap">
+              <Flame size={11} className="text-amber-400" />
+              <span>CRUISING</span>
             </div>
-          </div>
+          </motion.div>
 
-          {/* ── Bottom Clickable Station Dots & Years ── */}
-          <div className="mt-8 flex items-center justify-between gap-2 px-2">
-            {journeyMilestones.map((m, i) => (
-              <button
-                key={m.id}
-                onClick={() => goToStation(i)}
-                className="group flex-1 flex flex-col items-center gap-2 focus:outline-none"
-                aria-label={`Jump to ${m.title}`}
-              >
+          {/* ── Milestones Stations (Alternating Left & Right) ── */}
+          <div className="relative z-10 space-y-16 sm:space-y-24">
+            {journeyMilestones.map((milestone, idx) => {
+              const isEven = idx % 2 === 0;
+              const hasPhotos =
+                (milestone.images && milestone.images.length > 0) ||
+                milestone.imageUrl;
+              const photoCount = milestone.images?.length || (milestone.imageUrl ? 1 : 0);
+
+              // Distinct category styling
+              const isWork = milestone.category === "work";
+              const isAchievement = milestone.category === "achievement";
+              const isEducation = milestone.category === "education";
+
+              return (
                 <div
-                  className={`h-2 w-full rounded-full transition-all duration-300 ${
-                    i === activeIndex
-                      ? "bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] shadow-[0_0_12px_var(--color-primary)]"
-                      : i < activeIndex
-                      ? "bg-[var(--color-primary)]/70"
-                      : "bg-[var(--color-border)] group-hover:bg-slate-700"
-                  }`}
-                />
-                <span
-                  className={`text-[11px] font-mono transition-colors text-center ${
-                    i === activeIndex
-                      ? "text-[var(--color-accent-light)] font-bold scale-110"
-                      : "text-[var(--color-text-muted)] group-hover:text-[var(--color-text-secondary)]"
-                  }`}
+                  key={milestone.id}
+                  className={`flex flex-col md:flex-row items-start ${
+                    isEven ? "md:flex-row-reverse" : ""
+                  } gap-6 md:gap-0`}
                 >
-                  {m.date}
-                </span>
-              </button>
-            ))}
+                  {/* Station Content Card (Takes half the width on desktop) */}
+                  <div
+                    className={`w-full pl-16 md:pl-0 md:w-1/2 ${
+                      isEven ? "md:pl-16" : "md:pr-16"
+                    }`}
+                  >
+                    <div
+                      className={`group relative rounded-3xl border p-6 sm:p-7 shadow-xl backdrop-blur-xl transition-all duration-300 hover:scale-[1.01] ${
+                        isWork
+                          ? "border-purple-500/30 bg-[#0f0e1c]/90 hover:border-purple-500/60"
+                          : isAchievement
+                          ? "border-amber-500/30 bg-[#14120a]/90 hover:border-amber-500/60"
+                          : "border-slate-800 bg-[#0b0e18]/90 hover:border-slate-700"
+                      }`}
+                    >
+                      {/* Top Bar: Date & Category Badge */}
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <span className="text-xs font-mono font-bold text-slate-400">
+                          {milestone.date}
+                        </span>
+
+                        <span
+                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider ${
+                            isWork
+                              ? "bg-purple-500/15 text-purple-300 border border-purple-500/30"
+                              : isAchievement
+                              ? "bg-amber-500/15 text-amber-300 border border-amber-500/30"
+                              : "bg-blue-500/15 text-blue-300 border border-blue-500/30"
+                          }`}
+                        >
+                          {isWork && <Briefcase size={12} />}
+                          {isAchievement && <Trophy size={12} />}
+                          {isEducation && <GraduationCap size={12} />}
+                          {milestone.category}
+                        </span>
+                      </div>
+
+                      {/* Title */}
+                      <h3 className="text-lg sm:text-xl font-bold text-white mb-2 leading-snug group-hover:text-[var(--color-primary-light)] transition-colors">
+                        {milestone.title}
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal mb-4">
+                        {milestone.description}
+                      </p>
+
+                      {/* ── Directly Visible Media Preview (if photos exist) ── */}
+                      {hasPhotos && (
+                        <div
+                          onClick={() => openModal(milestone)}
+                          className="relative aspect-video w-full rounded-2xl overflow-hidden border border-slate-700/80 bg-slate-950 cursor-pointer group/img mb-4 shadow-md"
+                        >
+                          <Image
+                            src={
+                              milestone.images?.[0] ||
+                              milestone.imageUrl ||
+                              ""
+                            }
+                            alt={milestone.title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 450px"
+                            className="object-cover object-center group-hover/img:scale-105 transition-transform duration-500 opacity-90 group-hover/img:opacity-100"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+
+                          {/* Gallery Badge */}
+                          <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs font-mono text-white">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur-md border border-white/20">
+                              <Images size={13} className="text-cyan-400" />
+                              {photoCount > 1
+                                ? `${photoCount} Photos • Click to view`
+                                : "Click to view photo"}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Tags */}
+                      {milestone.tags && milestone.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-2 pt-2 border-t border-slate-800/80">
+                          {milestone.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-400"
+                            >
+                              #{tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Empty Spacer on other half for Desktop balance */}
+                  <div className="hidden md:block md:w-1/2" />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      {/* ── Milestone Details & Multi-Photo Gallery Modal ────────────────────── */}
+      {/* ── Multi-Photo Interactive Modal ── */}
       <AnimatePresence>
-        {selectedMilestone && (
+        {selectedMilestone && modalPhotos.length > 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={closeMilestoneModal}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-xl"
+            onClick={closeModal}
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6 select-none"
           >
             <motion.div
-              initial={{ scale: 0.92, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.92, opacity: 0, y: 20 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-3xl w-full max-h-[92vh] rounded-3xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-secondary)] shadow-2xl flex flex-col"
+              className="relative w-full max-w-4xl rounded-3xl border border-slate-700 bg-[#0b0e18] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
             >
-              {/* Modal Top Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-border)] bg-[var(--color-bg-secondary)]/90 backdrop-blur-md">
-                <div className="flex items-center gap-2.5">
-                  <span className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/30">
-                    <Trophy size={16} />
+              {/* Modal Header */}
+              <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#0d1220]">
+                <div>
+                  <h3 className="text-base font-bold text-white">
+                    {selectedMilestone.title}
+                  </h3>
+                  <span className="text-xs font-mono text-slate-400">
+                    {selectedMilestone.date} • Photo {activePhotoIdx + 1} of{" "}
+                    {modalPhotos.length}
                   </span>
-                  <div>
-                    <h3 className="text-base sm:text-lg font-bold text-[var(--color-text-primary)] line-clamp-1">
-                      {selectedMilestone.title}
-                    </h3>
-                    <span className="text-xs font-mono text-[var(--color-primary-light)]">
-                      {formatDate(selectedMilestone.date)}
-                    </span>
-                  </div>
                 </div>
-
                 <button
-                  onClick={closeMilestoneModal}
+                  onClick={closeModal}
                   aria-label="Close modal"
-                  className="p-2 rounded-xl border border-[var(--color-border)] hover:border-red-500/50 text-[var(--color-text-secondary)] hover:text-red-400 transition-colors"
+                  className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
                 >
                   <X size={18} />
                 </button>
               </div>
 
-              {/* Modal Body: Photo Viewer + Story */}
-              <div className="overflow-y-auto flex-1 p-6 space-y-6">
-                {/* ── Main Photo Viewer (if milestone has photos) ── */}
-                {modalPhotos.length > 0 && (
-                  <div className="space-y-3">
-                    <div className="relative h-64 sm:h-80 md:h-96 w-full rounded-2xl overflow-hidden bg-black/70 border border-[var(--color-border)] flex items-center justify-center">
-                      <Image
-                        src={modalPhotos[activePhotoIdx]}
-                        alt={`${selectedMilestone.title} photo ${activePhotoIdx + 1}`}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 750px"
-                        className="object-contain"
-                        priority
-                      />
+              {/* Photo Display Viewport */}
+              <div className="relative flex-1 min-h-[350px] sm:min-h-[500px] bg-black flex items-center justify-center overflow-hidden">
+                <Image
+                  src={modalPhotos[activePhotoIdx]}
+                  alt={`${selectedMilestone.title} photo ${activePhotoIdx + 1}`}
+                  fill
+                  sizes="(max-width: 1200px) 100vw, 1000px"
+                  className="object-contain"
+                  priority
+                />
 
-                      {/* Photo navigation arrows (if multiple photos) */}
-                      {modalPhotos.length > 1 && (
-                        <>
-                          <button
-                            onClick={() =>
-                              setActivePhotoIdx((prev) =>
-                                prev === 0 ? modalPhotos.length - 1 : prev - 1
-                              )
-                            }
-                            aria-label="Previous photo"
-                            className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/70 text-white hover:bg-black border border-white/20 transition-all"
-                          >
-                            <ChevronLeft size={18} />
-                          </button>
-                          <button
-                            onClick={() =>
-                              setActivePhotoIdx(
-                                (prev) => (prev + 1) % modalPhotos.length
-                              )
-                            }
-                            aria-label="Next photo"
-                            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/70 text-white hover:bg-black border border-white/20 transition-all"
-                          >
-                            <ChevronRight size={18} />
-                          </button>
+                {/* Left / Right Arrow Buttons if multiple photos */}
+                {modalPhotos.length > 1 && (
+                  <>
+                    <button
+                      onClick={() =>
+                        setActivePhotoIdx((prev) =>
+                          prev === 0 ? modalPhotos.length - 1 : prev - 1
+                        )
+                      }
+                      aria-label="Previous photo"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/20 transition-all hover:scale-110"
+                    >
+                      <ChevronLeft size={20} />
+                    </button>
+                    <button
+                      onClick={() =>
+                        setActivePhotoIdx((prev) =>
+                          (prev + 1) % modalPhotos.length
+                        )
+                      }
+                      aria-label="Next photo"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/20 transition-all hover:scale-110"
+                    >
+                      <ChevronRight size={20} />
+                    </button>
+                  </>
+                )}
+              </div>
 
-                          {/* Photo index indicator */}
-                          <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md text-white text-xs font-mono border border-white/10">
-                            {activePhotoIdx + 1} / {modalPhotos.length}
-                          </div>
-                        </>
-                      )}
-                    </div>
+              {/* Modal Bottom Description & Thumbnails */}
+              <div className="px-6 py-4 border-t border-slate-800 bg-[#0d1220] flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p className="text-xs text-slate-300 line-clamp-2 max-w-xl">
+                  {selectedMilestone.description}
+                </p>
 
-                    {/* Thumbnail previews row (if multiple photos) */}
-                    {modalPhotos.length > 1 && (
-                      <div className="flex items-center gap-3 overflow-x-auto pb-1 pt-1">
-                        {modalPhotos.map((photo, i) => (
-                          <button
-                            key={i}
-                            onClick={() => setActivePhotoIdx(i)}
-                            className={`relative h-16 w-20 sm:h-20 sm:w-24 shrink-0 rounded-xl overflow-hidden border-2 transition-all ${
-                              i === activePhotoIdx
-                                ? "border-[var(--color-primary)] shadow-lg shadow-[var(--color-primary)]/30 scale-105"
-                                : "border-transparent opacity-60 hover:opacity-100"
-                            }`}
-                          >
-                            <Image
-                              src={photo}
-                              alt="thumbnail"
-                              fill
-                              sizes="96px"
-                              className="object-cover"
-                            />
-                          </button>
-                        ))}
-                      </div>
-                    )}
+                {modalPhotos.length > 1 && (
+                  <div className="flex items-center gap-2">
+                    {modalPhotos.map((photo, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setActivePhotoIdx(i)}
+                        className={`relative w-12 h-12 rounded-lg overflow-hidden border-2 transition-all ${
+                          i === activePhotoIdx
+                            ? "border-[var(--color-primary)] scale-105"
+                            : "border-slate-700 opacity-60 hover:opacity-100"
+                        }`}
+                      >
+                        <Image
+                          src={photo}
+                          alt="Thumbnail"
+                          fill
+                          className="object-cover"
+                        />
+                      </button>
+                    ))}
                   </div>
                 )}
-
-                {/* ── Story & Mentorship Details ── */}
-                <div className="space-y-4">
-                  <div className="p-4 rounded-2xl bg-[var(--color-bg-tertiary)] border border-[var(--color-border)]">
-                    <h4 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1 flex items-center gap-2">
-                      <Award size={16} className="text-amber-400" />
-                      About this Milestone
-                    </h4>
-                    <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                      {selectedMilestone.description}
-                    </p>
-                  </div>
-
-                  {/* Tags */}
-                  {selectedMilestone.tags && selectedMilestone.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {selectedMilestone.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="text-xs font-mono px-3 py-1 rounded-lg bg-[var(--color-bg-tertiary)] text-[var(--color-primary-light)] border border-[var(--color-border)]"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
               </div>
             </motion.div>
           </motion.div>

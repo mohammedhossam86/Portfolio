@@ -3,6 +3,8 @@
 
 export { siteMetadata, navItems, socialLinks } from "./site";
 export { heroData } from "./hero";
+export { aboutData } from "./about";
+export { skillGroups } from "./skills";
 export { journeyMilestones } from "./journey";
 export { projects } from "./projects";
 export { teachingSessions } from "./teaching";

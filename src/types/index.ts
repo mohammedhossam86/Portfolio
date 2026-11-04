@@ -194,3 +194,34 @@ export interface SiteMetadata {
   twitterHandle?: string;
 }
 
+// ─── Skills (Categorized Bento Grid like elgemmy) ────────────────────────────
+
+export interface SkillItem {
+  name: string;
+  iconName: string;
+  color?: string;
+}
+
+export interface SkillGroup {
+  id: string;
+  title: string;
+  dotColor: string; // e.g. "#38bdf8", "#a855f7"
+  items: SkillItem[];
+}
+
+// ─── About Section ───────────────────────────────────────────────────────────
+
+export interface AboutData {
+  name: string;
+  title: string;
+  location: string;
+  avatarUrl: string;
+  bio: string[];
+  pills: string[];
+  stats: {
+    label: string;
+    value: string;
+  }[];
+}
+
+

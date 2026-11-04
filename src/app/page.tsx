@@ -2,14 +2,17 @@ import Navbar from "@/components/layout/Navbar";
 import FloatingSocialDock from "@/components/layout/FloatingSocialDock";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/hero/HeroSection";
+import AboutSection from "@/components/about/AboutSection";
+import SkillsGrid from "@/components/skills/SkillsGrid";
 import JourneyTimeline from "@/components/journey/JourneyTimeline";
 import ProjectsGrid from "@/components/projects/ProjectsGrid";
 import OpenSourceWidget from "@/components/opensource/OpenSourceWidget";
 import ArcadeHub from "@/components/arcade/ArcadeHub";
 import TeachingPlaylist from "@/components/teaching/TeachingPlaylist";
+import ContactSection from "@/components/contact/ContactSection";
 
 // =============================================================================
-// Home Page — Single Page Application (All 5 Phases Complete)
+// Home Page — Single Page Application (Mohammed Hossam Portfolio)
 // =============================================================================
 
 export default function Home() {
@@ -20,23 +23,32 @@ export default function Home() {
       <FloatingSocialDock />
 
       <main className="relative min-h-screen overflow-x-hidden">
-        {/* ── Phase 2: Hero Section ── */}
+        {/* ── Hero Section ── */}
         <HeroSection />
 
-        {/* ── Phase 3: The Interactive Journey (2D Car Timeline) ── */}
+        {/* ── About Me Section (Bio, Education & AI Trainer Focus) ── */}
+        <AboutSection />
+
+        {/* ── Skills Bento Grid (Languages, Backend, Cloud, DB, AI) ── */}
+        <SkillsGrid />
+
+        {/* ── Experience & The Interactive Car Journey ── */}
         <JourneyTimeline />
 
-        {/* ── Phase 4: Featured Projects & Technical Blog ── */}
+        {/* ── Featured Projects & Technical Blog ── */}
         <ProjectsGrid />
 
-        {/* ── Phase 4: Open Source & GitLab Contributions ── */}
+        {/* ── Open Source & GitLab Contributions ── */}
         <OpenSourceWidget />
 
-        {/* ── Phase 5: Interactive Arcade & xterm.js Browser Terminal ── */}
+        {/* ── Interactive Arcade (Tom & Jerry A* Search) ── */}
         <ArcadeHub />
 
-        {/* ── Phase 4: Teaching & Mentoring Playlist ── */}
+        {/* ── Teaching & Mentoring Playlist ── */}
         <TeachingPlaylist />
+
+        {/* ── Contact & Collaboration Section ── */}
+        <ContactSection />
       </main>
 
       {/* ── Footer ── */}
