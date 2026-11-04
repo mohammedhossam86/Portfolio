@@ -1,5 +1,5 @@
 import { GitLabMergeRequest } from "@/types";
-import { gitlabConfig } from "@/data/opensource";
+import { gitlabConfig, fallbackGitLabMRs } from "@/data/opensource";
 
 // =============================================================================
 // GitLab API Fetcher — Server-Side Only (SSG/ISR)
@@ -50,14 +50,18 @@ export async function fetchGitLabMergeRequests(): Promise<
     });
 
     if (!response.ok) {
-      console.error(
-        `GitLab API error: ${response.status} ${response.statusText}`
+      console.warn(
+        `GitLab API returned status ${response.status}. Using verified contribution highlights.`
       );
-      return [];
+      return fallbackGitLabMRs;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const rawData: any[] = await response.json();
+
+    if (!Array.isArray(rawData) || rawData.length === 0) {
+      return fallbackGitLabMRs;
+    }
 
     // Map GitLab API response to our typed interface
     const mergeRequests: GitLabMergeRequest[] = rawData.map((mr) => ({
@@ -79,8 +83,8 @@ export async function fetchGitLabMergeRequests(): Promise<
 
     return mergeRequests;
   } catch (error) {
-    console.error("Failed to fetch GitLab MRs:", error);
-    return [];
+    console.warn("Could not reach GitLab API (network/offline). Using verified highlights:", error);
+    return fallbackGitLabMRs;
   }
 }
 

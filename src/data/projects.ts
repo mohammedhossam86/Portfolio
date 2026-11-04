@@ -1,73 +1,115 @@
 import { Project } from "@/types";
 
-// ─── Projects ────────────────────────────────────────────────────────────────
-// Each project is rendered as a card in the Bento grid.
-// Featured projects get a larger card. Videos auto-play on hover.
+// =============================================================================
+// Featured Projects Showcase — Data-Driven UI
+// =============================================================================
 
 export const projects: Project[] = [
   {
     id: "mindmate-alzheimer",
-    title: "MindMate — Alzheimer AI Platform",
+    title: "MindMate — Alzheimer AI & IoT Platform",
     description:
-      "AI-powered platform for Alzheimer's patient care with real-time monitoring, cognitive assessments, and caregiver dashboards.",
+      "Full-stack graduation project linking a Node.js/TypeScript REST API with a Dockerized FastAPI AI service (RetinaFace + ResNet50) and ESP32 hardware for real-time patient tracking and caregiver alerts.",
     longDescription:
-      "Full-stack graduation project featuring a Node.js/Express backend, AI prediction models, real-time notifications, and a React-based caregiver dashboard.",
+      "Architected a multi-service backend with Mongoose Discriminators for multi-role modeling (patient, caregiver, admin), CRON scheduling, Firebase push notifications, and JWT RBAC middleware.",
     category: "graduation",
-    techStack: ["Node.js", "Express", "MongoDB", "Python", "React", "AI/ML"],
+    techStack: [
+      "Node.js",
+      "TypeScript",
+      "FastAPI",
+      "Python",
+      "MongoDB",
+      "Socket.IO",
+      "Docker",
+      "ESP32",
+    ],
     imageUrl: "/images/projects/mindmate.png",
-    previewVideoUrl: "/videos/mindmate-preview.webm",
-    repoUrl: "https://github.com/hossam/mindmate", // TODO: update
+    repoUrl: "https://github.com/MindMate-Project",
     isFeatured: true,
     date: "2026-06",
   },
   {
-    id: "wahaj-store",
-    title: "Wahaj Store — E-Commerce Platform",
+    id: "online-shop-backend",
+    title: "Online Shop — Enterprise Backend System",
     description:
-      "Full-featured e-commerce store with product management, shopping cart, payment integration, and admin dashboard.",
-    category: "fullstack",
-    techStack: ["Node.js", "Express", "MongoDB", "React"],
-    imageUrl: "/images/projects/wahaj-store.png",
-    repoUrl: "https://github.com/hossam/wahaj-store", // TODO: update
-    isFeatured: false,
-    date: "2025-10",
-  },
-  {
-    id: "tom-jerry-game",
-    title: "Tom & Jerry Game",
-    description:
-      "A fun 2D chase game built with Java featuring sprite animations, collision detection, and score tracking.",
-    category: "game",
-    techStack: ["Java", "Swing", "OOP"],
-    imageUrl: "/images/projects/tom-jerry.png",
-    previewVideoUrl: "/videos/tom-jerry-preview.webm",
-    repoUrl: "https://github.com/hossam/tom-jerry", // TODO: update
-    isFeatured: true,
-    date: "2025-05",
-  },
-  {
-    id: "airport-system",
-    title: "Airport Management System",
-    description:
-      "Database-driven airport management system handling flights, passengers, bookings, and gate assignments.",
+      "Production-grade backend system with a 3-tier Role-Based Access Control (RBAC) architecture (Guest, Customer, Provider), complete order lifecycle management, and strict server-side price validation.",
+    longDescription:
+      "Eliminated unhandled promise rejections using centralized AppError classes and async controller wrappers. Enforced route-level ownership checks preventing cross-user data leakage.",
     category: "backend",
-    techStack: ["Java", "SQL", "JDBC", "OOP"],
-    imageUrl: "/images/projects/airport.png",
-    repoUrl: "https://github.com/hossam/airport", // TODO: update
+    techStack: [
+      "Node.js",
+      "Express v5",
+      "MongoDB",
+      "JWT",
+      "Multer",
+      "bcrypt",
+      "MVC",
+    ],
+    imageUrl: "/images/projects/online-shop.png",
+    repoUrl: "https://github.com/mohammedhossam86/Online-Shop",
+    isFeatured: true,
+    date: "2024-12",
+  },
+  {
+    id: "codesync",
+    title: "CodeSync — Real-Time Collaborative Workspace",
+    description:
+      "Real-time collaborative developer platform built in TypeScript featuring bidirectional WebSockets communication, live document sync, and Joi payload validation.",
+    category: "backend",
+    techStack: [
+      "TypeScript",
+      "Node.js",
+      "Express v5",
+      "Socket.IO",
+      "JWT",
+      "Joi",
+    ],
+    imageUrl: "/images/projects/codesync.png",
+    repoUrl: "https://github.com/mohammedhossam86/CodeSync",
+    isFeatured: false,
+    date: "2026-01",
+  },
+  {
+    id: "tom-jerry-ai",
+    title: "Tom & Jerry — AI Pathfinding & Terminal Game",
+    description:
+      "Interactive 2D game with AI-driven pathfinding algorithms (BFS / A* / Dijkstra), dynamic obstacle generation, and multi-level difficulty modes playable both in the terminal and browser.",
+    category: "game",
+    techStack: ["Python", "Algorithms", "Pathfinding", "Pygame", "xterm.js"],
+    imageUrl: "/images/projects/tom-jerry.png",
+    repoUrl: "https://github.com/mohammedhossam86/Tom-Jerry",
+    isFeatured: true,
+    date: "2026-04",
+  },
+  {
+    id: "jobs-api",
+    title: "Jobs Management — Secure REST API",
+    description:
+      "Enterprise-ready microservice for job application tracking secured with express-rate-limit, Helmet, XSS sanitation, JWT authentication, and interactive Swagger/OpenAPI documentation.",
+    category: "backend",
+    techStack: [
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "Swagger",
+      "Rate Limiting",
+      "Helmet",
+    ],
+    imageUrl: "/images/projects/jobs-api.png",
+    repoUrl: "https://github.com/mohammedhossam86/jobs-API",
+    isFeatured: false,
+    date: "2025-11",
+  },
+  {
+    id: "url-shortener",
+    title: "High-Throughput URL Shortener",
+    description:
+      "Scalable URL shortening microservice featuring instant 302 redirects, click analytics tracking, and a clean MVC architecture with MongoDB.",
+    category: "backend",
+    techStack: ["Node.js", "Express", "MongoDB", "EJS", "MVC"],
+    imageUrl: "/images/projects/url-shortener.png",
+    repoUrl: "https://github.com/mohammedhossam86/url-shortener-main",
     isFeatured: false,
     date: "2025-12",
   },
-  {
-    id: "auto-fast",
-    title: "Auto Fast — Automation Tool",
-    description:
-      "Developer productivity tool for automating repetitive tasks and project scaffolding.",
-    category: "tool",
-    techStack: ["Python", "CLI", "Automation"],
-    imageUrl: "/images/projects/auto-fast.png",
-    repoUrl: "https://github.com/hossam/auto-fast", // TODO: update
-    isFeatured: false,
-    date: "2025-02",
-  },
 ];
-
