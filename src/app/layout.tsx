@@ -5,6 +5,9 @@ import "./globals.css";
 // ─── SEO Metadata ────────────────────────────────────────────────────────────
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || siteMetadata.url || "http://localhost:3000"
+  ),
   title: siteMetadata.title,
   description: siteMetadata.description,
   authors: [{ name: siteMetadata.author }],

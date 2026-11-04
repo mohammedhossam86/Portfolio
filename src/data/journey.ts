@@ -1,8 +1,8 @@
 import { JourneyMilestone } from "@/types";
 
 // ─── Journey Milestones (Chronological) ──────────────────────────────────────
-// Add your real milestones here. The car timeline reads this array in order.
-// Each milestone = a "station" where the car stops.
+// Each milestone = a "station" where the car stops on the timeline.
+// Ordered chronologically from college start to current career.
 
 export const journeyMilestones: JourneyMilestone[] = [
   {
@@ -12,67 +12,66 @@ export const journeyMilestones: JourneyMilestone[] = [
     description:
       "First day at university — the beginning of an incredible journey into software engineering.",
     category: "education",
-    imageUrl: "/images/journey/college-start.jpg",
     tags: ["University", "CS"],
   },
   {
-    id: "first-competitive",
-    date: "2023-01",
-    title: "First Competitive Programming Contest",
+    id: "ecpc-qual-2023",
+    date: "2023-10",
+    title: "ECPC Qualifications 2023",
     description:
-      "Competed in my first ICPC-style contest. Got hooked on problem solving and algorithmic thinking.",
+      "First competitive programming contest — ECPC Qualifications. Got hooked on problem solving and algorithmic thinking.",
     category: "achievement",
-    imageUrl: "/images/journey/first-contest.jpg",
-    tags: ["ICPC", "Problem Solving"],
+    imageUrl: "/images/journey/ECPCQ2023.jpeg",
+    tags: ["ECPC", "Competitive Programming"],
   },
   {
-    id: "robotics-instructor",
-    date: "2023-06",
-    title: "STEM & Robotics Instructor",
+    id: "ecpc-qual-2024",
+    date: "2024-10",
+    title: "ECPC Qualifications 2024",
     description:
-      "Started teaching robotics and programming to younger students. Discovered a passion for mentoring.",
-    category: "work",
-    imageUrl: "/images/journey/robotics.jpg",
-    tags: ["STEM", "Robotics", "Teaching"],
+      "Came back stronger for the second year of ECPC Qualifications. Growth in problem solving skills was real.",
+    category: "achievement",
+    imageUrl: "/images/journey/ECPCQ2024.jpeg",
+    tags: ["ECPC", "Competitive Programming"],
   },
   {
-    id: "opensource-first-mr",
-    date: "2023-09",
-    title: "First Open Source Merge Request",
+    id: "champions-coach",
+    date: "2025-03",
+    title: "3rd Place — Champions Coach Code Challenge 🏆",
     description:
-      "Submitted and got my first MR merged into a major open source project. The thrill of contributing to something bigger.",
-    category: "opensource",
-    imageUrl: "/images/journey/opensource.jpg",
-    tags: ["Open Source", "GitLab"],
+      "Won 3rd place in the Champions Coach Code Challenge! Hard work and team synergy paid off.",
+    category: "achievement",
+    imageUrl: "/images/journey/3rdplacechampionscoachcodechalleng.jpeg",
+    tags: ["Competition", "Award", "Problem Solving"],
   },
   {
-    id: "backend-internship",
-    date: "2024-06",
-    title: "Backend Engineering Internship",
+    id: "ecpc-qual-2025",
+    date: "2025-10",
+    title: "ECPC Qualifications 2025",
     description:
-      "Landed my first backend internship. Built REST APIs, worked with databases, and learned production-grade engineering.",
-    category: "internship",
-    imageUrl: "/images/journey/internship.jpg",
-    tags: ["Backend", "Node.js", "APIs"],
+      "Third year at ECPC — each year the problems get harder, and so do we.",
+    category: "achievement",
+    imageUrl: "/images/journey/ECPCQ2025.jpeg",
+    tags: ["ECPC", "Competitive Programming"],
   },
   {
-    id: "graduation-project",
-    date: "2025-09",
-    title: "Started Graduation Project — MindMate / Alzheimer AI",
+    id: "ecpc-2025",
+    date: "2025-11",
+    title: "ECPC 2025 Finals",
     description:
-      "Kicked off the graduation project: an AI-powered platform for Alzheimer's patient care and monitoring.",
-    category: "project",
-    imageUrl: "/images/journey/grad-project.jpg",
-    tags: ["AI", "Healthcare", "Backend"],
+      "Made it to the ECPC Finals! Competed with the best teams in Egypt.",
+    category: "achievement",
+    imageUrl: "/images/journey/ECPC2025.jpeg",
+    tags: ["ECPC", "Finals", "Competitive Programming"],
   },
   {
     id: "graduation",
     date: "2026-06",
     title: "Graduated! 🎓",
     description:
-      "Graduated with a Computer Science degree. Ready to take on the world.",
+      "Graduated with a Computer Science degree. Four years of grinding, learning, and building — all worth it.",
     category: "education",
-    imageUrl: "/images/journey/graduation.jpg",
+    imageUrl: "/images/journey/gradiuation.jpeg",
     tags: ["Graduation", "Milestone"],
   },
   {
@@ -82,8 +81,6 @@ export const journeyMilestones: JourneyMilestone[] = [
     description:
       "Started my professional career as a Software Engineer, continuing to build, learn, and contribute.",
     category: "work",
-    imageUrl: "/images/journey/current-role.jpg",
     tags: ["Career", "Software Engineering"],
   },
 ];
-

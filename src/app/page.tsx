@@ -1,48 +1,105 @@
+import Navbar from "@/components/layout/Navbar";
+import FloatingSocialDock from "@/components/layout/FloatingSocialDock";
+import Footer from "@/components/layout/Footer";
+import HeroSection from "@/components/hero/HeroSection";
+
 // =============================================================================
 // Home Page — Single Page Application
-// =============================================================================
-// Each section is a separate component that reads from /data/*.ts.
-// Heavy components (Terminal, Games, Video Players) will be loaded lazily
-// using Next.js dynamic() in their respective section wrappers.
 // =============================================================================
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen overflow-x-hidden">
-      {/* ── Phase 2: Navigation & Floating Social Dock ── */}
-      {/* <Navbar /> */}
-      {/* <FloatingSocialDock /> */}
+    <>
+      {/* ── Navigation & Floating Social Dock ── */}
+      <Navbar />
+      <FloatingSocialDock />
 
-      {/* ── Phase 2: Hero Section ── */}
-      <section id="hero" className="min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <h1 className="text-5xl font-bold text-gradient">Portfolio</h1>
-          <p className="text-xl text-[var(--color-text-secondary)]">
-            Phase 1 Complete — System Design & Data Layer Ready ✅
+      <main className="relative min-h-screen overflow-x-hidden">
+        {/* ── Phase 2: Hero Section ── */}
+        <HeroSection />
+
+        {/* ── Placeholders for upcoming sections (enables smooth scrolling & active link detection) ── */}
+        <section
+          id="journey"
+          className="min-h-[50vh] flex flex-col items-center justify-center border-t border-[var(--color-border)]/50 px-6 py-20 text-center"
+        >
+          <span className="text-xs uppercase tracking-widest text-[var(--color-primary-light)] font-mono mb-2">
+            Coming Up in Phase 3
+          </span>
+          <h2 className="text-3xl font-bold mb-4">The Interactive Journey (&quot;الرحلة&quot;)</h2>
+          <p className="text-[var(--color-text-secondary)] max-w-lg">
+            Scroll-driven 2D car timeline moving through college milestones, ECPC contests, and graduation.
           </p>
-          <p className="text-sm text-[var(--color-text-muted)] font-mono">
-            Next: Phase 2 → Hero Section, Navigation & Social Dock
+        </section>
+
+        <section
+          id="projects"
+          className="min-h-[50vh] flex flex-col items-center justify-center border-t border-[var(--color-border)]/50 px-6 py-20 text-center"
+        >
+          <span className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-mono mb-2">
+            Coming Up in Phase 4
+          </span>
+          <h2 className="text-3xl font-bold mb-4">Featured Projects &amp; Blog</h2>
+          <p className="text-[var(--color-text-secondary)] max-w-lg">
+            Bento-grid showcase for MindMate AI, Wahaj Store, Tom &amp; Jerry, and backend engineering projects.
           </p>
-        </div>
-      </section>
+        </section>
 
-      {/* ── Phase 3: Journey Timeline (Car Animation) ── */}
-      {/* <section id="journey"><JourneyTimeline /></section> */}
+        <section
+          id="opensource"
+          className="min-h-[50vh] flex flex-col items-center justify-center border-t border-[var(--color-border)]/50 px-6 py-20 text-center"
+        >
+          <span className="text-xs uppercase tracking-widest text-[var(--color-primary-light)] font-mono mb-2">
+            Coming Up in Phase 4
+          </span>
+          <h2 className="text-3xl font-bold mb-4">Open Source &amp; GitLab Contributions</h2>
+          <p className="text-[var(--color-text-secondary)] max-w-lg">
+            Real-time cached Merge Requests pulled directly from the GitLab REST API.
+          </p>
+        </section>
 
-      {/* ── Phase 4: Projects Bento Grid ── */}
-      {/* <section id="projects"><ProjectsGrid /></section> */}
+        <section
+          id="arcade"
+          className="min-h-[50vh] flex flex-col items-center justify-center border-t border-[var(--color-border)]/50 px-6 py-20 text-center"
+        >
+          <span className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-mono mb-2">
+            Coming Up in Phase 5
+          </span>
+          <h2 className="text-3xl font-bold mb-4">Interactive Arcade &amp; Browser Terminal</h2>
+          <p className="text-[var(--color-text-secondary)] max-w-lg">
+            Playable xterm.js terminal game and interactive web games directly in the browser.
+          </p>
+        </section>
 
-      {/* ── Phase 4: Open Source MRs ── */}
-      {/* <section id="opensource"><OpenSourceWidget /></section> */}
+        <section
+          id="teaching"
+          className="min-h-[50vh] flex flex-col items-center justify-center border-t border-[var(--color-border)]/50 px-6 py-20 text-center"
+        >
+          <span className="text-xs uppercase tracking-widest text-[var(--color-primary-light)] font-mono mb-2">
+            Coming Up in Phase 4
+          </span>
+          <h2 className="text-3xl font-bold mb-4">Teaching &amp; Mentoring Playlist</h2>
+          <p className="text-[var(--color-text-secondary)] max-w-lg">
+            Custom interactive player for 4 programming sessions (Loops, Arrays, Strings, Prefix Sum).
+          </p>
+        </section>
 
-      {/* ── Phase 5: Arcade & Terminal ── */}
-      {/* <section id="arcade"><ArcadeHub /></section> */}
+        <section
+          id="gallery"
+          className="min-h-[50vh] flex flex-col items-center justify-center border-t border-[var(--color-border)]/50 px-6 py-20 text-center"
+        >
+          <span className="text-xs uppercase tracking-widest text-[var(--color-primary-light)] font-mono mb-2">
+            Coming Up in Phase 3
+          </span>
+          <h2 className="text-3xl font-bold mb-4">Achievements Gallery</h2>
+          <p className="text-[var(--color-text-secondary)] max-w-lg">
+            Smooth 60fps infinite marquee of ECPC contests, hackathons, and graduation moments.
+          </p>
+        </section>
+      </main>
 
-      {/* ── Phase 4: Teaching Playlist ── */}
-      {/* <section id="teaching"><TeachingPlaylist /></section> */}
-
-      {/* ── Phase 3: Achievements Gallery ── */}
-      {/* <section id="gallery"><AchievementsGallery /></section> */}
-    </main>
+      {/* ── Footer ── */}
+      <Footer />
+    </>
   );
 }
