@@ -20,7 +20,6 @@ export const navItems: NavItem[] = [
   { label: "Open Source", href: "#opensource", icon: "GitMerge" },
   { label: "Arcade", href: "#arcade", icon: "Gamepad2" },
   { label: "Teaching", href: "#teaching", icon: "GraduationCap" },
-  { label: "Gallery", href: "#gallery", icon: "Images" },
 ];
 
 // ─── Social Links (Floating Dock) ────────────────────────────────────────────

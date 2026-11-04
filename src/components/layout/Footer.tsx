@@ -25,6 +25,15 @@ function getPlatformIcon(platform: SocialPlatform): IconType | LucideIcon {
   return map[platform];
 }
 
+const brandHoverColors: Record<SocialPlatform, string> = {
+  github: "hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]",
+  gitlab: "hover:text-[#FC6D26] hover:drop-shadow-[0_0_8px_rgba(252,109,38,0.5)]",
+  linkedin: "hover:text-[#0A66C2] hover:drop-shadow-[0_0_8px_rgba(10,102,194,0.5)]",
+  leetcode: "hover:text-[#FFA116] hover:drop-shadow-[0_0_8px_rgba(255,161,22,0.5)]",
+  email: "hover:text-[#22d3ee] hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]",
+  cv: "hover:text-[#818cf8] hover:drop-shadow-[0_0_8px_rgba(129,140,248,0.5)]",
+};
+
 // =============================================================================
 // Footer Component
 // =============================================================================
@@ -63,11 +72,11 @@ export default function Footer() {
                 href={link.url}
                 {...linkProps}
                 aria-label={link.label}
-                className="
+                className={`
                   text-[var(--color-text-muted)]
-                  transition-colors duration-200
-                  hover:text-[var(--color-primary-light)]
-                "
+                  transition-all duration-200
+                  ${brandHoverColors[link.platform]}
+                `}
               >
                 <Icon size={18} />
               </a>

@@ -1,10 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { JourneyMilestone } from "@/types";
 import { formatDate } from "@/lib/utils";
-import { Trophy, GraduationCap, Briefcase, Award, Sparkles, Code2 } from "lucide-react";
+import {
+  Trophy,
+  GraduationCap,
+  Briefcase,
+  Sparkles,
+  Code2,
+  Images,
+  ExternalLink,
+} from "lucide-react";
 
 interface MilestoneStationProps {
   milestone: JourneyMilestone;
@@ -12,9 +19,9 @@ interface MilestoneStationProps {
   total: number;
   isActive: boolean;
   onSelect?: () => void;
+  onOpenDetails?: (milestone: JourneyMilestone) => void;
 }
 
-/** Category badge styling and icon configuration */
 function getCategoryMeta(category: JourneyMilestone["category"]) {
   switch (category) {
     case "achievement":
@@ -22,14 +29,12 @@ function getCategoryMeta(category: JourneyMilestone["category"]) {
         label: "Achievement",
         icon: Trophy,
         badgeClass: "bg-amber-500/15 text-amber-300 border-amber-500/30",
-        glowClass: "from-amber-500/20 to-transparent",
       };
     case "education":
       return {
         label: "Education",
         icon: GraduationCap,
         badgeClass: "bg-indigo-500/15 text-indigo-300 border-indigo-500/30",
-        glowClass: "from-indigo-500/20 to-transparent",
       };
     case "work":
     case "internship":
@@ -37,21 +42,18 @@ function getCategoryMeta(category: JourneyMilestone["category"]) {
         label: category === "work" ? "Career" : "Internship",
         icon: Briefcase,
         badgeClass: "bg-cyan-500/15 text-cyan-300 border-cyan-500/30",
-        glowClass: "from-cyan-500/20 to-transparent",
       };
     case "opensource":
       return {
         label: "Open Source",
         icon: Code2,
         badgeClass: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
-        glowClass: "from-emerald-500/20 to-transparent",
       };
     default:
       return {
         label: "Milestone",
         icon: Sparkles,
         badgeClass: "bg-purple-500/15 text-purple-300 border-purple-500/30",
-        glowClass: "from-purple-500/20 to-transparent",
       };
   }
 }
@@ -62,21 +64,33 @@ export default function MilestoneStation({
   total,
   isActive,
   onSelect,
+  onOpenDetails,
 }: MilestoneStationProps) {
   const meta = getCategoryMeta(milestone.category);
   const Icon = meta.icon;
+  const photoCount = milestone.images?.length || (milestone.imageUrl ? 1 : 0);
+
+  const handleClick = () => {
+    if (isActive && onOpenDetails) {
+      onOpenDetails(milestone);
+    } else if (onSelect) {
+      onSelect();
+    }
+  };
 
   return (
     <div
-      onClick={onSelect}
+      onClick={handleClick}
       className={`group relative flex-shrink-0 w-[310px] sm:w-[360px] md:w-[400px] cursor-pointer transition-all duration-500 ${
-        isActive ? "scale-100 opacity-100 z-20" : "scale-[0.94] opacity-75 hover:opacity-100 z-10"
+        isActive
+          ? "scale-100 opacity-100 z-20"
+          : "scale-[0.93] opacity-65 hover:opacity-95 z-10"
       }`}
     >
       {/* ── Active Glow Aura ── */}
       {isActive && (
         <div
-          className="absolute -inset-2 rounded-2xl bg-gradient-to-r from-[var(--color-primary)]/30 to-[var(--color-accent)]/30 blur-xl opacity-75 transition-opacity"
+          className="absolute -inset-2.5 rounded-2xl bg-gradient-to-r from-[var(--color-primary)]/40 via-[var(--color-accent)]/30 to-[var(--color-primary)]/40 blur-xl opacity-80"
           aria-hidden
         />
       )}
@@ -85,13 +99,13 @@ export default function MilestoneStation({
       <div
         className={`relative overflow-hidden rounded-2xl border transition-all duration-300 backdrop-blur-xl ${
           isActive
-            ? "border-[var(--color-primary)] bg-[var(--color-bg-secondary)]/90 shadow-2xl shadow-[var(--color-primary)]/20"
-            : "border-[var(--color-border)] bg-[var(--color-bg-secondary)]/60 hover:border-[var(--color-border-hover)]"
+            ? "border-[var(--color-primary)] bg-[var(--color-bg-secondary)]/95 shadow-2xl shadow-[var(--color-primary)]/25"
+            : "border-[var(--color-border)] bg-[var(--color-bg-secondary)]/70 hover:border-[var(--color-border-hover)]"
         }`}
       >
-        {/* ── Photo Preview (if available) ── */}
+        {/* ── Photo Preview ── */}
         {milestone.imageUrl ? (
-          <div className="relative h-44 sm:h-52 w-full overflow-hidden bg-slate-900/60">
+          <div className="relative h-44 sm:h-52 w-full overflow-hidden bg-slate-900/80">
             <Image
               src={milestone.imageUrl}
               alt={milestone.title}
@@ -99,8 +113,8 @@ export default function MilestoneStation({
               sizes="(max-width: 640px) 310px, (max-width: 768px) 360px, 400px"
               className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
             />
-            {/* Gradient overlay for text contrast */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-secondary)] via-transparent to-black/30" />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-secondary)] via-transparent to-black/40" />
 
             {/* Top station counter badge */}
             <div className="absolute top-3 left-3 flex items-center gap-2">
@@ -110,7 +124,7 @@ export default function MilestoneStation({
             </div>
 
             {/* Category tag */}
-            <div className="absolute top-3 right-3">
+            <div className="absolute top-3 right-3 flex items-center gap-2">
               <span
                 className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border backdrop-blur-md ${meta.badgeClass}`}
               >
@@ -118,10 +132,18 @@ export default function MilestoneStation({
                 {meta.label}
               </span>
             </div>
+
+            {/* Multi-Photo Indicator Badge */}
+            {photoCount > 1 && (
+              <div className="absolute bottom-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-white text-xs font-mono">
+                <Images size={13} className="text-[var(--color-accent)]" />
+                <span>{photoCount} Photos</span>
+              </div>
+            )}
           </div>
         ) : (
-          /* Fallback banner for milestones without photos (e.g. college start) */
-          <div className="relative h-28 w-full overflow-hidden bg-gradient-to-br from-indigo-950/60 via-slate-900 to-[var(--color-bg-secondary)] p-4 flex flex-col justify-between border-b border-[var(--color-border)]">
+          /* Fallback banner for milestones without photos */
+          <div className="relative h-28 w-full overflow-hidden bg-gradient-to-br from-indigo-950/70 via-slate-900 to-[var(--color-bg-secondary)] p-4 flex flex-col justify-between border-b border-[var(--color-border)]">
             <div className="flex items-center justify-between">
               <span className="font-mono text-xs px-2.5 py-1 rounded-full bg-black/60 text-white/90 border border-white/10 font-semibold">
                 Station {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
@@ -146,6 +168,11 @@ export default function MilestoneStation({
             <span className="font-semibold tracking-wider uppercase">
               {formatDate(milestone.date)}
             </span>
+
+            {/* Click to view badge */}
+            <span className="text-[11px] text-[var(--color-accent-light)] flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              Click to view details <ExternalLink size={11} />
+            </span>
           </div>
 
           {/* Title */}
@@ -153,7 +180,7 @@ export default function MilestoneStation({
             {milestone.title}
           </h3>
 
-          {/* Description / Story */}
+          {/* Description */}
           <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed line-clamp-3">
             {milestone.description}
           </p>
@@ -176,4 +203,3 @@ export default function MilestoneStation({
     </div>
   );
 }
-

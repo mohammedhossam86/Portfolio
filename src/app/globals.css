@@ -38,6 +38,29 @@
   --gradient-bg: radial-gradient(ellipse at top, #111118 0%, #0a0a0f 70%);
 }
 
+/* ─── Light Mode Overrides ────────────────────────────────────────────────── */
+
+html.light {
+  color-scheme: light;
+
+  /* Light theme backgrounds */
+  --color-bg-primary: #f8fafc;     /* Slate-50 */
+  --color-bg-secondary: #ffffff;   /* Pure white cards */
+  --color-bg-tertiary: #f1f5f9;    /* Slate-100 surfaces */
+
+  /* Text */
+  --color-text-primary: #0f172a;   /* Slate-900 */
+  --color-text-secondary: #475569; /* Slate-600 */
+  --color-text-muted: #94a3b8;     /* Slate-400 */
+
+  /* Borders */
+  --color-border: #e2e8f0;         /* Slate-200 */
+  --color-border-hover: #cbd5e1;   /* Slate-300 */
+
+  /* Gradients */
+  --gradient-bg: radial-gradient(ellipse at top, #ffffff 0%, #f8fafc 70%);
+}
+
 /* ─── Base Styles ─────────────────────────────────────────────────────────── */
 
 html {

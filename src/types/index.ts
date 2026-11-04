@@ -56,7 +56,8 @@ export interface JourneyMilestone {
   title: string;
   description: string;
   category: MilestoneCategory;
-  imageUrl?: string; // optional photo for the milestone
+  imageUrl?: string; // primary photo for the milestone
+  images?: string[]; // array of all photos for this milestone (for popup gallery)
   link?: string; // optional external link
   tags?: string[]; // e.g. ["Backend", "Node.js"]
 }

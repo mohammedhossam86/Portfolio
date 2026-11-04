@@ -14,6 +14,8 @@ import {
   Images,
   Menu,
   X,
+  Sun,
+  Moon,
   type LucideIcon,
 } from "lucide-react";
 
@@ -46,7 +48,26 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState<string>("#hero");
   const [isVisible, setIsVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const lastScrollY = useRef(0);
+
+  // ─── Sync Theme from document class ───────────────────────────────────────
+  useEffect(() => {
+    const isLight = document.documentElement.classList.contains("light");
+    setTheme(isLight ? "light" : "dark");
+  }, []);
+
+  const toggleTheme = () => {
+    if (theme === "dark") {
+      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.add("light");
+      setTheme("light");
+    } else {
+      document.documentElement.classList.remove("light");
+      document.documentElement.classList.add("dark");
+      setTheme("dark");
+    }
+  };
 
   // ─── Hide on scroll down, show on scroll up ────────────────────────────────
   useEffect(() => {
@@ -186,13 +207,39 @@ export default function Navbar() {
               })}
             </ul>
 
-            {/* ── Mobile Hamburger Button ─────────────────────────────── */}
+            {/* ── Theme Toggle Button (Desktop) ────────────────────────── */}
             <button
-              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-              className="relative z-50 rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)] md:hidden"
-              aria-label="Toggle navigation menu"
-              aria-expanded={isMobileMenuOpen}
+              onClick={toggleTheme}
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+              className="hidden md:flex items-center justify-center p-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-primary)] transition-all duration-200"
             >
+              {theme === "dark" ? (
+                <Sun size={18} className="text-amber-400" />
+              ) : (
+                <Moon size={18} className="text-indigo-600" />
+              )}
+            </button>
+
+            {/* ── Mobile Controls (Theme Toggle + Hamburger) ─────────────── */}
+            <div className="flex items-center gap-1 md:hidden">
+              <button
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+                className="p-2 rounded-lg text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+              >
+                {theme === "dark" ? (
+                  <Sun size={18} className="text-amber-400" />
+                ) : (
+                  <Moon size={18} className="text-indigo-600" />
+                )}
+              </button>
+
+              <button
+                onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+                className="relative z-50 rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)]"
+                aria-label="Toggle navigation menu"
+                aria-expanded={isMobileMenuOpen}
+              >
               <AnimatePresence mode="wait" initial={false}>
                 {isMobileMenuOpen ? (
                   <motion.span
@@ -217,6 +264,7 @@ export default function Navbar() {
                 )}
               </AnimatePresence>
             </button>
+          </div>
           </div>
         </nav>
       </motion.header>

@@ -3,7 +3,6 @@ import FloatingSocialDock from "@/components/layout/FloatingSocialDock";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/hero/HeroSection";
 import JourneyTimeline from "@/components/journey/JourneyTimeline";
-import AchievementsGallery from "@/components/gallery/AchievementsGallery";
 
 // =============================================================================
 // Home Page — Single Page Application
@@ -63,6 +62,7 @@ export default function Home() {
           </p>
         </section>
 
+        {/* ── Teaching Playlist Placeholder ── */}
         <section
           id="teaching"
           className="min-h-[50vh] flex flex-col items-center justify-center border-t border-[var(--color-border)]/50 px-6 py-20 text-center"
@@ -75,9 +75,6 @@ export default function Home() {
             Custom interactive player for 4 programming sessions (Loops, Arrays, Strings, Prefix Sum).
           </p>
         </section>
-
-        {/* ── Phase 3: Achievements Gallery (Infinite Marquee) ── */}
-        <AchievementsGallery />
       </main>
 
       {/* ── Footer ── */}

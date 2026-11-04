@@ -10,13 +10,10 @@ import { type IconType } from "react-icons";
 import { type LucideIcon } from "lucide-react";
 
 // =============================================================================
-// Platform → Icon Mapping
+// Platform → Icon & Brand Color Configuration
 // =============================================================================
 
-/** Returns the appropriate icon component for each social platform. */
-function getPlatformIcon(
-  platform: SocialPlatform
-): IconType | LucideIcon {
+function getPlatformIcon(platform: SocialPlatform): IconType | LucideIcon {
   const map: Record<SocialPlatform, IconType | LucideIcon> = {
     github: FaGithub,
     gitlab: FaGitlab,
@@ -28,23 +25,81 @@ function getPlatformIcon(
   return map[platform];
 }
 
+interface BrandTheme {
+  hoverText: string;
+  hoverBg: string;
+  hoverBorder: string;
+  hoverShadow: string;
+  tooltipBorder: string;
+  hex: string;
+}
+
+const brandThemes: Record<SocialPlatform, BrandTheme> = {
+  github: {
+    hoverText: "hover:text-white",
+    hoverBg: "hover:bg-white/10",
+    hoverBorder: "hover:border-white/50",
+    hoverShadow: "hover:shadow-[0_0_20px_rgba(255,255,255,0.35)]",
+    tooltipBorder: "group-hover:border-white/40",
+    hex: "#ffffff",
+  },
+  gitlab: {
+    hoverText: "hover:text-[#FC6D26]",
+    hoverBg: "hover:bg-[#FC6D26]/10",
+    hoverBorder: "hover:border-[#FC6D26]/60",
+    hoverShadow: "hover:shadow-[0_0_20px_rgba(252,109,38,0.4)]",
+    tooltipBorder: "group-hover:border-[#FC6D26]/40",
+    hex: "#FC6D26",
+  },
+  linkedin: {
+    hoverText: "hover:text-[#0A66C2]",
+    hoverBg: "hover:bg-[#0A66C2]/10",
+    hoverBorder: "hover:border-[#0A66C2]/60",
+    hoverShadow: "hover:shadow-[0_0_20px_rgba(10,102,194,0.4)]",
+    tooltipBorder: "group-hover:border-[#0A66C2]/40",
+    hex: "#0A66C2",
+  },
+  leetcode: {
+    hoverText: "hover:text-[#FFA116]",
+    hoverBg: "hover:bg-[#FFA116]/10",
+    hoverBorder: "hover:border-[#FFA116]/60",
+    hoverShadow: "hover:shadow-[0_0_20px_rgba(255,161,22,0.4)]",
+    tooltipBorder: "group-hover:border-[#FFA116]/40",
+    hex: "#FFA116",
+  },
+  email: {
+    hoverText: "hover:text-[#22d3ee]",
+    hoverBg: "hover:bg-[#22d3ee]/10",
+    hoverBorder: "hover:border-[#22d3ee]/60",
+    hoverShadow: "hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]",
+    tooltipBorder: "group-hover:border-[#22d3ee]/40",
+    hex: "#22d3ee",
+  },
+  cv: {
+    hoverText: "hover:text-[#818cf8]",
+    hoverBg: "hover:bg-[#818cf8]/10",
+    hoverBorder: "hover:border-[#818cf8]/60",
+    hoverShadow: "hover:shadow-[0_0_20px_rgba(129,140,248,0.4)]",
+    tooltipBorder: "group-hover:border-[#818cf8]/40",
+    hex: "#818cf8",
+  },
+};
+
 // =============================================================================
 // Animation Variants
 // =============================================================================
 
-/** Container stagger for the dock entrance animation. */
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
       staggerChildren: 0.08,
-      delayChildren: 0.6, // wait for page content to load first
+      delayChildren: 0.5,
     },
   },
 };
 
-/** Individual icon entrance animation. */
 const itemVariants = {
   hidden: { opacity: 0, x: -20 },
   visible: {
@@ -61,31 +116,31 @@ const itemVariants = {
 export default function FloatingSocialDock() {
   return (
     <>
-      {/* ── Desktop: Vertical dock on left side ────────────────────────────── */}
+      {/* ── Desktop: Vertical dock on left side ── */}
       <motion.aside
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="fixed left-5 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-3 md:flex"
+        className="fixed left-5 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-3.5 md:flex"
         aria-label="Social links"
       >
         {socialLinks.map((link: SocialLink) => (
           <DockItem key={link.platform} link={link} />
         ))}
 
-        {/* Decorative line below the dock */}
+        {/* Decorative connecting line */}
         <motion.div
           variants={itemVariants}
-          className="mx-auto mt-2 h-20 w-px bg-gradient-to-b from-[var(--color-border)] to-transparent"
+          className="mx-auto mt-2 h-16 w-px bg-gradient-to-b from-[var(--color-border)] to-transparent"
         />
       </motion.aside>
 
-      {/* ── Mobile: Horizontal bar at the bottom ──────────────────────────── */}
+      {/* ── Mobile: Horizontal bar at the bottom ── */}
       <motion.aside
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="fixed bottom-0 left-0 right-0 z-40 flex items-center justify-center gap-4 border-t border-[var(--color-border)] bg-[var(--color-bg-secondary)]/90 px-4 py-3 backdrop-blur-lg md:hidden"
+        className="fixed bottom-0 left-0 right-0 z-40 flex items-center justify-center gap-4 border-t border-[var(--color-border)] bg-[var(--color-bg-secondary)]/95 px-4 py-3 backdrop-blur-xl md:hidden"
         aria-label="Social links"
       >
         {socialLinks.map((link: SocialLink) => (
@@ -97,7 +152,7 @@ export default function FloatingSocialDock() {
 }
 
 // =============================================================================
-// Dock Item — Single icon with tooltip
+// Dock Item Component with dynamic brand colors on hover
 // =============================================================================
 
 interface DockItemProps {
@@ -107,8 +162,8 @@ interface DockItemProps {
 
 function DockItem({ link, mobile = false }: DockItemProps) {
   const Icon = getPlatformIcon(link.platform);
+  const theme = brandThemes[link.platform];
 
-  // CV link opens in same tab (download), others open in new tab
   const isExternal = link.platform !== "cv";
   const linkProps = isExternal
     ? { target: "_blank" as const, rel: "noopener noreferrer" }
@@ -120,35 +175,37 @@ function DockItem({ link, mobile = false }: DockItemProps) {
         href={link.url}
         {...linkProps}
         aria-label={link.label}
-        whileHover={{ scale: 1.15 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.18 }}
+        whileTap={{ scale: 0.92 }}
         className={`
           flex items-center justify-center rounded-xl
           border border-[var(--color-border)] bg-[var(--color-bg-tertiary)]
           text-[var(--color-text-secondary)]
-          transition-all duration-200
-          hover:border-[var(--color-primary)]/40
-          hover:text-[var(--color-primary-light)]
-          hover:shadow-[0_0_15px_rgba(99,102,241,0.2)]
+          transition-all duration-300
+          ${theme.hoverText}
+          ${theme.hoverBg}
+          ${theme.hoverBorder}
+          ${theme.hoverShadow}
           ${mobile ? "h-10 w-10" : "h-11 w-11"}
         `}
       >
         <Icon size={mobile ? 18 : 20} />
       </motion.a>
 
-      {/* Tooltip — slides in from the left (desktop only) */}
+      {/* Tooltip on Desktop — slides smoothly from left */}
       {!mobile && (
         <span
-          className="
-            pointer-events-none absolute left-full top-1/2 ml-3
+          className={`
+            pointer-events-none absolute left-full top-1/2 ml-3.5
             -translate-y-1/2 whitespace-nowrap
-            rounded-md bg-[var(--color-bg-tertiary)] px-2.5 py-1
-            text-xs font-medium text-[var(--color-text-primary)]
+            rounded-lg bg-[var(--color-bg-secondary)]/95 px-3 py-1.5
+            text-xs font-mono font-medium text-[var(--color-text-primary)]
             opacity-0 transition-all duration-200
             group-hover:translate-x-0 group-hover:opacity-100
-            -translate-x-2
+            -translate-x-2 shadow-xl backdrop-blur-md
             border border-[var(--color-border)]
-          "
+            ${theme.tooltipBorder}
+          `}
         >
           {link.label}
         </span>

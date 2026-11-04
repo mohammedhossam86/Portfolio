@@ -1,8 +1,8 @@
 import { JourneyMilestone } from "@/types";
 
 // ─── Journey Milestones (Chronological) ──────────────────────────────────────
-// Each milestone = a "station" where the car stops on the timeline.
-// Ordered chronologically from college start to current career.
+// Each milestone = a station where the car stops on the timeline.
+// Milestones with multiple images can be clicked to open the interactive gallery modal.
 
 export const journeyMilestones: JourneyMilestone[] = [
   {
@@ -10,18 +10,19 @@ export const journeyMilestones: JourneyMilestone[] = [
     date: "2022-09",
     title: "Started Computer Science Degree",
     description:
-      "First day at university — the beginning of an incredible journey into software engineering.",
+      "First day at university — the beginning of an incredible journey into software engineering, algorithms, and deep backend systems.",
     category: "education",
-    tags: ["University", "CS"],
+    tags: ["University", "CS", "Beginnings"],
   },
   {
     id: "ecpc-qual-2023",
     date: "2023-10",
     title: "ECPC Qualifications 2023",
     description:
-      "First competitive programming contest — ECPC Qualifications. Got hooked on problem solving and algorithmic thinking.",
+      "First competitive programming contest — ECPC Qualifications. Got hooked on problem solving, data structures, and competitive programming.",
     category: "achievement",
     imageUrl: "/images/journey/ECPCQ2023.jpeg",
+    images: ["/images/journey/ECPCQ2023.jpeg"],
     tags: ["ECPC", "Competitive Programming"],
   },
   {
@@ -29,9 +30,10 @@ export const journeyMilestones: JourneyMilestone[] = [
     date: "2024-10",
     title: "ECPC Qualifications 2024",
     description:
-      "Came back stronger for the second year of ECPC Qualifications. Growth in problem solving skills was real.",
+      "Returned for the second year of ECPC Qualifications with sharper algorithmic intuition, tackling complex graphs and dynamic programming problems.",
     category: "achievement",
     imageUrl: "/images/journey/ECPCQ2024.jpeg",
+    images: ["/images/journey/ECPCQ2024.jpeg"],
     tags: ["ECPC", "Competitive Programming"],
   },
   {
@@ -39,9 +41,10 @@ export const journeyMilestones: JourneyMilestone[] = [
     date: "2025-10",
     title: "ECPC Qualifications 2025",
     description:
-      "Third year at ECPC — each year the problems get harder, and so do we.",
+      "Third year competing at ECPC Qualifications. Strong problem solving performance qualified the team to the Egyptian national finals.",
     category: "achievement",
     imageUrl: "/images/journey/ECPCQ2025.jpeg",
+    images: ["/images/journey/ECPCQ2025.jpeg"],
     tags: ["ECPC", "Competitive Programming"],
   },
   {
@@ -49,9 +52,13 @@ export const journeyMilestones: JourneyMilestone[] = [
     date: "2025-11",
     title: "ECPC 2025 Finals",
     description:
-      "Made it to the ECPC Finals! Competed with the best teams in Egypt.",
+      "Reached the prestigious ECPC Egyptian Collegiate Programming Contest Finals! Competed alongside the top university teams in Egypt under coach mentorship.",
     category: "achievement",
     imageUrl: "/images/journey/ECPC2025.jpeg",
+    images: [
+      "/images/journey/ECPC2025.jpeg",
+      "/images/journey/ECPC2025witcoac.jpeg",
+    ],
     tags: ["ECPC", "Finals", "Competitive Programming"],
   },
   {
@@ -59,17 +66,23 @@ export const journeyMilestones: JourneyMilestone[] = [
     date: "2026-06",
     title: "Graduated! 🎓",
     description:
-      "Graduated with a Computer Science degree. Four years of grinding, learning, and building — all worth it.",
+      "Graduated with a Computer Science degree. Four years of grinding, building real-world systems, AI healthcare projects, and competitive programming.",
     category: "education",
     imageUrl: "/images/journey/gradiuation.jpeg",
-    tags: ["Graduation", "Milestone"],
+    images: [
+      "/images/journey/gradiuation.jpeg",
+      "/images/journey/gradiuation1.jpeg",
+      "/images/journey/gradiuation2.jpeg",
+      "/images/journey/gradiuation3.jpeg",
+    ],
+    tags: ["Graduation", "Milestone", "CS Degree"],
   },
   {
     id: "current-role",
     date: "2026-08",
     title: "Software Engineer",
     description:
-      "Started my professional career as a Software Engineer, continuing to build, learn, and contribute.",
+      "Started my professional career as a Software Engineer, building robust backend architectures, distributed services, and open source tools.",
     category: "work",
     tags: ["Career", "Software Engineering"],
   },
@@ -78,9 +91,14 @@ export const journeyMilestones: JourneyMilestone[] = [
     date: "2026-10",
     title: "3rd Place — Champions Coach Code Challenge 🏆",
     description:
-      "Won 3rd place in the Champions Coach Code Challenge! Hard work and team synergy paid off.",
+      "Honored as a Coach for kids and young students in the Champions Coach Code Challenge! Mentored and guided young brilliant minds through algorithmic problem solving and coding challenges, proudly leading the team to 3rd Place!",
     category: "achievement",
     imageUrl: "/images/journey/3rdplacechampionscoachcodechalleng.jpeg",
-    tags: ["Competition", "Award", "Problem Solving"],
+    images: [
+      "/images/journey/3rdplacechampionscoachcodechalleng.jpeg",
+      "/images/journey/3rdplacechampionscoachcodechalleng1.jpeg",
+      "/images/journey/3rdplacechampionscoachcodechalleng2.jpeg",
+    ],
+    tags: ["Kids Coach", "Mentorship", "Award", "3rd Place", "Code Challenge"],
   },
 ];
