@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { navItems } from "@/data/site";
+import { navItems, socialLinks } from "@/data/site";
 import { NavItem } from "@/types";
 import {
   Home,
@@ -20,6 +20,8 @@ import {
   Mail,
   type LucideIcon,
 } from "lucide-react";
+import { FaGithub, FaGitlab, FaLinkedinIn } from "react-icons/fa";
+import { SiLeetcode } from "react-icons/si";
 
 // =============================================================================
 // Icon Resolver — maps the `icon` string field from NavItem to a Lucide component
@@ -35,18 +37,16 @@ const iconMap: Record<string, LucideIcon> = {
   Images,
 };
 
-/** Resolves a Lucide icon component from its string name. */
 function getIcon(name?: string): LucideIcon | null {
   if (!name) return null;
   return iconMap[name] ?? null;
 }
 
 // =============================================================================
-// Navbar Component
+// Navbar Component — Futuristic AI Floating Island / Dynamic Capsule
 // =============================================================================
 
 export default function Navbar() {
-  // ─── State ──────────────────────────────────────────────────────────────────
   const [activeSection, setActiveSection] = useState<string>("#hero");
   const [isVisible, setIsVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -86,15 +86,12 @@ export default function Navbar() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Always show at the very top of the page
       if (currentScrollY < 50) {
         setIsVisible(true);
-      } else if (currentScrollY > lastScrollY.current + 5) {
-        // Scrolling down — hide
+      } else if (currentScrollY > lastScrollY.current + 8) {
         setIsVisible(false);
         setIsMobileMenuOpen(false);
-      } else if (currentScrollY < lastScrollY.current - 5) {
-        // Scrolling up — show
+      } else if (currentScrollY < lastScrollY.current - 8) {
         setIsVisible(true);
       }
 
@@ -121,9 +118,8 @@ export default function Navbar() {
           }
         },
         {
-          // Trigger when at least 30% of the section is visible
-          threshold: 0.3,
-          rootMargin: "-80px 0px -40% 0px",
+          threshold: 0.25,
+          rootMargin: "-70px 0px -40% 0px",
         }
       );
 
@@ -134,7 +130,7 @@ export default function Navbar() {
     return () => observers.forEach((obs) => obs.disconnect());
   }, []);
 
-  // ─── Smooth scroll handler (Calculates exact offset for fixed navbar) ───
+  // ─── Smooth scroll handler ───────────────────────────────────────────────
   const handleNavClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
       e.preventDefault();
@@ -142,7 +138,7 @@ export default function Navbar() {
       const el = document.getElementById(targetId);
 
       if (el) {
-        const navHeight = 75;
+        const navHeight = 70;
         const elementPosition = el.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - navHeight;
         window.scrollTo({
@@ -157,118 +153,98 @@ export default function Navbar() {
     []
   );
 
-  // ─── Render ────────────────────────────────────────────────────────────────
   return (
     <>
-      {/* Navbar wrapper — fixed top, hides/shows via Framer Motion */}
+      {/* ── Fixed Floating Wrapper (Pointer-events pass-through outside pill) ── */}
       <motion.header
         initial={{ y: 0 }}
-        animate={{ y: isVisible ? 0 : -100 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="fixed top-0 left-0 right-0 z-50"
+        animate={{ y: isVisible ? 0 : -90 }}
+        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+        className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none px-3 pt-3 sm:pt-4"
       >
-        {/* Glass-morphism bar */}
-        <nav className="glass border-b border-[var(--color-border)] px-6 py-3">
-          <div className="mx-auto flex max-w-7xl items-center justify-between">
-            {/* ── Logo / Name ─────────────────────────────────────────── */}
+        {/* ── Futuristic AI Floating Capsule ──────────────────────────────── */}
+        <nav className="pointer-events-auto flex items-center justify-between gap-3 sm:gap-6 px-3.5 sm:px-5 h-11 sm:h-12 rounded-full border border-orange-200/80 dark:border-white/10 bg-white/90 dark:bg-[#08080b]/85 backdrop-blur-2xl shadow-xl shadow-black/5 dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] w-full max-w-5xl transition-all duration-300">
+          {/* ── Left: AI Status & Monogram ── */}
+          <a
+            href="#hero"
+            onClick={(e) => handleNavClick(e, "#hero")}
+            className="flex items-center gap-2 group select-none shrink-0"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            <span className="font-mono text-xs sm:text-sm font-bold tracking-wider text-stone-900 dark:text-white group-hover:text-stone-600 dark:group-hover:text-zinc-300 transition-colors">
+              HOSSAM<span className="text-stone-400 dark:text-zinc-500 font-normal">.AI</span>
+            </span>
+          </a>
+
+          {/* ── Center: Desktop Navigation Links (Minimalist AI Pills) ── */}
+          <ul className="hidden md:flex items-center gap-1">
+            {navItems.map((item: NavItem) => {
+              const Icon = getIcon(item.icon);
+              const isActive = activeSection === item.href;
+
+              return (
+                <li key={item.href} className="relative">
+                  <a
+                    href={item.href}
+                    onClick={(e) => handleNavClick(e, item.href)}
+                    className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-medium transition-all duration-200 ${
+                      isActive
+                        ? "text-stone-900 dark:text-white font-semibold"
+                        : "text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-zinc-100"
+                    }`}
+                  >
+                    {isActive && (
+                      <motion.span
+                        layoutId="nav-pill-active"
+                        className="absolute inset-0 rounded-full bg-orange-100 dark:bg-white/10 border border-orange-200/80 dark:border-white/15 shadow-xs"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                    <span className="relative z-10 flex items-center gap-1.5">
+                      {Icon && <Icon size={13} className="opacity-80" />}
+                      {item.label}
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+
+          {/* ── Right: Quick Action, Theme Switcher & Mobile Menu Toggle ── */}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Quick CV Download (Desktop only) */}
             <a
-              href="#hero"
-              onClick={(e) => handleNavClick(e, "#hero")}
-              className="text-gradient text-xl font-bold tracking-tight select-none"
+              href="/cv.pdf"
+              download="Mohammed_Hossam_CV.pdf"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-stone-900 text-white dark:bg-white dark:text-black font-mono text-[11px] font-semibold hover:bg-stone-800 dark:hover:bg-zinc-200 transition-all shadow-xs active:scale-95"
             >
-              Hossam
+              <Download size={12} />
+              <span>CV</span>
             </a>
 
-            {/* ── Desktop Navigation Links ────────────────────────────── */}
-            <ul className="hidden items-center gap-1 md:flex">
-              {navItems.map((item: NavItem) => {
-                const Icon = getIcon(item.icon);
-                const isActive = activeSection === item.href;
+            {/* Theme Toggle Button */}
+            <button
+              onClick={toggleTheme}
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+              className="flex items-center justify-center w-8 h-8 rounded-full border border-orange-200/80 dark:border-zinc-800 bg-orange-50/50 dark:bg-zinc-900/60 text-stone-700 dark:text-zinc-300 hover:border-orange-400 dark:hover:border-zinc-600 transition-all duration-200 active:scale-90"
+            >
+              {theme === "dark" ? (
+                <Sun size={15} className="text-amber-400" />
+              ) : (
+                <Moon size={15} className="text-orange-500" />
+              )}
+            </button>
 
-                return (
-                  <li key={item.href}>
-                    <a
-                      href={item.href}
-                      onClick={(e) => handleNavClick(e, item.href)}
-                      className={`
-                        group relative flex items-center gap-1.5 rounded-lg px-3 py-2
-                        text-sm font-medium transition-colors duration-200
-                        ${
-                          isActive
-                            ? "text-[var(--color-primary-light)]"
-                            : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
-                        }
-                      `}
-                    >
-                      {Icon && <Icon size={16} />}
-                      {item.label}
-
-                      {/* Active indicator — animated underline */}
-                      {isActive && (
-                        <motion.span
-                          layoutId="nav-underline"
-                          className="absolute bottom-0 left-2 right-2 h-0.5 rounded-full bg-[var(--gradient-primary)]"
-                          style={{
-                            background:
-                              "linear-gradient(90deg, var(--color-primary), var(--color-accent))",
-                          }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 380,
-                            damping: 30,
-                          }}
-                        />
-                      )}
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-
-            {/* ── Desktop Actions: CV & Theme Toggle ───────────────────────── */}
-            <div className="hidden md:flex items-center gap-2">
-              <a
-                href="/cv.pdf"
-                download="Mohammed_Hossam_CV.pdf"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-light)] text-white text-xs font-semibold font-mono shadow-sm transition-all active:scale-95"
-              >
-                <Download size={13} />
-                <span>CV</span>
-              </a>
-
-              <button
-                onClick={toggleTheme}
-                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-                className="flex items-center justify-center p-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-primary)] transition-all duration-200"
-              >
-                {theme === "dark" ? (
-                  <Sun size={18} className="text-amber-400" />
-                ) : (
-                  <Moon size={18} className="text-orange-500" />
-                )}
-              </button>
-            </div>
-
-            {/* ── Mobile Controls (Theme Toggle + Hamburger) ─────────────── */}
-            <div className="flex items-center gap-1 md:hidden">
-              <button
-                onClick={toggleTheme}
-                aria-label="Toggle theme"
-                className="p-2 rounded-lg text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
-              >
-                {theme === "dark" ? (
-                  <Sun size={18} className="text-amber-400" />
-                ) : (
-                  <Moon size={18} className="text-orange-500" />
-                )}
-              </button>
-
-              <button
-                onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-                className="relative z-50 rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)]"
-                aria-label="Toggle navigation menu"
-                aria-expanded={isMobileMenuOpen}
-              >
+            {/* Mobile Menu Hamburger (Visible on small screens) */}
+            <button
+              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+              aria-label="Toggle navigation menu"
+              aria-expanded={isMobileMenuOpen}
+              className="md:hidden flex items-center justify-center w-8 h-8 rounded-full border border-orange-200/80 dark:border-zinc-800 bg-orange-50/50 dark:bg-zinc-900/60 text-stone-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-all active:scale-90"
+            >
               <AnimatePresence mode="wait" initial={false}>
                 {isMobileMenuOpen ? (
                   <motion.span
@@ -278,7 +254,7 @@ export default function Navbar() {
                     exit={{ rotate: 90, opacity: 0 }}
                     transition={{ duration: 0.15 }}
                   >
-                    <X size={22} />
+                    <X size={16} />
                   </motion.span>
                 ) : (
                   <motion.span
@@ -288,92 +264,139 @@ export default function Navbar() {
                     exit={{ rotate: -90, opacity: 0 }}
                     transition={{ duration: 0.15 }}
                   >
-                    <Menu size={22} />
+                    <Menu size={16} />
                   </motion.span>
                 )}
               </AnimatePresence>
             </button>
           </div>
-          </div>
         </nav>
       </motion.header>
 
-      {/* ── Mobile Slide-in Menu ────────────────────────────────────────────── */}
+      {/* ── Mobile Futuristic Glass Overlay Sheet ─────────────────────────── */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            {/* Backdrop overlay */}
+            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden"
               onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 z-40 bg-black/80 backdrop-blur-md md:hidden"
             />
 
-            {/* Slide-in panel from right */}
+            {/* Modal Sheet */}
             <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 250 }}
-              className="fixed top-0 right-0 bottom-0 z-40 w-72 border-l border-[var(--color-border)] bg-[var(--color-bg-secondary)]/95 backdrop-blur-xl md:hidden"
+              initial={{ opacity: 0, y: -20, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.96 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="fixed top-16 left-3 right-3 z-50 rounded-3xl border border-orange-200/80 dark:border-zinc-800 bg-white/95 dark:bg-[#09090d]/95 backdrop-blur-2xl shadow-2xl p-5 md:hidden max-h-[85vh] overflow-y-auto"
             >
-              <nav className="flex h-full flex-col justify-center px-8">
-                <ul className="space-y-2">
-                  {navItems.map((item: NavItem, index: number) => {
-                    const Icon = getIcon(item.icon);
-                    const isActive = activeSection === item.href;
-
-                    return (
-                      <motion.li
-                        key={item.href}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05, duration: 0.2 }}
-                      >
-                        <a
-                          href={item.href}
-                          onClick={(e) => handleNavClick(e, item.href)}
-                          className={`
-                            flex items-center gap-3 rounded-xl px-4 py-3
-                            text-base font-medium transition-all duration-200
-                            ${
-                              isActive
-                                ? "bg-[var(--color-primary)]/10 text-[var(--color-primary-light)]"
-                                : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-tertiary)] hover:text-[var(--color-text-primary)]"
-                            }
-                          `}
-                        >
-                          {Icon && <Icon size={20} />}
-                          {item.label}
-                        </a>
-                      </motion.li>
-                    );
-                  })}
-                </ul>
-
-                {/* Quick Mobile Drawer Actions */}
-                <div className="pt-6 mt-4 border-t border-[var(--color-border)] flex flex-col gap-2.5">
-                  <a
-                    href="/cv.pdf"
-                    download="Mohammed_Hossam_CV.pdf"
-                    className="flex items-center justify-center gap-2 rounded-xl py-2.5 px-4 bg-[var(--color-primary)] text-white text-xs font-semibold shadow-md active:scale-95 transition-all font-mono"
-                  >
-                    <Download size={14} />
-                    <span>Download CV</span>
-                  </a>
-                  <a
-                    href="#contact"
-                    onClick={(e) => handleNavClick(e, "#contact")}
-                    className="flex items-center justify-center gap-2 rounded-xl py-2.5 px-4 border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] text-[var(--color-text-primary)] text-xs font-semibold active:scale-95 transition-all font-mono"
-                  >
-                    <Mail size={14} />
-                    <span>Get in Touch</span>
-                  </a>
+              {/* Header */}
+              <div className="flex items-center justify-between pb-3 mb-3 border-b border-orange-100 dark:border-zinc-800">
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-stone-500 dark:text-zinc-400 font-bold">
+                    SYSTEM NAVIGATION
+                  </span>
                 </div>
-              </nav>
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-1 rounded-lg text-stone-400 dark:text-zinc-500 hover:text-stone-900 dark:hover:text-white"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              {/* Navigation Links Grid */}
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                {navItems.map((item: NavItem, idx: number) => {
+                  const Icon = getIcon(item.icon);
+                  const isActive = activeSection === item.href;
+
+                  return (
+                    <motion.a
+                      key={item.href}
+                      href={item.href}
+                      onClick={(e) => handleNavClick(e, item.href)}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.03 }}
+                      className={`flex items-center gap-2.5 p-3 rounded-2xl border text-xs font-mono font-medium transition-all ${
+                        isActive
+                          ? "border-orange-300 dark:border-white/20 bg-orange-50 dark:bg-white/10 text-orange-950 dark:text-white font-bold"
+                          : "border-orange-100/60 dark:border-zinc-800/80 bg-orange-50/40 dark:bg-zinc-900/40 text-stone-700 dark:text-zinc-300 hover:border-orange-300 dark:hover:border-zinc-700"
+                      }`}
+                    >
+                      {Icon && <Icon size={14} className="opacity-75 shrink-0" />}
+                      <span className="truncate">{item.label}</span>
+                    </motion.a>
+                  );
+                })}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-orange-100 dark:border-zinc-800">
+                <a
+                  href="/cv.pdf"
+                  download="Mohammed_Hossam_CV.pdf"
+                  className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-stone-900 dark:bg-white text-white dark:text-black font-mono text-xs font-semibold shadow-sm active:scale-95 transition-all"
+                >
+                  <Download size={13} />
+                  <span>Download CV</span>
+                </a>
+                <a
+                  href="#contact"
+                  onClick={(e) => handleNavClick(e, "#contact")}
+                  className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border border-orange-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-stone-900 dark:text-white font-mono text-xs font-semibold active:scale-95 transition-all"
+                >
+                  <Mail size={13} />
+                  <span>Let&apos;s Connect</span>
+                </a>
+              </div>
+
+              {/* Social Channels Row */}
+              <div className="flex items-center justify-center gap-4 mt-4 pt-3 border-t border-orange-100 dark:border-zinc-800/80 text-stone-500 dark:text-zinc-400">
+                <a
+                  href="https://github.com/mohammedhossam86"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-xl hover:text-stone-900 dark:hover:text-white transition-colors"
+                  aria-label="GitHub"
+                >
+                  <FaGithub size={16} />
+                </a>
+                <a
+                  href="https://gitlab.com/mohammedhossam86"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-xl hover:text-[#FC6D26] transition-colors"
+                  aria-label="GitLab"
+                >
+                  <FaGitlab size={16} />
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/mohammed-hossam-3286b2223/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-xl hover:text-[#0A66C2] transition-colors"
+                  aria-label="LinkedIn"
+                >
+                  <FaLinkedinIn size={16} />
+                </a>
+                <a
+                  href="https://leetcode.com/u/mohammedhossam86/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-xl hover:text-[#FFA116] transition-colors"
+                  aria-label="LeetCode"
+                >
+                  <SiLeetcode size={16} />
+                </a>
+              </div>
             </motion.div>
           </>
         )}

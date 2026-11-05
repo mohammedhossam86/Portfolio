@@ -193,14 +193,14 @@ export default function AboutSection() {
               <a
                 href="/cv.pdf"
                 download="Mohammed_Hossam_CV.pdf"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-light)] text-white font-semibold text-sm transition-all duration-200 shadow-lg shadow-[var(--color-primary)]/30 active:scale-95"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-stone-900 text-white dark:bg-white dark:text-black hover:bg-stone-800 dark:hover:bg-zinc-200 font-semibold text-sm font-mono transition-all duration-200 shadow-md active:scale-95"
               >
                 <Download size={16} />
                 Download CV
               </a>
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-bg-tertiary)] border border-[var(--color-border)] hover:border-[var(--color-primary)] text-[var(--color-text-primary)] font-semibold text-sm transition-all duration-200 active:scale-95"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-stone-300 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/60 text-stone-800 dark:text-zinc-200 hover:border-stone-500 dark:hover:border-zinc-600 font-semibold text-sm font-mono transition-all duration-200 active:scale-95"
               >
                 <Mail size={16} />
                 Let&apos;s Connect

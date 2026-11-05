@@ -14,45 +14,48 @@ html {
 /* ─── CSS Custom Properties (Design Tokens) ─────────────────────────────────── */
 
 :root {
-  /* Brand colors */
-  --color-primary: #6366f1;        /* Indigo-500 */
-  --color-primary-light: #818cf8;  /* Indigo-400 */
-  --color-primary-dark: #4f46e5;   /* Indigo-600 */
-  --color-accent: #06b6d4;         /* Cyan-500 */
-  --color-accent-light: #22d3ee;   /* Cyan-400 */
+  /* ── Futuristic AI Monochrome Design Tokens (Calm Obsidian & Titanium) ── */
+  --color-primary: #f4f4f5;        /* Zinc-100 / Pure Crisp Titanium */
+  --color-primary-light: #ffffff;  /* Pure White */
+  --color-primary-dark: #a1a1aa;   /* Zinc-400 */
+  --color-accent: #71717a;         /* Zinc-500 / Steel */
+  --color-accent-light: #d4d4d8;   /* Zinc-300 / Silver */
 
-  /* Dark theme backgrounds */
-  --color-bg-primary: #0a0a0f;     /* Deep dark */
-  --color-bg-secondary: #111118;   /* Card backgrounds */
-  --color-bg-tertiary: #1a1a24;    /* Elevated surfaces */
+  /* Neural AI Indicator */
+  --color-neural: #10b981;         /* Emerald micro status dot */
 
-  /* Text */
-  --color-text-primary: #f0f0f5;
-  --color-text-secondary: #a0a0b0;
-  --color-text-muted: #6b6b80;
+  /* Dark theme backgrounds (Calm Obsidian & Charcoal) */
+  --color-bg-primary: #050507;     /* Pure Obsidian Deep Black */
+  --color-bg-secondary: #0c0c10;   /* Charcoal / Dark Slate Card Background */
+  --color-bg-tertiary: #141419;    /* Elevated Micro Surfaces */
 
-  /* Borders */
-  --color-border: #2a2a3a;
-  --color-border-hover: #3a3a4a;
+  /* Text — Ultra-legible contrast */
+  --color-text-primary: #f4f4f5;   /* Crisp Zinc-100 */
+  --color-text-secondary: #a1a1aa; /* Calm Zinc-400 */
+  --color-text-muted: #71717a;     /* Muted Zinc-500 */
+
+  /* Borders — Hairline Precision AI aesthetic */
+  --color-border: #1f1f26;         /* Subtle dark zinc hairline */
+  --color-border-hover: #3f3f46;   /* Zinc-700 on hover */
 
   /* Status colors */
-  --color-success: #22c55e;
-  --color-warning: #eab308;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
   --color-error: #ef4444;
 
-  /* Gradients */
-  --gradient-primary: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-  --gradient-bg: radial-gradient(ellipse at top, #111118 0%, #0a0a0f 70%);
+  /* Gradients — Liquid Silver / Titanium Monochrome */
+  --gradient-primary: linear-gradient(135deg, #ffffff 0%, #e4e4e7 40%, #a1a1aa 100%);
+  --gradient-bg: radial-gradient(ellipse at top, #111116 0%, #050507 80%);
 
-  /* Top-down sports car livery colors (Dark Mode: Cyber Blue/Indigo) */
-  --car-body-1: #1e1b4b;
-  --car-body-2: #4338ca;
-  --car-body-3: #6366f1;
-  --car-body-4: #06b6d4;
-  --car-stripe: #22d3ee;
-  --car-underglow: #06b6d4;
-  --car-beam: rgba(34, 211, 238, 0.6);
-  --car-beam-conic: rgba(99, 102, 241, 0.25);
+  /* Top-down sports car livery colors (Dark Mode: Cyber Stealth Black & Titanium) */
+  --car-body-1: #0a0a0d;        /* Carbon fiber core */
+  --car-body-2: #18181b;        /* Matte graphite */
+  --car-body-3: #27272a;        /* Dark titanium */
+  --car-body-4: #e4e4e7;        /* Brushed aluminum highlight */
+  --car-stripe: #ffffff;        /* Pure white racing stripes */
+  --car-underglow: rgba(255, 255, 255, 0.12); /* Subtle silver underglow */
+  --car-beam: rgba(255, 255, 255, 0.65);       /* High-beam crisp white xenon */
+  --car-beam-conic: rgba(255, 255, 255, 0.15);
 }
 
 /* ─── Light Mode Overrides (Warm Orange & White Aesthetic) ───────────────── */
@@ -283,8 +286,8 @@ body {
 /* ─── Glass Card Effect ───────────────────────────────────────────────────── */
 
 .glass {
-  background: rgba(17, 17, 24, 0.7);
-  backdrop-filter: blur(12px);
+  background: rgba(12, 12, 16, 0.8);
+  backdrop-filter: blur(16px);
   border: 1px solid var(--color-border);
 }
 
@@ -295,13 +298,49 @@ html.light .glass {
   box-shadow: 0 10px 25px -5px rgba(234, 88, 12, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03) !important;
 }
 
-/* ─── Glow Effect ─────────────────────────────────────────────────────────── */
+/* ─── Dark Mode Card & Surface Overrides (Pure Obsidian & Charcoal) ────── */
+
+html.dark .bg-\[\#0b0e18\],
+html.dark .bg-\[\#0b0e18\]\/90,
+html.dark .bg-\[\#0b0e18\]\/95,
+html.dark .bg-\[\#0a0d18\],
+html.dark .bg-\[\#0a0d16\],
+html.dark .bg-\[\#0a0d16\]\/95,
+html.dark .bg-\[\#070912\],
+html.dark .bg-\[\#0b0e1a\],
+html.dark .bg-\[\#0b0e1a\]\/85,
+html.dark .bg-\[\#0b0e1a\]\/90,
+html.dark .bg-\[\#0b0e1a\]\/95,
+html.dark .bg-\[\#0d1220\],
+html.dark .bg-\[\#06080e\],
+html.dark .bg-\[\#06080e\]\/95,
+html.dark .bg-\[\#0d111a\],
+html.dark .bg-\[\#0c101a\],
+html.dark .bg-\[\#0c101a\]\/80,
+html.dark .bg-\[\#0c101d\],
+html.dark .bg-slate-900,
+html.dark .bg-slate-900\/80,
+html.dark .bg-slate-900\/90,
+html.dark .bg-slate-900\/95,
+html.dark .bg-slate-950 {
+  background-color: #0c0c10 !important;
+  border-color: #1f1f26 !important;
+}
+
+html.dark .bg-slate-800,
+html.dark .bg-slate-800\/70,
+html.dark .bg-slate-800\/80,
+html.dark .bg-slate-800\/90 {
+  background-color: #141419 !important;
+  border-color: #27272e !important;
+}
+
+/* ─── Glow Effect (Calm Silver/White Neural Glow) ────────────────────────── */
 
 .glow {
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.15),
-              0 0 40px rgba(6, 182, 212, 0.1);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.05);
 }
 
 .glow-text {
-  text-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+  text-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
 }

@@ -34,14 +34,14 @@ function getCategoryMeta(category: JourneyMilestone["category"]) {
       return {
         label: "Education",
         icon: GraduationCap,
-        badgeClass: "bg-indigo-500/15 text-indigo-300 border-indigo-500/30",
+        badgeClass: "bg-zinc-800 text-zinc-300 border-zinc-700",
       };
     case "work":
     case "internship":
       return {
         label: category === "work" ? "Career" : "Internship",
         icon: Briefcase,
-        badgeClass: "bg-cyan-500/15 text-cyan-300 border-cyan-500/30",
+        badgeClass: "bg-zinc-800 text-zinc-200 border-zinc-700",
       };
     case "opensource":
       return {
@@ -143,7 +143,7 @@ export default function MilestoneStation({
           </div>
         ) : (
           /* Fallback banner for milestones without photos */
-          <div className="relative h-28 w-full overflow-hidden bg-gradient-to-br from-indigo-950/70 via-slate-900 to-[var(--color-bg-secondary)] p-4 flex flex-col justify-between border-b border-[var(--color-border)]">
+          <div className="relative h-28 w-full overflow-hidden bg-gradient-to-br from-zinc-900 via-black to-[var(--color-bg-secondary)] p-4 flex flex-col justify-between border-b border-[var(--color-border)]">
             <div className="flex items-center justify-between">
               <span className="font-mono text-xs px-2.5 py-1 rounded-full bg-black/60 text-white/90 border border-white/10 font-semibold">
                 Station {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}

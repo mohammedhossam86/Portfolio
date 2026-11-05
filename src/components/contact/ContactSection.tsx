@@ -108,7 +108,7 @@ export default function ContactSection() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
             <a
               href={`mailto:${email}?subject=Collaboration%20Inquiry%20from%20Portfolio`}
-              className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-light)] text-white font-semibold text-sm transition-all duration-200 shadow-lg shadow-[var(--color-primary)]/25 active:scale-95"
+              className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-stone-900 text-white dark:bg-white dark:text-black font-semibold text-sm font-mono transition-all duration-200 shadow-lg active:scale-95"
             >
               <Send size={16} />
               Send Direct Email
@@ -116,7 +116,7 @@ export default function ContactSection() {
             <a
               href="/cv.pdf"
               download="Mohammed_Hossam_CV.pdf"
-              className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)] hover:border-[var(--color-primary)] text-[var(--color-text-primary)] font-semibold text-sm transition-all duration-200 active:scale-95 shadow-xs"
+              className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-stone-100 dark:bg-zinc-900 border border-stone-300 dark:border-zinc-800 hover:border-stone-500 dark:hover:border-zinc-600 text-stone-900 dark:text-white font-semibold text-sm font-mono transition-all duration-200 active:scale-95 shadow-xs"
             >
               <Download size={16} />
               Download Resume

@@ -471,7 +471,7 @@ export default function JourneyWorld({
             className="absolute top-44 left-0 right-0 h-96 pointer-events-none opacity-20"
             style={{
               background:
-                "radial-gradient(ellipse at 50% 50%, rgba(99, 102, 241, 0.35), rgba(6, 182, 212, 0.2), transparent 70%)",
+                "radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.08), rgba(161, 161, 170, 0.04), transparent 70%)",
               filter: "blur(80px)",
             }}
           />
@@ -712,7 +712,7 @@ export default function JourneyWorld({
           >
             <button
               onClick={() => onInspectMilestone(focusedMilestone)}
-              className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 text-white font-mono text-xs sm:text-sm font-bold shadow-[0_0_25px_rgba(6,182,212,0.7)] hover:scale-105 active:scale-95 transition-all animate-bounce cursor-pointer border border-cyan-300"
+              className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-stone-900 text-white dark:bg-white dark:text-black font-mono text-xs sm:text-sm font-bold shadow-[0_0_25px_rgba(255,255,255,0.3)] hover:scale-105 active:scale-95 transition-all animate-bounce cursor-pointer border border-stone-700 dark:border-white"
             >
               <Sparkles size={16} />
               <span>[SPACE] Press to Inspect Station Details</span>

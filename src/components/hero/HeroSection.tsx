@@ -109,7 +109,7 @@ function FloatingParticles({ count = 16 }: { count?: number }) {
             top: `${p.y}%`,
             width: p.size,
             height: p.size,
-            background: `rgba(99, 102, 241, ${p.opacity})`,
+            background: `rgba(255, 255, 255, ${p.opacity * 0.45})`,
           }}
           animate={{
             y: [0, -20, 0],
@@ -224,11 +224,15 @@ function RoleRotator({ roles }: { roles: string[] }) {
 
   return (
     <div className="flex items-center min-h-[44px] my-1">
-      <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[var(--color-primary)]/10 dark:bg-[var(--color-primary)]/15 border border-[var(--color-primary)]/30 shadow-xs backdrop-blur-md max-w-full">
-        <span className="text-[var(--color-primary)] font-bold text-base select-none shrink-0 font-mono">
-          &gt;
+      <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-zinc-900/60 dark:bg-zinc-900/80 border border-orange-200/60 dark:border-zinc-800 shadow-xs backdrop-blur-md max-w-full">
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
         </span>
-        <div className="relative overflow-hidden min-h-[24px] flex items-center">
+        <span className="text-stone-500 dark:text-zinc-400 font-bold text-xs select-none shrink-0 font-mono">
+          AI //
+        </span>
+        <div className="relative overflow-hidden min-h-[22px] flex items-center">
           <AnimatePresence mode="wait">
             <motion.span
               key={roles[currentIndex]}
@@ -236,13 +240,12 @@ function RoleRotator({ roles }: { roles: string[] }) {
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               exit={{ opacity: 0, y: -14, filter: "blur(4px)" }}
               transition={{ duration: 0.35, ease: "easeOut" }}
-              className="text-sm sm:text-base font-mono font-semibold text-[var(--color-primary-light)] whitespace-nowrap"
+              className="text-xs sm:text-sm font-mono font-semibold text-stone-900 dark:text-zinc-100 whitespace-nowrap"
             >
               {roles[currentIndex]}
             </motion.span>
           </AnimatePresence>
         </div>
-        <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse shrink-0 ml-0.5" />
       </div>
     </div>
   );
@@ -361,8 +364,7 @@ export default function HeroSection() {
           {/* Primary CTA — View Projects */}
           <a
             href="#projects"
-            className="group inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold text-white transition-all duration-300 hover:scale-[1.03] hover:shadow-lg"
-            style={{ background: "var(--gradient-primary)" }}
+            className="group inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold bg-stone-900 text-white dark:bg-white dark:text-black hover:bg-stone-800 dark:hover:bg-zinc-200 transition-all duration-300 hover:scale-[1.03] shadow-md font-mono text-sm"
           >
             View Projects
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -373,7 +375,7 @@ export default function HeroSection() {
             href={resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold border border-[var(--color-border)] text-[var(--color-text-primary)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary-light)] transition-all duration-300 hover:scale-[1.03]"
+            className="group inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold border border-stone-300 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/60 text-stone-800 dark:text-zinc-200 hover:border-stone-500 dark:hover:border-zinc-600 hover:text-black dark:hover:text-white transition-all duration-300 hover:scale-[1.03] font-mono text-sm backdrop-blur-md"
           >
             <Download className="w-4 h-4" />
             Download CV

@@ -134,19 +134,6 @@ export default function FloatingSocialDock() {
           className="mx-auto mt-2 h-16 w-px bg-gradient-to-b from-[var(--color-border)] to-transparent"
         />
       </motion.aside>
-
-      {/* ── Mobile: Horizontal bar at the bottom ── */}
-      <motion.aside
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="fixed bottom-0 left-0 right-0 z-40 flex items-center justify-center gap-4 border-t border-[var(--color-border)] bg-[var(--color-bg-secondary)]/95 px-4 py-3 backdrop-blur-xl md:hidden"
-        aria-label="Social links"
-      >
-        {socialLinks.map((link: SocialLink) => (
-          <DockItem key={link.platform} link={link} mobile />
-        ))}
-      </motion.aside>
     </>
   );
 }

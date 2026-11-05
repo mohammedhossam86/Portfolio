@@ -296,7 +296,7 @@ function ProjectCard({ project, isFeatured = false, index = 0 }: ProjectCardProp
               href={project.liveUrl}
               target={project.liveUrl.startsWith("#") ? "_self" : "_blank"}
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-light)] text-white text-xs font-semibold font-mono transition-all shadow-md active:scale-95"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-stone-900 text-white dark:bg-white dark:text-black hover:bg-stone-800 dark:hover:bg-zinc-200 text-xs font-semibold font-mono transition-all shadow-sm active:scale-95"
             >
               <ExternalLink size={12} />
               <span>Live Demo</span>
@@ -307,7 +307,7 @@ function ProjectCard({ project, isFeatured = false, index = 0 }: ProjectCardProp
               href={project.repoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)] hover:border-[var(--color-primary)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] text-xs font-semibold font-mono transition-all active:scale-95 shadow-xs"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-stone-100 dark:bg-zinc-900 border border-stone-300 dark:border-zinc-800 hover:border-stone-500 dark:hover:border-zinc-600 text-stone-900 dark:text-white text-xs font-semibold font-mono transition-all active:scale-95 shadow-xs"
             >
               <FaGithub size={12} />
               <span>Source Code</span>
