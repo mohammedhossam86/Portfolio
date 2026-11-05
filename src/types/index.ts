@@ -107,6 +107,7 @@ export type MergeRequestState = "merged" | "opened" | "closed";
 
 export interface GitLabMergeRequest {
   id: number;
+  iid?: number;
   title: string;
   description: string;
   state: MergeRequestState;

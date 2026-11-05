@@ -39,10 +39,9 @@ export async function fetchGitLabMergeRequests(): Promise<
     const url = new URL(`${baseUrl}/api/v4/merge_requests`);
     url.searchParams.set("author_username", username);
     url.searchParams.set("scope", "all");
-    url.searchParams.set("state", "merged"); // show merged MRs by default
     url.searchParams.set("order_by", "created_at");
     url.searchParams.set("sort", "desc");
-    url.searchParams.set("per_page", String(maxResults));
+    url.searchParams.set("per_page", "100");
 
     const response = await fetch(url.toString(), {
       headers,
@@ -65,7 +64,8 @@ export async function fetchGitLabMergeRequests(): Promise<
 
     // Map GitLab API response to our typed interface
     const mergeRequests: GitLabMergeRequest[] = rawData.map((mr) => ({
-      id: mr.iid,
+      id: mr.id,
+      iid: mr.iid,
       title: mr.title,
       description: mr.description || "",
       state: mr.state as GitLabMergeRequest["state"],

@@ -1,11 +1,11 @@
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { journeyMilestones } from "@/data/journey";
 import { JourneyMilestone } from "@/types";
-import TopDownCar from "./TopDownCar";
+import JourneyWorld from "./JourneyWorld";
 import {
   Compass,
   Trophy,
@@ -16,23 +16,13 @@ import {
   ChevronLeft,
   ChevronRight,
   Flame,
-  ArrowDown,
-  ArrowUp,
-  Play,
-  RotateCcw,
-  Sparkles,
+  LayoutGrid,
+  Car,
+  ExternalLink,
 } from "lucide-react";
 
 export default function JourneyTimeline() {
-  const [activeStationIdx, setActiveStationIdx] = useState(0);
-  const [isDriving, setIsDriving] = useState(false);
-  const [isAutoCruise, setIsAutoCruise] = useState(false);
-  const totalMilestones = journeyMilestones.length;
-
-  const isMouseOverJourney = useRef(false);
-  const stationRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  // ─── Modal State for Multi-Photo Gallery ───────────────────────────────────
+  const [viewMode, setViewMode] = useState<"drive" | "cards">("drive");
   const [selectedMilestone, setSelectedMilestone] = useState<JourneyMilestone | null>(null);
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
 
@@ -46,85 +36,6 @@ export default function JourneyTimeline() {
     setActivePhotoIdx(0);
   };
 
-  // ─── Drive to Specific Station ────────────────────────────────────────────
-  const driveToStation = useCallback(
-    (targetIdx: number) => {
-      const clamped = Math.max(0, Math.min(totalMilestones - 1, targetIdx));
-      if (clamped === activeStationIdx && !isDriving) return;
-
-      setIsDriving(true);
-      setActiveStationIdx(clamped);
-
-      // Smoothly scroll station into view
-      setTimeout(() => {
-        const targetEl = stationRefs.current[clamped];
-        if (targetEl) {
-          targetEl.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
-        setTimeout(() => setIsDriving(false), 500);
-      }, 50);
-    },
-    [activeStationIdx, isDriving, totalMilestones]
-  );
-
-  const driveNext = useCallback(() => {
-    driveToStation(activeStationIdx + 1);
-  }, [activeStationIdx, driveToStation]);
-
-  const drivePrev = useCallback(() => {
-    driveToStation(activeStationIdx - 1);
-  }, [activeStationIdx, driveToStation]);
-
-  // ─── Keyboard Controls for Driving ────────────────────────────────────────
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Only drive the car if the user is hovering or interacting with the Journey section,
-      // and NOT if typing in inputs or interacting with the Arcade game!
-      if (
-        !isMouseOverJourney.current ||
-        (e.target as HTMLElement)?.tagName === "INPUT" ||
-        (e.target as HTMLElement)?.tagName === "TEXTAREA" ||
-        selectedMilestone ||
-        document.getElementById("arcade")?.matches(":hover")
-      ) {
-        return;
-      }
-
-      if (e.key === "ArrowDown" || e.key === "s" || e.key === "S") {
-        e.preventDefault();
-        driveNext();
-      } else if (e.key === "ArrowUp" || e.key === "w" || e.key === "W") {
-        e.preventDefault();
-        drivePrev();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [driveNext, drivePrev, selectedMilestone]);
-
-  // ─── Auto Cruise Mode ──────────────────────────────────────────────────────
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isAutoCruise) {
-      interval = setInterval(() => {
-        setActiveStationIdx((prev) => {
-          if (prev >= totalMilestones - 1) {
-            setIsAutoCruise(false);
-            return prev;
-          }
-          const next = prev + 1;
-          const targetEl = stationRefs.current[next];
-          if (targetEl) {
-            targetEl.scrollIntoView({ behavior: "smooth", block: "center" });
-          }
-          return next;
-        });
-      }, 2500);
-    }
-    return () => clearInterval(interval);
-  }, [isAutoCruise, totalMilestones]);
-
   const modalPhotos = selectedMilestone
     ? selectedMilestone.images && selectedMilestone.images.length > 0
       ? selectedMilestone.images
@@ -133,18 +44,22 @@ export default function JourneyTimeline() {
       : []
     : [];
 
-  const carProgressPercent =
-    totalMilestones > 1 ? (activeStationIdx / (totalMilestones - 1)) * 92 : 0;
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case "education":
+        return <GraduationCap size={16} className="text-cyan-400" />;
+      case "achievement":
+        return <Trophy size={16} className="text-amber-400" />;
+      case "work":
+        return <Briefcase size={16} className="text-purple-400" />;
+      default:
+        return <Compass size={16} className="text-emerald-400" />;
+    }
+  };
 
   return (
     <section
       id="journey"
-      onMouseEnter={() => {
-        isMouseOverJourney.current = true;
-      }}
-      onMouseLeave={() => {
-        isMouseOverJourney.current = false;
-      }}
       className="relative py-20 sm:py-32 overflow-hidden border-t border-[var(--color-border)]/50"
     >
       {/* ── Background Atmosphere ── */}
@@ -159,232 +74,101 @@ export default function JourneyTimeline() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         {/* ── Section Header ── */}
-        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/30 text-[var(--color-accent-light)] text-xs font-mono uppercase tracking-wider mb-3">
-            <Compass size={13} />
-            Interactive Career Drive
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-14">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/30 text-[var(--color-accent-light)] text-xs font-mono uppercase tracking-wider mb-3">
+              <Compass size={13} />
+              Open World Boulevard
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white">
+              Drive Through My <span className="text-gradient">Journey</span>
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">
+              Navigate the sports car across the highway using <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-cyan-300">W/A/S/D</kbd> or <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-cyan-300">Arrows</kbd>. Drive near milestones to light them up, and press <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-amber-300">SPACE</kbd> to inspect!
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white">
-            Drive Through My <span className="text-gradient">Journey</span>
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">
-            Drive the sports car using your keyboard <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-cyan-300">W / S</kbd> or the Gamepad controls below!
-          </p>
 
-          {/* ── Drive Control Dashboard (Gamepad Controls) ── */}
-          <div className="mt-6 inline-flex flex-wrap items-center justify-center gap-2.5 p-2 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-xl backdrop-blur-xl">
+          {/* View Switcher: Interactive Drive vs Grid Cards */}
+          <div className="flex items-center gap-2 bg-slate-900/90 border border-slate-800 p-1.5 rounded-2xl backdrop-blur-xl">
             <button
-              onClick={drivePrev}
-              disabled={activeStationIdx === 0}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-xs font-mono text-slate-200 disabled:opacity-40 disabled:pointer-events-none transition-all border border-slate-700"
-            >
-              <ArrowUp size={14} />
-              <span>Drive Up</span>
-            </button>
-
-            <button
-              onClick={driveNext}
-              disabled={activeStationIdx === totalMilestones - 1}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-light)] active:scale-95 text-xs font-mono text-white disabled:opacity-40 disabled:pointer-events-none transition-all shadow-md shadow-[var(--color-primary)]/30"
-            >
-              <span>Drive Down</span>
-              <ArrowDown size={14} />
-            </button>
-
-            <button
-              onClick={() => setIsAutoCruise(!isAutoCruise)}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-mono transition-all border ${
-                isAutoCruise
-                  ? "bg-amber-500/20 text-amber-300 border-amber-500/50"
-                  : "bg-slate-800 text-slate-300 border-slate-700 hover:text-white"
+              onClick={() => setViewMode("drive")}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-semibold transition-all ${
+                viewMode === "drive"
+                  ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25"
+                  : "text-slate-400 hover:text-white"
               }`}
             >
-              <Play size={12} className={isAutoCruise ? "animate-spin" : ""} />
-              <span>{isAutoCruise ? "Cruise Active" : "Auto-Cruise"}</span>
+              <Car size={15} />
+              <span>Drive Mode</span>
             </button>
 
-            <div className="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-lg bg-black/40 text-[11px] font-mono text-slate-400 border border-slate-800">
-              <span>Station:</span>
-              <strong className="text-cyan-300">
-                {activeStationIdx + 1}/{totalMilestones}
-              </strong>
-            </div>
+            <button
+              onClick={() => setViewMode("cards")}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-semibold transition-all ${
+                viewMode === "cards"
+                  ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <LayoutGrid size={15} />
+              <span>Cards View ({journeyMilestones.length})</span>
+            </button>
           </div>
         </div>
 
-        {/* ── Road & Stations Container ── */}
-        <div className="relative min-h-[1200px] py-6 sm:py-10">
-          {/* ── The Center Asphalt Highway Road ── */}
-          <div className="absolute left-6 md:left-1/2 top-0 bottom-0 -translate-x-1/2 w-14 sm:w-20 bg-gradient-to-b from-[#090d16] via-[#0f1422] to-[#090d16] border-x-2 border-slate-800/90 shadow-[0_0_30px_rgba(0,0,0,0.8)] z-0 rounded-2xl overflow-hidden">
-            {/* White Shoulder Borders */}
-            <div className="absolute left-1 top-0 bottom-0 w-0.5 bg-slate-600/40" />
-            <div className="absolute right-1 top-0 bottom-0 w-0.5 bg-slate-600/40" />
-
-            {/* Yellow Dashed Center Line */}
-            <div
-              className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-1"
-              style={{
-                backgroundImage:
-                  "repeating-linear-gradient(to bottom, #facc15 0px, #facc15 24px, transparent 24px, transparent 48px)",
-              }}
-            />
-          </div>
-
-          {/* ── The Playable 2D Top-Down Car (Drives between Stations) ── */}
-          <div
-            style={{
-              top: `${carProgressPercent}%`,
-              transition: "top 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)",
-            }}
-            className="absolute left-6 md:left-1/2 -translate-x-1/2 z-20 pointer-events-none"
-          >
-            <TopDownCar isDriving={isDriving || isAutoCruise} />
-
-            {/* Cruising Speed HUD */}
-            <div className="absolute -right-20 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-900/90 border border-cyan-500/50 text-[10px] font-mono text-cyan-300 shadow-lg backdrop-blur-md whitespace-nowrap">
-              <Flame size={11} className="text-amber-400" />
-              <span>{isDriving ? "ACCELERATING" : "ARRIVED"}</span>
-            </div>
-          </div>
-
-          {/* ── Milestones Stations (Alternating Left & Right) ── */}
-          <div className="relative z-10 space-y-12 sm:space-y-20">
-            {journeyMilestones.map((milestone, idx) => {
-              const isEven = idx % 2 === 0;
-              const isActive = idx === activeStationIdx;
-              const hasPhotos =
-                (milestone.images && milestone.images.length > 0) ||
-                milestone.imageUrl;
-              const photoCount = milestone.images?.length || (milestone.imageUrl ? 1 : 0);
-
-              const isWork = milestone.category === "work";
-              const isAchievement = milestone.category === "achievement";
-              const isEducation = milestone.category === "education";
-
-              return (
-                <div
-                  key={milestone.id}
-                  ref={(el) => {
-                    stationRefs.current[idx] = el;
-                  }}
-                  onClick={() => driveToStation(idx)}
-                  className={`flex flex-col md:flex-row items-start cursor-pointer ${
-                    isEven ? "md:flex-row-reverse" : ""
-                  } gap-4 md:gap-0`}
-                >
-                  {/* Station Content Card */}
-                  <div
-                    className={`w-full pl-16 md:pl-0 md:w-1/2 ${
-                      isEven ? "md:pl-16" : "md:pr-16"
-                    }`}
-                  >
-                    <div
-                      className={`group relative rounded-3xl border p-5 sm:p-7 shadow-xl backdrop-blur-xl transition-all duration-300 ${
-                        isActive
-                          ? "border-cyan-400 ring-2 ring-cyan-400/30 shadow-[0_0_25px_rgba(34,211,238,0.25)] scale-[1.02] bg-[#0f172a]"
-                          : isWork
-                          ? "border-purple-500/30 bg-[#0f0e1c]/90 hover:border-purple-500/60"
-                          : isAchievement
-                          ? "border-amber-500/30 bg-[#14120a]/90 hover:border-amber-500/60"
-                          : "border-slate-800 bg-[#0b0e18]/90 hover:border-slate-700"
-                      }`}
-                    >
-                      {/* Active Station Car Magnet Indicator */}
-                      {isActive && (
-                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-[10px] font-mono mb-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-                          <span>CAR AT THIS STATION</span>
-                        </div>
-                      )}
-
-                      {/* Top Bar: Date & Category Badge */}
-                      <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
-                        <span className="text-xs font-mono font-bold text-slate-400">
-                          {milestone.date}
-                        </span>
-
-                        <span
-                          className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-mono uppercase tracking-wider ${
-                            isWork
-                              ? "bg-purple-500/15 text-purple-300 border border-purple-500/30"
-                              : isAchievement
-                              ? "bg-amber-500/15 text-amber-300 border border-amber-500/30"
-                              : "bg-blue-500/15 text-blue-300 border border-blue-500/30"
-                          }`}
-                        >
-                          {isWork && <Briefcase size={11} />}
-                          {isAchievement && <Trophy size={11} />}
-                          {isEducation && <GraduationCap size={11} />}
-                          {milestone.category}
-                        </span>
-                      </div>
-
-                      {/* Title */}
-                      <h3 className="text-base sm:text-lg font-bold text-white mb-2 leading-snug group-hover:text-[var(--color-primary-light)] transition-colors">
-                        {milestone.title}
-                      </h3>
-
-                      {/* Description */}
-                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal mb-4">
-                        {milestone.description}
-                      </p>
-
-                      {/* ── Directly Visible Media Preview ── */}
-                      {hasPhotos && (
-                        <div
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openModal(milestone);
-                          }}
-                          className="relative aspect-video w-full rounded-2xl overflow-hidden border border-slate-700/80 bg-slate-950 cursor-pointer group/img mb-3 shadow-md"
-                        >
-                          <Image
-                            src={
-                              milestone.images?.[0] ||
-                              milestone.imageUrl ||
-                              ""
-                            }
-                            alt={milestone.title}
-                            fill
-                            sizes="(max-width: 768px) 100vw, 450px"
-                            className="object-cover object-center group-hover/img:scale-105 transition-transform duration-500 opacity-90 group-hover/img:opacity-100"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-
-                          {/* Gallery Badge */}
-                          <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-xs font-mono text-white">
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur-md border border-white/20 text-[11px]">
-                              <Images size={12} className="text-cyan-400" />
-                              {photoCount > 1
-                                ? `${photoCount} Photos • Click to view`
-                                : "Click to view photo"}
-                            </span>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Tags */}
-                      {milestone.tags && milestone.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5 pt-2 border-t border-slate-800/80">
-                          {milestone.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="px-2 py-0.5 rounded-lg bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-400"
-                            >
-                              #{tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+        {/* ── Main Viewport Content ── */}
+        {viewMode === "drive" ? (
+          <JourneyWorld
+            milestones={journeyMilestones}
+            onInspectMilestone={openModal}
+          />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {journeyMilestones.map((m, idx) => (
+              <div
+                key={m.id}
+                onClick={() => openModal(m)}
+                className="group relative rounded-3xl border border-slate-800 bg-[#0b0e18]/90 backdrop-blur-xl p-6 transition-all duration-300 hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/10 cursor-pointer flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-3 mb-4">
+                    <span className="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+                      {getCategoryIcon(m.category)}
+                    </span>
+                    <span className="text-xs font-mono text-cyan-400">
+                      {m.date}
+                    </span>
                   </div>
 
-                  <div className="hidden md:block md:w-1/2" />
+                  <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors mb-2">
+                    {m.title}
+                  </h3>
+
+                  <p className="text-xs text-slate-400 leading-relaxed line-clamp-3 mb-4">
+                    {m.description}
+                  </p>
                 </div>
-              );
-            })}
+
+                {m.imageUrl && (
+                  <div className="relative w-full h-36 rounded-2xl overflow-hidden border border-slate-800 mt-2">
+                    <Image
+                      src={m.imageUrl}
+                      alt={m.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    {m.images && m.images.length > 1 && (
+                      <div className="absolute bottom-2 right-2 px-2 py-1 rounded-lg bg-black/80 text-[10px] font-mono text-white flex items-center gap-1 backdrop-blur-md">
+                        <Images size={12} />
+                        <span>{m.images.length} photos</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
-        </div>
+        )}
       </div>
 
       {/* ── Multi-Photo Interactive Modal ── */}

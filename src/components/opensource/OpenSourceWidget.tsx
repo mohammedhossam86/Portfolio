@@ -1,22 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { GitLabMergeRequest } from "@/types";
 import { fallbackGitLabMRs } from "@/data/opensource";
 import { formatDate } from "@/lib/utils";
 import {
   GitMerge,
   CheckCircle2,
+  XCircle,
   ExternalLink,
   ShieldCheck,
   ChevronDown,
   ChevronUp,
+  Layers,
 } from "lucide-react";
 import { FaGitlab } from "react-icons/fa";
 
 export default function OpenSourceWidget() {
   const [mrs, setMrs] = useState<GitLabMergeRequest[]>(fallbackGitLabMRs);
   const [isSectionCollapsed, setIsSectionCollapsed] = useState(false);
+  const [filter, setFilter] = useState<"all" | "merged" | "closed">("all");
+  const [visibleCount, setVisibleCount] = useState(8);
   const [expandedMrId, setExpandedMrId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -40,6 +44,22 @@ export default function OpenSourceWidget() {
     setExpandedMrId((prev) => (prev === id ? null : id));
   };
 
+  const filteredMrs = useMemo(() => {
+    if (filter === "all") return mrs;
+    return mrs.filter((m) => m.state === filter);
+  }, [filter, mrs]);
+
+  const displayedMrs = filteredMrs.slice(0, visibleCount);
+
+  const mergedCount = useMemo(
+    () => mrs.filter((m) => m.state === "merged").length,
+    [mrs]
+  );
+  const closedCount = useMemo(
+    () => mrs.filter((m) => m.state === "closed").length,
+    [mrs]
+  );
+
   return (
     <section
       id="opensource"
@@ -57,7 +77,7 @@ export default function OpenSourceWidget() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full overflow-hidden">
         {/* ── Section Header ── */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-14">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 sm:mb-10">
           <div className="max-w-xl min-w-0">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FC6D26]/10 border border-[#FC6D26]/30 text-[#FC6D26] text-xs font-mono uppercase tracking-wider mb-2">
               <FaGitlab size={13} />
@@ -67,7 +87,7 @@ export default function OpenSourceWidget() {
               Open Source &amp; <span className="text-gradient">GitLab MRs</span>
             </h2>
             <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mt-2 break-words">
-              Direct code contributions to GitLab&apos;s core enterprise repository (<code className="text-[#FC6D26] font-mono text-xs">gitlab-org/gitlab</code>).
+              All 37 verified merge requests authored by Mohammed Hossam for GitLab&apos;s core enterprise repository (<code className="text-[#FC6D26] font-mono text-xs">gitlab-org/gitlab</code>).
             </p>
           </div>
 
@@ -88,44 +108,104 @@ export default function OpenSourceWidget() {
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[#FC6D26]/40 bg-[#FC6D26]/10 text-white hover:bg-[#FC6D26] transition-all font-semibold text-xs shadow-md shadow-[#FC6D26]/10"
             >
               <FaGitlab size={16} className="text-[#FC6D26]" />
-              <span>GitLab Profile</span>
+              <span>GitLab Profile ({mrs.length} MRs)</span>
               <ExternalLink size={12} className="opacity-75" />
             </a>
           </div>
         </div>
 
         {/* ── Key Highlights Badges (Compact) ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
           <div className="p-4 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)] flex items-center gap-3 min-w-0">
             <div className="p-2.5 rounded-xl bg-[#FC6D26]/10 text-[#FC6D26] shrink-0">
               <ShieldCheck size={20} />
             </div>
             <div className="min-w-0">
-              <span className="text-[11px] text-[var(--color-text-muted)] font-mono block">Role</span>
+              <span className="text-[11px] text-[var(--color-text-muted)] font-mono block">Repository</span>
               <span className="text-xs sm:text-sm font-bold text-[var(--color-text-primary)] truncate block">
-                GitLab Core Contributor
+                gitlab-org/gitlab
               </span>
             </div>
           </div>
 
           <div className="p-4 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)] flex items-center gap-3 min-w-0">
             <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 shrink-0">
+              <CheckCircle2 size={20} />
+            </div>
+            <div className="min-w-0">
+              <span className="text-[11px] text-[var(--color-text-muted)] font-mono block">Production Merged</span>
+              <span className="text-xs sm:text-sm font-bold text-emerald-400 truncate block">
+                {mergedCount} Merged MRs
+              </span>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)] flex items-center gap-3 min-w-0">
+            <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-400 shrink-0">
               <GitMerge size={20} />
             </div>
             <div className="min-w-0">
-              <span className="text-[11px] text-[var(--color-text-muted)] font-mono block">Status</span>
+              <span className="text-[11px] text-[var(--color-text-muted)] font-mono block">Total Lifetime MRs</span>
               <span className="text-xs sm:text-sm font-bold text-[var(--color-text-primary)] truncate block">
-                100% Production Merged
+                {mrs.length} Contributions
               </span>
             </div>
           </div>
         </div>
 
+        {/* ── Filter Tabs ── */}
+        {!isSectionCollapsed && (
+          <div className="flex flex-wrap items-center gap-2 mb-6">
+            <button
+              onClick={() => {
+                setFilter("all");
+                setVisibleCount(8);
+              }}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-mono transition-all ${
+                filter === "all"
+                  ? "bg-[#FC6D26] text-white font-bold shadow-md shadow-[#FC6D26]/20"
+                  : "bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+              }`}
+            >
+              All MRs ({mrs.length})
+            </button>
+            <button
+              onClick={() => {
+                setFilter("merged");
+                setVisibleCount(8);
+              }}
+              className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-mono transition-all ${
+                filter === "merged"
+                  ? "bg-emerald-600 text-white font-bold shadow-md shadow-emerald-600/20"
+                  : "bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+              }`}
+            >
+              <CheckCircle2 size={12} />
+              Merged ({mergedCount})
+            </button>
+            <button
+              onClick={() => {
+                setFilter("closed");
+                setVisibleCount(8);
+              }}
+              className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-mono transition-all ${
+                filter === "closed"
+                  ? "bg-slate-700 text-white font-bold shadow-md"
+                  : "bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+              }`}
+            >
+              <XCircle size={12} />
+              Closed / Archived ({closedCount})
+            </button>
+          </div>
+        )}
+
         {/* ── Merge Requests List (Collapsible) ── */}
         {!isSectionCollapsed && (
           <div className="space-y-3.5 w-full">
-            {mrs.map((mr) => {
+            {displayedMrs.map((mr) => {
               const isCardExpanded = expandedMrId === mr.id;
+              const isMerged = mr.state === "merged";
 
               return (
                 <div
@@ -136,12 +216,19 @@ export default function OpenSourceWidget() {
                     <div className="space-y-1.5 flex-1 min-w-0">
                       {/* Status + Date */}
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                          <CheckCircle2 size={11} />
-                          Merged
-                        </span>
-                        <span className="text-[11px] font-mono text-slate-400">
-                          {mr.projectName} !{mr.id}
+                        {isMerged ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                            <CheckCircle2 size={11} />
+                            Merged
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-slate-800 text-slate-400 border border-slate-700">
+                            <XCircle size={11} />
+                            Closed
+                          </span>
+                        )}
+                        <span className="text-[11px] font-mono text-slate-300 font-semibold">
+                          {mr.projectName} !{mr.iid || mr.id}
                         </span>
                         {mr.createdAt && (
                           <span className="text-[11px] font-mono text-slate-500 hidden sm:inline">
@@ -197,13 +284,28 @@ export default function OpenSourceWidget() {
                           ))}
                       </div>
                       <div className="text-[11px] font-mono text-slate-500">
-                        Merged: {mr.mergedAt ? formatDate(mr.mergedAt) : "Verified in production"}
+                        {mr.mergedAt
+                          ? `Merged: ${formatDate(mr.mergedAt)}`
+                          : `Created: ${formatDate(mr.createdAt)}`}
                       </div>
                     </div>
                   )}
                 </div>
               );
             })}
+
+            {/* Show More / Show All Pagination Control */}
+            {filteredMrs.length > visibleCount && (
+              <div className="flex justify-center pt-4">
+                <button
+                  onClick={() => setVisibleCount((prev) => Math.min(prev + 10, filteredMrs.length))}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 border border-slate-700 hover:border-[#FC6D26] text-xs font-mono text-slate-200 hover:text-white transition-all shadow-lg hover:shadow-[#FC6D26]/10"
+                >
+                  <Layers size={13} />
+                  <span>Show More ({filteredMrs.length - visibleCount} remaining)</span>
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
