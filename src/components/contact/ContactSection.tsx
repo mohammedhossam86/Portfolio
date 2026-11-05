@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import {
   Mail,
   Copy,
@@ -40,7 +41,13 @@ export default function ContactSection() {
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
-        <div className="max-w-3xl mx-auto text-center mb-14">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="max-w-3xl mx-auto text-center mb-14"
+        >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/30 text-[var(--color-primary-light)] text-xs font-mono uppercase tracking-wider mb-3">
             <Mail size={13} />
             Get In Touch
@@ -51,10 +58,16 @@ export default function ContactSection() {
           <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mt-3 font-normal max-w-xl mx-auto">
             Whether you need a scalable backend architecture, an algorithmic problem solver, or someone to evaluate frontier AI models — my inbox is always open.
           </p>
-        </div>
+        </motion.div>
 
-        {/* ── Contact Hero Card ── */}
-        <div className="max-w-2xl mx-auto rounded-3xl border border-orange-200/80 dark:border-slate-800 bg-white/95 dark:bg-[#0a0d16]/95 backdrop-blur-2xl p-8 sm:p-10 shadow-2xl">
+        {/* ── Contact Hero Card (Docks into place with soft scale) ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 35, scale: 0.94 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-2xl mx-auto rounded-3xl border border-orange-200/80 dark:border-slate-800 bg-white/95 dark:bg-[#0a0d16]/95 backdrop-blur-2xl p-8 sm:p-10 shadow-2xl"
+        >
           {/* Status Badge */}
           <div className="flex items-center justify-between pb-6 mb-6 border-b border-slate-800/80">
             <div className="flex items-center gap-2 text-xs font-mono text-emerald-400">
@@ -156,7 +169,7 @@ export default function ContactSection() {
               <ArrowUpRight size={11} className="opacity-60" />
             </a>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

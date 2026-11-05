@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Gamepad2, Terminal, LayoutGrid, Sparkles, Cpu, Code2, Bot } from "lucide-react";
 import TerminalEmulator from "./TerminalEmulator";
 import VisualGameCanvas from "./VisualGameCanvas";
@@ -26,7 +27,13 @@ export default function ArcadeHub() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         {/* ── Header ── */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16"
+        >
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/30 text-[var(--color-primary-light)] text-xs font-mono uppercase tracking-wider mb-2">
               <Gamepad2 size={14} />
@@ -65,10 +72,16 @@ export default function ArcadeHub() {
               Visual 2D Board
             </button>
           </div>
-        </div>
+        </motion.div>
 
         {/* ── Key Highlights Pill Row ── */}
-        <div className="flex flex-wrap items-center gap-3 mb-8">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.45, delay: 0.1 }}
+          className="flex flex-wrap items-center gap-3 mb-8"
+        >
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-bg-secondary)] border border-[var(--color-border)] text-xs font-mono text-[var(--color-text-secondary)] shadow-xs">
             <Bot size={13} className="text-emerald-500 dark:text-emerald-400" />
             A* Search Heuristic AI
@@ -85,16 +98,22 @@ export default function ArcadeHub() {
             <Code2 size={13} className="text-amber-600 dark:text-amber-400" />
             Original Python &amp; TypeScript Engine
           </span>
-        </div>
+        </motion.div>
 
-        {/* ── Interactive Game View ── */}
-        <div className="w-full">
+        {/* ── Interactive Game View (Docks with soft scale into place) ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 35, scale: 0.96 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full"
+        >
           {activeMode === "terminal" ? (
             <TerminalEmulator />
           ) : (
             <VisualGameCanvas />
           )}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

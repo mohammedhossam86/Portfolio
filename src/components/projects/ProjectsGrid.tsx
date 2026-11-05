@@ -57,7 +57,13 @@ export default function ProjectsGrid() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         {/* ── Header ── */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-14">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-14"
+        >
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/30 text-[var(--color-accent-light)] text-xs font-mono uppercase tracking-wider mb-2">
               <FolderKanban size={14} />
@@ -96,7 +102,7 @@ export default function ProjectsGrid() {
               Blog ({blogPosts.length})
             </button>
           </div>
-        </div>
+        </motion.div>
 
         {/* ── Sub-category Filter (For Projects view) ── */}
         {activeTab === "projects" && (
@@ -136,6 +142,7 @@ export default function ProjectsGrid() {
                   <ProjectCard
                     key={project.id}
                     project={project}
+                    index={idx}
                     isFeatured={project.isFeatured && idx === 0}
                   />
                 ))}
@@ -172,8 +179,8 @@ export default function ProjectsGrid() {
               transition={{ duration: 0.3 }}
               className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8"
             >
-              {blogPosts.map((post) => (
-                <BlogCard key={post.id} post={post} />
+              {blogPosts.map((post, pIdx) => (
+                <BlogCard key={post.id} post={post} index={pIdx} />
               ))}
             </motion.div>
           )}
@@ -190,14 +197,23 @@ export default function ProjectsGrid() {
 interface ProjectCardProps {
   project: Project;
   isFeatured?: boolean;
+  index?: number;
 }
 
-function ProjectCard({ project, isFeatured = false }: ProjectCardProps) {
+function ProjectCard({ project, isFeatured = false, index = 0 }: ProjectCardProps) {
   const isGraduation = project.category === "graduation";
   const isGame = project.category === "game";
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: "-45px" }}
+      transition={{
+        duration: 0.55,
+        delay: (index % 4) * 0.08,
+        ease: [0.22, 1, 0.36, 1],
+      }}
       className={`group relative flex flex-col justify-between rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)]/90 backdrop-blur-xl p-6 sm:p-7 transition-all duration-300 hover:border-[var(--color-primary)] hover:shadow-2xl hover:shadow-[var(--color-primary)]/15 ${
         isFeatured ? "md:col-span-2 lg:col-span-2" : "col-span-1"
       }`}
@@ -299,7 +315,7 @@ function ProjectCard({ project, isFeatured = false }: ProjectCardProps) {
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -307,12 +323,16 @@ function ProjectCard({ project, isFeatured = false }: ProjectCardProps) {
 // Blog Card Sub-Component
 // =============================================================================
 
-function BlogCard({ post }: { post: BlogPost }) {
+function BlogCard({ post, index = 0 }: { post: BlogPost; index?: number }) {
   return (
-    <a
+    <motion.a
       href={post.url}
       target="_blank"
       rel="noopener noreferrer"
+      initial={{ opacity: 0, y: 35, scale: 0.96 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: "-45px" }}
+      transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
       className="group relative flex flex-col justify-between rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)]/90 backdrop-blur-xl p-6 sm:p-7 transition-all duration-300 hover:border-[var(--color-primary)] hover:shadow-2xl hover:shadow-[var(--color-primary)]/15"
     >
       <div>
@@ -346,6 +366,6 @@ function BlogCard({ post }: { post: BlogPost }) {
           className="text-[var(--color-primary-light)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
         />
       </div>
-    </a>
+    </motion.a>
   );
 }

@@ -210,7 +210,7 @@ function StatCard({ stat, index }: { stat: HeroStat; index: number }) {
 }
 
 /**
- * RoleRotator — cycles through role strings with a smooth crossfade.
+ * RoleRotator — cycles through role strings with a smooth crossfade in a sleek terminal badge.
  */
 function RoleRotator({ roles }: { roles: string[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -218,25 +218,32 @@ function RoleRotator({ roles }: { roles: string[] }) {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % roles.length);
-    }, 3000);
+    }, 3200);
     return () => clearInterval(interval);
   }, [roles.length]);
 
   return (
-    <div className="h-10 sm:h-12 relative flex items-center">
-      <span className="text-[var(--color-text-muted)] mr-2 text-lg sm:text-xl">{">"}</span>
-      <AnimatePresence mode="wait">
-        <motion.span
-          key={roles[currentIndex]}
-          variants={roleVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          className="text-lg sm:text-xl font-medium text-[var(--color-accent-light)] absolute left-6"
-        >
-          {roles[currentIndex]}
-        </motion.span>
-      </AnimatePresence>
+    <div className="flex items-center min-h-[44px] my-1">
+      <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[var(--color-primary)]/10 dark:bg-[var(--color-primary)]/15 border border-[var(--color-primary)]/30 shadow-xs backdrop-blur-md max-w-full">
+        <span className="text-[var(--color-primary)] font-bold text-base select-none shrink-0 font-mono">
+          &gt;
+        </span>
+        <div className="relative overflow-hidden min-h-[24px] flex items-center">
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={roles[currentIndex]}
+              initial={{ opacity: 0, y: 14, filter: "blur(4px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -14, filter: "blur(4px)" }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="text-sm sm:text-base font-mono font-semibold text-[var(--color-primary-light)] whitespace-nowrap"
+            >
+              {roles[currentIndex]}
+            </motion.span>
+          </AnimatePresence>
+        </div>
+        <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse shrink-0 ml-0.5" />
+      </div>
     </div>
   );
 }

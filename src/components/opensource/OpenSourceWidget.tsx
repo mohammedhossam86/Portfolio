@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import { motion } from "framer-motion";
 import { GitLabMergeRequest } from "@/types";
 import { fallbackGitLabMRs } from "@/data/opensource";
 import { formatDate } from "@/lib/utils";
@@ -77,7 +78,13 @@ export default function OpenSourceWidget() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full overflow-hidden">
         {/* ── Section Header ── */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 sm:mb-10">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 sm:mb-10"
+        >
           <div className="max-w-xl min-w-0">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FC6D26]/10 border border-[#FC6D26]/30 text-[#FC6D26] text-xs font-mono uppercase tracking-wider mb-2">
               <FaGitlab size={13} />
@@ -112,10 +119,16 @@ export default function OpenSourceWidget() {
               <ExternalLink size={12} className="opacity-75" />
             </a>
           </div>
-        </div>
+        </motion.div>
 
         {/* ── Key Highlights Badges (Compact) ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+          className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8"
+        >
           <div className="p-4 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)] flex items-center gap-3 min-w-0">
             <div className="p-2.5 rounded-xl bg-[#FC6D26]/10 text-[#FC6D26] shrink-0">
               <ShieldCheck size={20} />
@@ -151,7 +164,7 @@ export default function OpenSourceWidget() {
               </span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* ── Filter Tabs ── */}
         {!isSectionCollapsed && (
@@ -203,13 +216,17 @@ export default function OpenSourceWidget() {
         {/* ── Merge Requests List (Collapsible) ── */}
         {!isSectionCollapsed && (
           <div className="space-y-3.5 w-full">
-            {displayedMrs.map((mr) => {
+            {displayedMrs.map((mr, mrIdx) => {
               const isCardExpanded = expandedMrId === mr.id;
               const isMerged = mr.state === "merged";
 
               return (
-                <div
+                <motion.div
                   key={mr.id}
+                  initial={{ opacity: 0, x: -25 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.38, delay: (mrIdx % 8) * 0.05, ease: "easeOut" }}
                   className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)]/90 backdrop-blur-xl p-4 sm:p-5 transition-all duration-200 hover:border-[#FC6D26]/50 w-full overflow-hidden"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full min-w-0">
@@ -290,7 +307,7 @@ export default function OpenSourceWidget() {
                       </div>
                     </div>
                   )}
-                </div>
+                </motion.div>
               );
             })}
 

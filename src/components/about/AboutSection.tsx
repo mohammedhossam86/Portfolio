@@ -35,7 +35,13 @@ export default function AboutSection() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         {/* ── Section Header ── */}
-        <div className="mb-14">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="mb-14"
+        >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/30 text-[var(--color-primary-light)] text-xs font-mono uppercase tracking-wider mb-3">
             <User size={13} />
             About Me
@@ -46,12 +52,18 @@ export default function AboutSection() {
           <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mt-2 max-w-2xl">
             Passionate about high-performance distributed systems, robust backend architecture, competitive programming, and fine-tuning frontier AI models.
           </p>
-        </div>
+        </motion.div>
 
         {/* ── Main Layout: Profile Card + Bio Content ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-          {/* Left Column: Photo Card */}
-          <div className="lg:col-span-4">
+          {/* Left Column: Photo Card (Glides in from left and settles into place) */}
+          <motion.div
+            initial={{ opacity: 0, x: -45, rotate: -1.5 }}
+            whileInView={{ opacity: 1, x: 0, rotate: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-4"
+          >
             <div className="relative group rounded-3xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-secondary)] shadow-xl transition-all duration-300 hover:border-[var(--color-primary)]">
               <div className="relative w-full aspect-[4/5] overflow-hidden bg-slate-900">
                 <Image
@@ -94,10 +106,16 @@ export default function AboutSection() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Right Column: Narrative + Key Credentials */}
-          <div className="lg:col-span-8 space-y-6">
+          {/* Right Column: Narrative + Key Credentials (Glides in from right and docks) */}
+          <motion.div
+            initial={{ opacity: 0, x: 45 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-8 space-y-6"
+          >
             {/* Bio Paragraphs */}
             <div className="space-y-4 text-sm sm:text-base leading-relaxed text-[var(--color-text-secondary)] font-normal">
               {aboutData.bio.map((paragraph, idx) => (
@@ -119,8 +137,12 @@ export default function AboutSection() {
                   const isDiscovery = pill.includes("Discovery Academy");
 
                   return (
-                    <span
+                    <motion.span
                       key={idx}
+                      initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.35, delay: idx * 0.05 }}
                       className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)] text-xs text-[var(--color-text-secondary)] font-medium hover:border-[var(--color-primary)] hover:text-[var(--color-text-primary)] transition-all shadow-sm"
                     >
                       {isAiTrainer ? (
@@ -139,7 +161,7 @@ export default function AboutSection() {
                       ) : (
                         pill
                       )}
-                    </span>
+                    </motion.span>
                   );
                 })}
               </div>
@@ -148,8 +170,12 @@ export default function AboutSection() {
             {/* Quick Metrics Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
               {aboutData.stats.map((stat, idx) => (
-                <div
+                <motion.div
                   key={idx}
+                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.15 + idx * 0.06 }}
                   className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-3.5 text-center shadow-md transition-all hover:border-[var(--color-primary)]"
                 >
                   <div className="text-lg sm:text-xl font-extrabold text-[var(--color-primary)] font-mono">
@@ -158,7 +184,7 @@ export default function AboutSection() {
                   <div className="text-[11px] text-[var(--color-text-secondary)] mt-1 uppercase font-mono tracking-wider font-semibold">
                     {stat.label}
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
 
@@ -180,7 +206,7 @@ export default function AboutSection() {
                 Let&apos;s Connect
               </a>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

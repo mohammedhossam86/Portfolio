@@ -7,7 +7,7 @@ export const heroData: HeroData = {
     "Building scalable distributed backend architectures, high-concurrency microservices, and evaluating frontier AI models. Active GitLab Core Contributor and 4× ECPC Contestant.",
   roles: [
     "Backend Engineer",
-    "AI Trainer & Evaluator (Outlier & Alignerr)",
+    "AI & RLHF Evaluator",
     "GitLab Core Contributor",
     "Competitive Programmer (ECPC)",
     "STEM & Robotics Instructor",

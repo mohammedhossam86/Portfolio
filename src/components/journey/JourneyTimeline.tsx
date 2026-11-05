@@ -161,22 +161,31 @@ export default function JourneyTimeline() {
 
       {/* ── Main Content ── */}
       {viewMode === "drive" ? (
-        <div className="relative w-full">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="relative w-full"
+        >
           <JourneyWorld
             milestones={journeyMilestones}
             onInspectMilestone={openModal}
           />
-        </div>
+        </motion.div>
       ) : (
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredMilestones.map((m) => {
+            {filteredMilestones.map((m, mIdx) => {
               const isAiTrainer = m.id === "ai-trainer";
               const isDiscovery = m.id === "discovery-academy";
 
               return (
-                <div
+                <motion.div
                   key={m.id}
+                  initial={{ opacity: 0, y: 35, scale: 0.96 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.45, delay: mIdx * 0.07, ease: "easeOut" }}
                   onClick={() => openModal(m)}
                   className="group relative rounded-3xl border border-orange-200/80 dark:border-slate-800 bg-white/90 dark:bg-[#0b0e18]/90 backdrop-blur-xl p-6 transition-all duration-300 hover:border-[var(--color-primary)] hover:shadow-xl hover:shadow-orange-500/10 dark:hover:shadow-cyan-500/10 cursor-pointer flex flex-col justify-between shadow-sm"
                 >
@@ -245,7 +254,7 @@ export default function JourneyTimeline() {
                       ))}
                     </div>
                   )}
-                </div>
+                </motion.div>
               );
             })}
           </div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { teachingSessions } from "@/data/teaching";
 import { TeachingSession } from "@/types";
 import { getYouTubeThumbnail, getYouTubeEmbedUrl } from "@/lib/utils";
@@ -44,7 +45,13 @@ export default function TeachingPlaylist() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         {/* ── Section Header ── */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16"
+        >
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/30 text-[var(--color-primary-light)] text-xs font-mono uppercase tracking-wider mb-2">
               <GraduationCap size={14} />
@@ -62,12 +69,18 @@ export default function TeachingPlaylist() {
             <BookOpen size={14} className="text-[var(--color-primary-light)]" />
             <span>4 In-Depth Sessions • 5.5+ Hours</span>
           </div>
-        </div>
+        </motion.div>
 
         {/* ── Player & Playlist Grid ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* ── Active Video Player Frame (8 Cols) ── */}
-          <div className="lg:col-span-8 space-y-5">
+          <motion.div
+            initial={{ opacity: 0, x: -35 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-8 space-y-5"
+          >
             <div className="relative aspect-video w-full rounded-3xl overflow-hidden border border-[var(--color-border)] bg-black/80 shadow-2xl">
               {isPlaying ? (
                 <iframe
@@ -148,10 +161,16 @@ export default function TeachingPlaylist() {
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* ── Playlist Queue Sidebar (4 Cols) ── */}
-          <div className="lg:col-span-4 space-y-3">
+          {/* ── Playlist Queue Sidebar (4 Cols, Slides in from Right) ── */}
+          <motion.div
+            initial={{ opacity: 0, x: 35 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-4 space-y-3"
+          >
             <div className="p-4 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)] flex items-center justify-between">
               <span className="text-xs font-mono uppercase tracking-wider text-[var(--color-text-muted)]">
                 Playlist Curriculum
@@ -162,12 +181,16 @@ export default function TeachingPlaylist() {
             </div>
 
             <div className="space-y-3">
-              {teachingSessions.map((session) => {
+              {teachingSessions.map((session, sIdx) => {
                 const isCurrent = session.id === activeSession.id;
 
                 return (
-                  <button
+                  <motion.button
                     key={session.id}
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.35, delay: sIdx * 0.06 }}
                     onClick={() => handleSelectSession(session)}
                     className={`w-full text-left p-3.5 rounded-2xl border transition-all duration-300 flex items-center gap-3.5 group ${
                       isCurrent
@@ -216,11 +239,11 @@ export default function TeachingPlaylist() {
                         {session.title}
                       </h4>
                     </div>
-                  </button>
+                  </motion.button>
                 );
               })}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
