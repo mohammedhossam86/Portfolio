@@ -16,6 +16,8 @@ import {
   X,
   Sun,
   Moon,
+  Download,
+  Mail,
   type LucideIcon,
 } from "lucide-react";
 
@@ -132,7 +134,7 @@ export default function Navbar() {
     return () => observers.forEach((obs) => obs.disconnect());
   }, []);
 
-  // ─── Smooth scroll handler ────────────────────────────────────────────────
+  // ─── Smooth scroll handler (Calculates exact offset for fixed navbar) ───
   const handleNavClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
       e.preventDefault();
@@ -140,7 +142,13 @@ export default function Navbar() {
       const el = document.getElementById(targetId);
 
       if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
+        const navHeight = 75;
+        const elementPosition = el.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - navHeight;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
       }
 
       setActiveSection(href);
@@ -217,18 +225,29 @@ export default function Navbar() {
               })}
             </ul>
 
-            {/* ── Theme Toggle Button (Desktop) ────────────────────────── */}
-            <button
-              onClick={toggleTheme}
-              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-              className="hidden md:flex items-center justify-center p-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-primary)] transition-all duration-200"
-            >
-              {theme === "dark" ? (
-                <Sun size={18} className="text-amber-400" />
-              ) : (
-                <Moon size={18} className="text-orange-500" />
-              )}
-            </button>
+            {/* ── Desktop Actions: CV & Theme Toggle ───────────────────────── */}
+            <div className="hidden md:flex items-center gap-2">
+              <a
+                href="/cv.pdf"
+                download="Mohammed_Hossam_CV.pdf"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-light)] text-white text-xs font-semibold font-mono shadow-sm transition-all active:scale-95"
+              >
+                <Download size={13} />
+                <span>CV</span>
+              </a>
+
+              <button
+                onClick={toggleTheme}
+                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+                className="flex items-center justify-center p-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-primary)] transition-all duration-200"
+              >
+                {theme === "dark" ? (
+                  <Sun size={18} className="text-amber-400" />
+                ) : (
+                  <Moon size={18} className="text-orange-500" />
+                )}
+              </button>
+            </div>
 
             {/* ── Mobile Controls (Theme Toggle + Hamburger) ─────────────── */}
             <div className="flex items-center gap-1 md:hidden">
@@ -334,6 +353,26 @@ export default function Navbar() {
                     );
                   })}
                 </ul>
+
+                {/* Quick Mobile Drawer Actions */}
+                <div className="pt-6 mt-4 border-t border-[var(--color-border)] flex flex-col gap-2.5">
+                  <a
+                    href="/cv.pdf"
+                    download="Mohammed_Hossam_CV.pdf"
+                    className="flex items-center justify-center gap-2 rounded-xl py-2.5 px-4 bg-[var(--color-primary)] text-white text-xs font-semibold shadow-md active:scale-95 transition-all font-mono"
+                  >
+                    <Download size={14} />
+                    <span>Download CV</span>
+                  </a>
+                  <a
+                    href="#contact"
+                    onClick={(e) => handleNavClick(e, "#contact")}
+                    className="flex items-center justify-center gap-2 rounded-xl py-2.5 px-4 border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] text-[var(--color-text-primary)] text-xs font-semibold active:scale-95 transition-all font-mono"
+                  >
+                    <Mail size={14} />
+                    <span>Get in Touch</span>
+                  </a>
+                </div>
               </nav>
             </motion.div>
           </>

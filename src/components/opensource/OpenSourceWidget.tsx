@@ -95,7 +95,7 @@ export default function OpenSourceWidget() {
           <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={() => setIsSectionCollapsed(!isSectionCollapsed)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-xs font-mono text-slate-300 hover:text-white transition-colors"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] text-xs font-mono text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:border-[#FC6D26] transition-colors shadow-xs"
             >
               <span>{isSectionCollapsed ? "Expand MRs" : "Collapse MRs"}</span>
               {isSectionCollapsed ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
@@ -105,7 +105,7 @@ export default function OpenSourceWidget() {
               href="https://gitlab.com/mohammedhossam86"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[#FC6D26]/40 bg-[#FC6D26]/10 text-white hover:bg-[#FC6D26] transition-all font-semibold text-xs shadow-md shadow-[#FC6D26]/10"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[#FC6D26]/40 bg-[#FC6D26]/10 text-stone-800 dark:text-white hover:bg-[#FC6D26] hover:text-white transition-all font-semibold text-xs shadow-md shadow-[#FC6D26]/10"
             >
               <FaGitlab size={16} className="text-[#FC6D26]" />
               <span>GitLab Profile ({mrs.length} MRs)</span>
@@ -164,7 +164,7 @@ export default function OpenSourceWidget() {
               className={`px-3.5 py-1.5 rounded-xl text-xs font-mono transition-all ${
                 filter === "all"
                   ? "bg-[#FC6D26] text-white font-bold shadow-md shadow-[#FC6D26]/20"
-                  : "bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+                  : "bg-[var(--color-bg-secondary)] border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:border-[#FC6D26]"
               }`}
             >
               All MRs ({mrs.length})
@@ -177,7 +177,7 @@ export default function OpenSourceWidget() {
               className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-mono transition-all ${
                 filter === "merged"
                   ? "bg-emerald-600 text-white font-bold shadow-md shadow-emerald-600/20"
-                  : "bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+                  : "bg-[var(--color-bg-secondary)] border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:border-emerald-500"
               }`}
             >
               <CheckCircle2 size={12} />
@@ -191,7 +191,7 @@ export default function OpenSourceWidget() {
               className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-mono transition-all ${
                 filter === "closed"
                   ? "bg-slate-700 text-white font-bold shadow-md"
-                  : "bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+                  : "bg-[var(--color-bg-secondary)] border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
               }`}
             >
               <XCircle size={12} />
@@ -299,7 +299,7 @@ export default function OpenSourceWidget() {
               <div className="flex justify-center pt-4">
                 <button
                   onClick={() => setVisibleCount((prev) => Math.min(prev + 10, filteredMrs.length))}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 border border-slate-700 hover:border-[#FC6D26] text-xs font-mono text-slate-200 hover:text-white transition-all shadow-lg hover:shadow-[#FC6D26]/10"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[var(--color-bg-secondary)] border border-[var(--color-border)] hover:border-[#FC6D26] text-xs font-mono text-[var(--color-text-primary)] transition-all shadow-md hover:shadow-[#FC6D26]/10"
                 >
                   <Layers size={13} />
                   <span>Show More ({filteredMrs.length - visibleCount} remaining)</span>

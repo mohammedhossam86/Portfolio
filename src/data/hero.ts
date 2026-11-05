@@ -2,21 +2,22 @@ import { HeroData } from "@/types";
 
 export const heroData: HeroData = {
   name: "Mohammed Hossam",
-  headline: "Software Engineer",
+  headline: "Backend Engineer & AI Engineer",
   tagline:
-    "Building robust backend systems, solving competitive programming challenges, contributing to open source, and teaching the next generation of developers.",
+    "Building scalable distributed backend architectures, high-concurrency microservices, and evaluating frontier AI models. Active GitLab Core Contributor and 4× ECPC Contestant.",
   roles: [
     "Backend Engineer",
-    "Competitive Programmer",
-    "Open Source Contributor",
+    "AI Trainer & Evaluator (Outlier & Alignerr)",
+    "GitLab Core Contributor",
+    "Competitive Programmer (ECPC)",
     "STEM & Robotics Instructor",
   ],
   stats: [
-    { label: "LeetCode Problems", value: "500+", icon: "Code2" },
-    { label: "Open Source MRs", value: "30+", icon: "GitMerge" },
-    { label: "Students Taught", value: "100+", icon: "Users" },
-    { label: "Projects Built", value: "15+", icon: "Rocket" },
+    { label: "Problems Solved", value: "2,500+", icon: "Code2" },
+    { label: "GitLab Core MRs", value: "37+", icon: "GitMerge" },
+    { label: "Students Mentored", value: "200+", icon: "Users" },
+    { label: "Production Projects", value: "15+", icon: "Rocket" },
   ],
   resumeUrl: "/cv.pdf",
-  avatarUrl: "/images/avatar.png",
+  avatarUrl: "/images/profile.jpg",
 };

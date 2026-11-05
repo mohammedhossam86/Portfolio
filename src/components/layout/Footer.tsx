@@ -56,7 +56,7 @@ export default function Footer() {
         }}
       />
 
-      <div className="mx-auto max-w-7xl px-6 py-10">
+      <div className="mx-auto max-w-7xl px-6 py-10 pb-28 md:pb-10">
         {/* ── Social links row ────────────────────────────────────────────── */}
         <div className="mb-6 flex items-center justify-center gap-4">
           {socialLinks.map((link: SocialLink) => {

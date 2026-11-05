@@ -3,9 +3,9 @@ import { SiteMetadata, NavItem, SocialLink } from "@/types";
 // ─── Site Metadata (used in layout.tsx for SEO) ──────────────────────────────
 
 export const siteMetadata: SiteMetadata = {
-  title: "Mohammed Hossam — Software Engineer",
+  title: "Mohammed Hossam — Backend & AI Engineer",
   description:
-    "Software Engineer specializing in Backend Engineering, Open Source, and Competitive Programming. Portfolio showcasing projects, contributions, and teaching.",
+    "Backend Engineer & AI Specialist specializing in high-performance distributed systems, microservices, 37+ GitLab Core MRs, and RLHF AI Model Evaluation. 4× ECPC Contestant.",
   url: "https://mohammedhossam.dev",
   ogImage: "/images/og-image.png",
   author: "Mohammed Hossam",

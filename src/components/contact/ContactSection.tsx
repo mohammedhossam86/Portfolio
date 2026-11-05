@@ -68,19 +68,19 @@ export default function ContactSection() {
           </div>
 
           {/* Email Copy Box */}
-          <div className="flex flex-col sm:flex-row items-center gap-3 p-2 rounded-2xl bg-slate-900/90 border border-slate-800 mb-6">
-            <div className="flex-1 flex items-center gap-3 px-3 py-2 w-full text-slate-300 font-mono text-sm sm:text-base select-all overflow-hidden text-ellipsis">
-              <Mail size={18} className="text-[var(--color-primary-light)] shrink-0" />
+          <div className="flex flex-col sm:flex-row items-center gap-3 p-2 rounded-2xl bg-[var(--color-bg-tertiary)] border border-[var(--color-border)] mb-6">
+            <div className="flex-1 flex items-center gap-3 px-3 py-2 w-full text-[var(--color-text-primary)] font-mono text-sm sm:text-base select-all overflow-hidden text-ellipsis">
+              <Mail size={18} className="text-[var(--color-primary)] shrink-0" />
               <span className="truncate">{email}</span>
             </div>
             <button
               onClick={handleCopyEmail}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-white text-xs font-semibold font-mono transition-all duration-150 border border-slate-700"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-bg-secondary)] hover:border-[var(--color-primary)] active:scale-95 text-[var(--color-text-primary)] text-xs font-semibold font-mono transition-all duration-150 border border-[var(--color-border)] shadow-xs"
             >
               {copied ? (
                 <>
-                  <Check size={14} className="text-emerald-400" />
-                  <span>Copied!</span>
+                  <Check size={14} className="text-emerald-500" />
+                  <span className="text-emerald-500">Copied!</span>
                 </>
               ) : (
                 <>
@@ -103,7 +103,7 @@ export default function ContactSection() {
             <a
               href="/cv.pdf"
               download="Mohammed_Hossam_CV.pdf"
-              className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-slate-900 border border-slate-700 hover:border-slate-500 text-slate-200 font-semibold text-sm transition-all duration-200 active:scale-95"
+              className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)] hover:border-[var(--color-primary)] text-[var(--color-text-primary)] font-semibold text-sm transition-all duration-200 active:scale-95 shadow-xs"
             >
               <Download size={16} />
               Download Resume
