@@ -84,10 +84,10 @@ export default function JourneyTimeline() {
               <Compass size={13} />
               Career &amp; Learning Odyssey
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-stone-900 dark:text-white">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[var(--color-text-primary)]">
               My Professional <span className="text-gradient">Journey</span>
             </h2>
-            <p className="text-xs sm:text-sm text-stone-600 dark:text-slate-400 mt-2 font-mono">
+            <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mt-2 font-mono">
               Explore my work experience, competitive programming milestones, and university graduation. Switch to the interactive Highway Drive to steer a sports car across the career road!
             </p>
           </div>
@@ -209,11 +209,11 @@ export default function JourneyTimeline() {
                       </span>
                     </div>
 
-                    <h3 className="text-base font-bold text-stone-900 dark:text-white group-hover:text-[var(--color-primary)] transition-colors mb-2">
+                    <h3 className="text-base font-bold text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors mb-2">
                       {m.title}
                     </h3>
 
-                    <p className="text-xs text-stone-600 dark:text-slate-400 leading-relaxed line-clamp-3 mb-4">
+                    <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed line-clamp-3 mb-4">
                       {m.description}
                     </p>
                   </div>

@@ -238,12 +238,12 @@ export default function OpenSourceWidget() {
                       </div>
 
                       {/* Title — Clean, Truncate / Wrap cleanly */}
-                      <h3 className="text-sm sm:text-base font-bold text-white break-words">
+                      <h3 className="text-sm sm:text-base font-bold text-[var(--color-text-primary)] break-words">
                         {mr.title}
                       </h3>
 
                       {/* Short Description */}
-                      <p className="text-xs text-slate-300 break-words line-clamp-2">
+                      <p className="text-xs text-[var(--color-text-secondary)] break-words line-clamp-2">
                         {mr.description}
                       </p>
                     </div>
@@ -252,7 +252,7 @@ export default function OpenSourceWidget() {
                     <div className="flex items-center gap-2 self-start sm:self-center shrink-0 pt-1 sm:pt-0">
                       <button
                         onClick={() => toggleMrDetails(mr.id)}
-                        className="px-2.5 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-[11px] font-mono text-slate-300 hover:text-white transition-colors"
+                        className="px-2.5 py-1.5 rounded-lg border border-orange-200 dark:border-slate-700 bg-orange-50 dark:bg-slate-900 text-[11px] font-mono text-stone-700 dark:text-slate-300 hover:text-stone-900 dark:hover:text-white transition-colors"
                       >
                         {isCardExpanded ? "Less" : "Details"}
                       </button>

@@ -123,12 +123,12 @@ export default function SkillsGrid() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         {/* ── Section Title ── */}
         <div className="flex flex-col items-center text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-stone-900 dark:text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[var(--color-text-primary)] tracking-tight">
             Skills &amp; Technologies
           </h2>
           {/* Subtle Accent Line */}
           <div className="w-12 h-1 rounded-full bg-[var(--color-primary)] mt-2.5 mb-3 shadow-sm" />
-          <p className="text-xs sm:text-sm text-stone-600 dark:text-slate-400 font-mono tracking-wide">
+          <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] font-mono tracking-wide">
             The programming languages, frameworks, databases, and DevOps systems I engineer with.
           </p>
         </div>

@@ -41,10 +41,10 @@ export default function AboutSection() {
             About Me
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--color-text-primary)]">
-            Architecting Systems &amp; <span className="text-gradient">Training AI</span>
+            Backend &amp; <span className="text-gradient">AI Engineer</span>
           </h2>
           <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mt-2 max-w-2xl">
-            A look into my background, engineering philosophy, competitive programming grind, and work fine-tuning frontier AI models.
+            Passionate about high-performance distributed systems, robust backend architecture, competitive programming, and fine-tuning frontier AI models.
           </p>
         </div>
 
