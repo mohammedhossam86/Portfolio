@@ -19,7 +19,7 @@ export default function ArcadeHub() {
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] rounded-full pointer-events-none opacity-20"
         style={{
           background:
-            "radial-gradient(ellipse at center, #22d3ee, #6366f1, transparent 70%)",
+            "radial-gradient(ellipse at center, var(--color-accent), var(--color-primary), transparent 70%)",
           filter: "blur(100px)",
         }}
       />
@@ -28,7 +28,7 @@ export default function ArcadeHub() {
         {/* ── Header ── */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/30 text-[var(--color-accent-light)] text-xs font-mono uppercase tracking-wider mb-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/30 text-[var(--color-primary-light)] text-xs font-mono uppercase tracking-wider mb-2">
               <Gamepad2 size={14} />
               Interactive AI Pathfinding Arena
             </div>
@@ -36,18 +36,18 @@ export default function ArcadeHub() {
               Tom &amp; Jerry <span className="text-gradient">BFS · Dijkstra · A* Arena</span>
             </h2>
             <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mt-2 max-w-xl">
-              Play my game directly in the browser and compare <strong className="text-white">A* Search</strong>, <strong className="text-white">Dijkstra</strong>, and <strong className="text-white">BFS</strong> in real-time to see how heuristics drastically reduce search space!
+              Play my game directly in the browser and compare <strong className="text-[var(--color-text-primary)] font-bold">A* Search</strong>, <strong className="text-[var(--color-text-primary)] font-bold">Dijkstra</strong>, and <strong className="text-[var(--color-text-primary)] font-bold">BFS</strong> in real-time to see how heuristics drastically reduce search space!
             </p>
           </div>
 
           {/* Mode Switcher Tabs */}
-          <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)]">
+          <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)] shadow-sm">
             <button
               onClick={() => setActiveMode("terminal")}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
                 activeMode === "terminal"
-                  ? "bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/30"
-                  : "text-[var(--color-text-secondary)] hover:text-white"
+                  ? "bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/25"
+                  : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
               }`}
             >
               <Terminal size={16} />
@@ -57,8 +57,8 @@ export default function ArcadeHub() {
               onClick={() => setActiveMode("visual")}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
                 activeMode === "visual"
-                  ? "bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/30"
-                  : "text-[var(--color-text-secondary)] hover:text-white"
+                  ? "bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/25"
+                  : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
               }`}
             >
               <LayoutGrid size={16} />
@@ -69,20 +69,20 @@ export default function ArcadeHub() {
 
         {/* ── Key Highlights Pill Row ── */}
         <div className="flex flex-wrap items-center gap-3 mb-8">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300">
-            <Bot size={13} className="text-emerald-400" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-bg-secondary)] border border-[var(--color-border)] text-xs font-mono text-[var(--color-text-secondary)] shadow-xs">
+            <Bot size={13} className="text-emerald-500 dark:text-emerald-400" />
             A* Search Heuristic AI
           </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300">
-            <Cpu size={13} className="text-cyan-400" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-bg-secondary)] border border-[var(--color-border)] text-xs font-mono text-[var(--color-text-secondary)] shadow-xs">
+            <Cpu size={13} className="text-cyan-600 dark:text-cyan-400" />
             Dynamic Map &amp; Obstacles Generation
           </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300">
-            <Terminal size={13} className="text-purple-400" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-bg-secondary)] border border-[var(--color-border)] text-xs font-mono text-[var(--color-text-secondary)] shadow-xs">
+            <Terminal size={13} className="text-purple-600 dark:text-purple-400" />
             High-Performance CLI Terminal
           </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300">
-            <Code2 size={13} className="text-amber-400" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-bg-secondary)] border border-[var(--color-border)] text-xs font-mono text-[var(--color-text-secondary)] shadow-xs">
+            <Code2 size={13} className="text-amber-600 dark:text-amber-400" />
             Original Python &amp; TypeScript Engine
           </span>
         </div>
