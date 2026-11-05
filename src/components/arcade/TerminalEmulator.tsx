@@ -41,7 +41,7 @@ export default function TerminalEmulator() {
     setGameState(newGame.getState());
     setHistory((prev) => [
       ...prev.slice(-6),
-      `\x1b[36m>> Game restarted! Difficulty: ${lvl === 0 ? "Easy" : lvl === 1 ? "Medium" : "Hard"}\x1b[0m`,
+      `>> Game restarted! Difficulty: ${lvl === 0 ? "Easy" : lvl === 1 ? "Medium" : "Hard"}`,
     ]);
   }, []);
 
@@ -54,12 +54,12 @@ export default function TerminalEmulator() {
       if (state.status === "won") {
         setHistory((prev) => [
           ...prev.slice(-6),
-          `\x1b[92m>> 🎉 VICTORY! Jerry reached the exit in ${state.moves} moves!\x1b[0m`,
+          `>> 🎉 VICTORY! Jerry reached the exit in ${state.moves} moves!`,
         ]);
       } else if (state.status === "lost") {
         setHistory((prev) => [
           ...prev.slice(-6),
-          `\x1b[91m>> 💥 CAUGHT! Tom's A* path trapped Jerry!\x1b[0m`,
+          `>> 💥 CAUGHT! Tom's A* path trapped Jerry!`,
         ]);
       }
     }
@@ -157,15 +157,15 @@ export default function TerminalEmulator() {
     } else if (cmd === "astar" || cmd === "algo astar") {
       gameRef.current?.setAlgorithm("astar");
       setGameState(gameRef.current!.getState());
-      setHistory((prev) => [...prev.slice(-6), "\x1b[36m>> Switched algorithm to A* Search (Heuristic)\x1b[0m"]);
+      setHistory((prev) => [...prev.slice(-6), ">> Switched algorithm to A* Search (Heuristic)"]);
     } else if (cmd === "dijkstra" || cmd === "algo dijkstra") {
       gameRef.current?.setAlgorithm("dijkstra");
       setGameState(gameRef.current!.getState());
-      setHistory((prev) => [...prev.slice(-6), "\x1b[35m>> Switched algorithm to Dijkstra (Uniform Cost)\x1b[0m"]);
+      setHistory((prev) => [...prev.slice(-6), ">> Switched algorithm to Dijkstra (Uniform Cost)"]);
     } else if (cmd === "bfs" || cmd === "algo bfs") {
       gameRef.current?.setAlgorithm("bfs");
       setGameState(gameRef.current!.getState());
-      setHistory((prev) => [...prev.slice(-6), "\x1b[32m>> Switched algorithm to BFS (Level-Order)\x1b[0m"]);
+      setHistory((prev) => [...prev.slice(-6), ">> Switched algorithm to BFS (Level-Order)"]);
     } else {
       setHistory((prev) => [
         ...prev.slice(-6),
@@ -174,38 +174,38 @@ export default function TerminalEmulator() {
     }
   };
 
-  const { grid, height, width, moves, status, ratPos, catPos, exitPos } = gameState;
+  const { grid, moves, status, ratPos, catPos, exitPos } = gameState;
   const distToExit = manhattanDistance(ratPos, exitPos);
   const distToTom = manhattanDistance(ratPos, catPos);
 
   return (
     <div
-      className={`relative flex flex-col rounded-3xl border border-slate-800 bg-[#07090e] shadow-2xl transition-all duration-300 font-mono ${
+      className={`relative flex flex-col rounded-3xl border border-orange-200/80 dark:border-slate-800 bg-white dark:bg-[#07090e] shadow-2xl transition-all duration-300 font-mono ${
         isFullscreen
           ? "fixed inset-4 z-50 rounded-2xl h-[calc(100vh-32px)]"
           : "w-full overflow-hidden"
       }`}
     >
       {/* ── Terminal Window Title Bar ── */}
-      <div className="flex items-center justify-between px-5 py-3 border-b border-slate-800 bg-[#0d111a] select-none">
+      <div className="flex items-center justify-between px-5 py-3 border-b border-orange-200/80 dark:border-slate-800 bg-orange-50/70 dark:bg-[#0d111a] select-none">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-[#ef4444]" />
           <div className="w-3 h-3 rounded-full bg-[#eab308]" />
           <div className="w-3 h-3 rounded-full bg-[#22c55e]" />
-          <span className="ml-3 text-xs text-slate-400 hidden sm:inline">
+          <span className="ml-3 text-xs text-stone-600 dark:text-slate-400 hidden sm:inline">
             mohammed@portfolio: ~/tom-and-jerry-ai
           </span>
         </div>
 
         {/* Level Controls & Window Buttons */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center rounded-lg bg-slate-900 border border-slate-800 p-0.5 text-xs">
+          <div className="flex items-center rounded-lg bg-orange-100/60 dark:bg-slate-900 border border-orange-200/80 dark:border-slate-800 p-0.5 text-xs">
             <button
               onClick={() => resetGame(0)}
               className={`px-2.5 py-0.5 rounded-md transition-colors ${
                 level === 0
-                  ? "bg-emerald-500/20 text-emerald-400 font-bold"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-emerald-500 text-white dark:bg-emerald-500/20 dark:text-emerald-400 font-bold shadow-xs"
+                  : "text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white"
               }`}
             >
               Easy
@@ -214,8 +214,8 @@ export default function TerminalEmulator() {
               onClick={() => resetGame(1)}
               className={`px-2.5 py-0.5 rounded-md transition-colors ${
                 level === 1
-                  ? "bg-amber-500/20 text-amber-400 font-bold"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-amber-500 text-white dark:bg-amber-500/20 dark:text-amber-400 font-bold shadow-xs"
+                  : "text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white"
               }`}
             >
               Med
@@ -224,8 +224,8 @@ export default function TerminalEmulator() {
               onClick={() => resetGame(2)}
               className={`px-2.5 py-0.5 rounded-md transition-colors ${
                 level === 2
-                  ? "bg-rose-500/20 text-rose-400 font-bold"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-rose-500 text-white dark:bg-rose-500/20 dark:text-rose-400 font-bold shadow-xs"
+                  : "text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white"
               }`}
             >
               Hard
@@ -235,7 +235,7 @@ export default function TerminalEmulator() {
           <button
             onClick={() => resetGame(level)}
             title="Restart Game (R)"
-            className="p-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-white transition-colors"
+            className="p-1.5 rounded-lg border border-orange-200 dark:border-slate-800 hover:border-orange-300 dark:hover:border-slate-700 text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white transition-colors bg-white/60 dark:bg-slate-900/60"
           >
             <RefreshCw size={14} />
           </button>
@@ -243,7 +243,7 @@ export default function TerminalEmulator() {
           <button
             onClick={() => setIsFullscreen((p) => !p)}
             title="Toggle Fullscreen"
-            className="p-1.5 rounded-lg border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-white transition-colors"
+            className="p-1.5 rounded-lg border border-orange-200 dark:border-slate-800 hover:border-orange-300 dark:hover:border-slate-700 text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white transition-colors bg-white/60 dark:bg-slate-900/60"
           >
             {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
           </button>
@@ -251,25 +251,25 @@ export default function TerminalEmulator() {
       </div>
 
       {/* ── Terminal HUD Header ── */}
-      <div className="px-5 py-2.5 bg-[#0a0d16] border-b border-slate-800/80 flex flex-wrap items-center justify-between text-xs text-slate-400 gap-2">
+      <div className="px-5 py-2.5 bg-orange-50/40 dark:bg-[#0a0d16] border-b border-orange-200/80 dark:border-slate-800/80 flex flex-wrap items-center justify-between text-xs text-stone-600 dark:text-slate-400 gap-2">
         <div className="flex items-center gap-4">
           <span>
-            Moves: <strong className="text-white">{moves}</strong>
+            Moves: <strong className="text-stone-900 dark:text-white">{moves}</strong>
           </span>
           <span>
-            Exit Dist: <strong className="text-blue-400">{distToExit}</strong>
+            Exit Dist: <strong className="text-blue-600 dark:text-blue-400">{distToExit}</strong>
           </span>
           <span>
-            Tom Dist: <strong className="text-rose-400">{distToTom}</strong>
+            Tom Dist: <strong className="text-rose-600 dark:text-rose-400">{distToTom}</strong>
           </span>
-          <span className="hidden sm:inline text-slate-500">|</span>
+          <span className="hidden sm:inline text-stone-300 dark:text-slate-600">|</span>
           <span className="hidden sm:inline">
-            Nodes Checked: <strong className="text-cyan-400">{gameState.nodesExplored}</strong>
+            Nodes Checked: <strong className="text-amber-600 dark:text-cyan-400">{gameState.nodesExplored}</strong>
           </span>
         </div>
 
         {/* Algorithm Switcher in Terminal HUD */}
-        <div className="flex items-center gap-1.5 rounded-lg bg-slate-900 border border-slate-800 p-0.5 text-[10px]">
+        <div className="flex items-center gap-1.5 rounded-lg bg-orange-100/60 dark:bg-slate-900 border border-orange-200/80 dark:border-slate-800 p-0.5 text-[10px]">
           <button
             onClick={() => {
               gameRef.current?.setAlgorithm("astar");
@@ -277,8 +277,8 @@ export default function TerminalEmulator() {
             }}
             className={`px-2 py-0.5 rounded transition-colors ${
               gameState.algorithm === "astar"
-                ? "bg-cyan-500/20 text-cyan-300 font-bold"
-                : "text-slate-400 hover:text-white"
+                ? "bg-[var(--color-primary)] text-white dark:bg-cyan-500/20 dark:text-cyan-300 font-bold"
+                : "text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white"
             }`}
           >
             A* Search
@@ -290,8 +290,8 @@ export default function TerminalEmulator() {
             }}
             className={`px-2 py-0.5 rounded transition-colors ${
               gameState.algorithm === "dijkstra"
-                ? "bg-purple-500/20 text-purple-300 font-bold"
-                : "text-slate-400 hover:text-white"
+                ? "bg-purple-600 text-white dark:bg-purple-500/20 dark:text-purple-300 font-bold"
+                : "text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white"
             }`}
           >
             Dijkstra
@@ -303,8 +303,8 @@ export default function TerminalEmulator() {
             }}
             className={`px-2 py-0.5 rounded transition-colors ${
               gameState.algorithm === "bfs"
-                ? "bg-emerald-500/20 text-emerald-300 font-bold"
-                : "text-slate-400 hover:text-white"
+                ? "bg-emerald-600 text-white dark:bg-emerald-500/20 dark:text-emerald-300 font-bold"
+                : "text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white"
             }`}
           >
             BFS
@@ -313,27 +313,27 @@ export default function TerminalEmulator() {
 
         <div className="flex items-center gap-2">
           {status === "won" && (
-            <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">
+            <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold">
               🎉 JERRY ESCAPED!
             </span>
           )}
           {status === "lost" && (
-            <span className="px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 font-bold">
+            <span className="px-2 py-0.5 rounded bg-rose-500/20 text-rose-600 dark:text-rose-400 font-bold">
               💥 TOM CAUGHT JERRY!
             </span>
           )}
           {status === "playing" && (
-            <span className="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400">
-              ⚡ A* PATHFINDING ACTIVE
+            <span className="px-2 py-0.5 rounded bg-orange-500/10 text-orange-600 dark:bg-cyan-500/10 dark:text-cyan-400 font-semibold">
+              ⚡ {gameState.algorithm.toUpperCase()} PATHFINDING ACTIVE
             </span>
           )}
         </div>
       </div>
 
       {/* ── Terminal Screen (Pure Native ASCII + ANSI Color Rendering) ── */}
-      <div className="flex-1 p-6 bg-[#06080d] flex flex-col items-center justify-center select-none overflow-x-auto min-h-[300px]">
+      <div className="flex-1 p-6 bg-orange-50/20 dark:bg-[#06080d] flex flex-col items-center justify-center select-none overflow-x-auto min-h-[300px]">
         {/* Render Grid as ASCII tiles */}
-        <div className="inline-block border border-slate-800/80 rounded-2xl p-4 bg-[#090d18] shadow-inner">
+        <div className="inline-block border border-orange-200 dark:border-slate-800/80 rounded-2xl p-4 bg-white dark:bg-[#090d18] shadow-md dark:shadow-inner">
           <div className="space-y-1">
             {grid.map((row, r) => (
               <div key={r} className="flex items-center justify-center gap-1.5">
@@ -347,14 +347,14 @@ export default function TerminalEmulator() {
                       key={`${r}-${c}`}
                       className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center text-sm font-bold transition-all duration-150 ${
                         isJerry
-                          ? "bg-emerald-500/20 border-2 border-emerald-400 text-emerald-300 shadow-[0_0_12px_rgba(34,197,94,0.4)] scale-110"
+                          ? "bg-emerald-100 dark:bg-emerald-500/20 border-2 border-emerald-500 text-emerald-700 dark:text-emerald-300 shadow-[0_0_12px_rgba(34,197,94,0.3)] scale-110"
                           : isTom
-                          ? "bg-rose-500/20 border-2 border-rose-400 text-rose-300 shadow-[0_0_12px_rgba(244,63,94,0.4)] scale-110"
+                          ? "bg-rose-100 dark:bg-rose-500/20 border-2 border-rose-500 text-rose-700 dark:text-rose-300 shadow-[0_0_12px_rgba(244,63,94,0.3)] scale-110"
                           : isExit
-                          ? "bg-blue-500/20 border-2 border-blue-400 text-blue-300 shadow-[0_0_10px_rgba(59,130,246,0.3)] animate-pulse"
+                          ? "bg-blue-100 dark:bg-blue-500/20 border-2 border-blue-500 text-blue-700 dark:text-blue-300 shadow-[0_0_10px_rgba(59,130,246,0.3)] animate-pulse"
                           : cell === "#"
-                          ? "bg-amber-950/40 border border-amber-600/40 text-amber-500"
-                          : "bg-slate-900/60 border border-slate-800/60 text-slate-700"
+                          ? "bg-stone-200 dark:bg-amber-950/40 border border-stone-300 dark:border-amber-600/40 text-stone-700 dark:text-amber-500"
+                          : "bg-orange-50/60 dark:bg-slate-900/60 border border-orange-100 dark:border-slate-800/60 text-stone-400 dark:text-slate-700"
                       }`}
                     >
                       {isJerry && (status === "won" ? "🎉" : "🐭")}
@@ -370,8 +370,13 @@ export default function TerminalEmulator() {
           </div>
         </div>
 
+        {/* Legend */}
+        <p className="mt-4 text-xs text-stone-500 dark:text-slate-400 text-center max-w-md">
+          Jerry (🐭) must escape to Exit (🚪) before Tom (🐱) catches him. Tom calculates routes in real-time via {gameState.algorithm.toUpperCase()}.
+        </p>
+
         {/* Recent Terminal Log Stream */}
-        <div className="mt-4 w-full max-w-lg text-[11px] text-slate-400 space-y-1">
+        <div className="mt-3 w-full max-w-lg text-[11px] text-stone-600 dark:text-slate-400 space-y-1">
           {history.slice(-3).map((line, i) => (
             <div key={i} className="line-clamp-1">
               {line}
@@ -383,9 +388,9 @@ export default function TerminalEmulator() {
       {/* ── Terminal Command Input Line ── */}
       <form
         onSubmit={handleCommandSubmit}
-        className="px-5 py-2.5 bg-[#0a0d16] border-t border-slate-800 flex items-center gap-2"
+        className="px-5 py-2.5 bg-orange-50/50 dark:bg-[#0a0d16] border-t border-orange-200 dark:border-slate-800 flex items-center gap-2"
       >
-        <span className="text-xs text-emerald-400 font-bold shrink-0">
+        <span className="text-xs text-orange-600 dark:text-emerald-400 font-bold shrink-0">
           user@portfolio:~$
         </span>
         <input
@@ -393,22 +398,22 @@ export default function TerminalEmulator() {
           value={commandInput}
           onChange={(e) => setCommandInput(e.target.value)}
           placeholder="Type command (e.g. 'u', 'd', 'help', 'restart') or use arrow keys"
-          className="flex-1 bg-transparent text-xs text-white placeholder-slate-600 focus:outline-none"
+          className="flex-1 bg-transparent text-xs text-stone-900 dark:text-white placeholder-stone-400 dark:placeholder-slate-600 focus:outline-none"
         />
         <button
           type="submit"
-          className="text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300"
+          className="text-xs px-3 py-1 rounded-lg bg-[var(--color-primary)] hover:bg-[var(--color-primary-light)] text-white font-medium transition-colors"
         >
           Send
         </button>
       </form>
 
       {/* ── Virtual D-Pad Gamepad for Mobile & Touch ── */}
-      <div className="border-t border-slate-800 bg-[#080a12] p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2 text-xs text-slate-400">
-          <Bot size={15} className="text-cyan-400" />
+      <div className="border-t border-orange-200 dark:border-slate-800 bg-orange-50/30 dark:bg-[#080a12] p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-2 text-xs text-stone-600 dark:text-slate-400">
+          <Bot size={15} className="text-orange-500 dark:text-cyan-400" />
           <span>
-            Controls: <kbd className="px-1 py-0.5 rounded bg-slate-800 text-white">W A S D</kbd> / <kbd className="px-1 py-0.5 rounded bg-slate-800 text-white">Arrows</kbd> / Touch D-Pad
+            Controls: <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 border border-orange-200 dark:border-slate-700 text-stone-800 dark:text-white font-mono text-[11px] shadow-xs">W A S D</kbd> / <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 border border-orange-200 dark:border-slate-700 text-stone-800 dark:text-white font-mono text-[11px] shadow-xs">Arrows</kbd> / Touch D-Pad
           </span>
         </div>
 
@@ -417,7 +422,7 @@ export default function TerminalEmulator() {
           <button
             onClick={() => handleMove("up")}
             aria-label="Up"
-            className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 flex items-center justify-center transition-all border border-slate-700 shadow"
+            className="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 hover:bg-orange-100 dark:hover:bg-slate-700 active:scale-95 text-stone-800 dark:text-slate-200 flex items-center justify-center transition-all border border-orange-200 dark:border-slate-700 shadow-sm"
           >
             <ArrowUp size={16} />
           </button>
@@ -425,21 +430,21 @@ export default function TerminalEmulator() {
           <button
             onClick={() => handleMove("left")}
             aria-label="Left"
-            className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 flex items-center justify-center transition-all border border-slate-700 shadow"
+            className="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 hover:bg-orange-100 dark:hover:bg-slate-700 active:scale-95 text-stone-800 dark:text-slate-200 flex items-center justify-center transition-all border border-orange-200 dark:border-slate-700 shadow-sm"
           >
             <ArrowLeft size={16} />
           </button>
           <button
             onClick={() => handleMove("down")}
             aria-label="Down"
-            className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 flex items-center justify-center transition-all border border-slate-700 shadow"
+            className="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 hover:bg-orange-100 dark:hover:bg-slate-700 active:scale-95 text-stone-800 dark:text-slate-200 flex items-center justify-center transition-all border border-orange-200 dark:border-slate-700 shadow-sm"
           >
             <ArrowDown size={16} />
           </button>
           <button
             onClick={() => handleMove("right")}
             aria-label="Right"
-            className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 flex items-center justify-center transition-all border border-slate-700 shadow"
+            className="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 hover:bg-orange-100 dark:hover:bg-slate-700 active:scale-95 text-stone-800 dark:text-slate-200 flex items-center justify-center transition-all border border-orange-200 dark:border-slate-700 shadow-sm"
           >
             <ArrowRight size={16} />
           </button>

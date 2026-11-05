@@ -96,6 +96,22 @@ export const journeyMilestones: JourneyMilestone[] = [
     tags: ["Career", "Software Engineering"],
   },
   {
+    id: "discovery-academy",
+    date: "2026-10 - Present",
+    title: "Discovery Academy for Science & Technology",
+    description:
+      "STEM & Robotics Instructor at Discovery Academy for Science and Technology. Mentored and instructed students in algorithmic problem solving and robotics, guided technical graduation projects, and coached competitive student teams to tournament rankings.",
+    category: "work",
+    imageUrl: "/images/journey/discovery-academy.jpg",
+    images: [
+      "/images/journey/discovery-academy.jpg",
+      "/images/journey/3rdplacechampionscoachcodechalleng.jpeg",
+      "/images/journey/3rdplacechampionscoachcodechalleng1.jpeg",
+      "/images/journey/3rdplacechampionscoachcodechalleng2.jpeg",
+    ],
+    tags: ["Discovery Academy", "STEM", "Robotics", "Graduation Projects", "Instructor"],
+  },
+  {
     id: "champions-coach",
     date: "2026-10",
     title: "3rd Place — Champions Coach Code Challenge 🏆",

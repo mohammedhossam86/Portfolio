@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { JourneyMilestone } from "@/types";
 import TopDownCar from "./TopDownCar";
+import { OutlierIcon, AlignerrIcon, DiscoveryAcademyIcon } from "@/components/ui/BrandIcons";
 import {
   Sparkles,
   Trophy,
@@ -116,9 +117,9 @@ export default function JourneyWorld({
     [milestones.length]
   );
 
-  // Proximity Calculation (Pure math helper based on road distance)
+  // Proximity Calculation (Requires steering near the curb/billboard + horizontal alignment)
   const calculateProximity = useCallback(
-    (x: number) => {
+    (x: number, y: number) => {
       let closestIdx = -1;
       let minDistance = Infinity;
 
@@ -131,7 +132,15 @@ export default function JourneyWorld({
         }
       }
 
-      if (minDistance < 280 && closestIdx !== -1) {
+      // Proximity condition: must be in the top lane close to the billboard curb (y <= 515)
+      // and horizontally within reach (dx <= 190), or arriving via auto-cruise
+      const isNearCurb = y <= 515;
+      const isHorizontallyAligned = minDistance < 190;
+      const isStationNear =
+        (isNearCurb && isHorizontallyAligned) ||
+        (carPhysics.current.autoCruiseActive && minDistance < 120);
+
+      if (isStationNear && closestIdx !== -1) {
         if (activeStationIdxRef.current !== closestIdx) {
           setActiveStationIdx(closestIdx);
         }
@@ -245,8 +254,8 @@ export default function JourneyWorld({
       p.x = Math.max(140, Math.min(totalWorldWidth - 160, p.x));
       p.y = Math.max(ROAD_MIN_Y, Math.min(ROAD_MAX_Y, p.y));
 
-      // Calculate proximity to milestone landmarks based on car X
-      calculateProximity(p.x);
+      // Calculate proximity to milestone landmarks based on car position (curbside proximity)
+      calculateProximity(p.x, p.y);
 
       // Commit frame to React state for UI rendering
       setCarX(p.x);
@@ -511,9 +520,22 @@ export default function JourneyWorld({
               >
                 {/* Header: Date + Category Badge */}
                 <div className="flex items-center justify-between gap-3 mb-3">
-                  <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/90 border border-slate-700/80 text-xs font-mono font-bold text-slate-200">
-                    {getCategoryIcon(milestone.category)}
-                    <span>{milestone.date}</span>
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/90 border border-slate-700/80 text-xs font-mono font-bold text-slate-200">
+                      {getCategoryIcon(milestone.category)}
+                      <span>{milestone.date}</span>
+                    </div>
+                    {milestone.id === "ai-trainer" && (
+                      <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-orange-500/20 border border-orange-500/30">
+                        <OutlierIcon className="w-3.5 h-3.5" />
+                        <AlignerrIcon className="w-3.5 h-3.5" />
+                      </div>
+                    )}
+                    {milestone.id === "discovery-academy" && (
+                      <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-purple-500/20 border border-purple-500/30">
+                        <DiscoveryAcademyIcon className="w-4 h-4" variant="round" />
+                      </div>
+                    )}
                   </div>
 
                   <span className="text-xs font-mono text-cyan-400 uppercase tracking-widest font-extrabold">

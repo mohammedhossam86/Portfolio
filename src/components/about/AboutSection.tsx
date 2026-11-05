@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { aboutData } from "@/data/about";
+import { OutlierIcon, AlignerrIcon, DiscoveryAcademyIcon } from "@/components/ui/BrandIcons";
 import {
   User,
   MapPin,
@@ -48,54 +49,55 @@ export default function AboutSection() {
         </div>
 
         {/* ── Main Layout: Profile Card + Bio Content ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          {/* Profile Photo Card (5 Cols) */}
-          <div className="lg:col-span-5 flex flex-col items-center">
-            <div className="relative group w-full max-w-md">
-              {/* Animated outer aura */}
-              <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] opacity-30 blur-xl group-hover:opacity-50 transition duration-500" />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          {/* Left Column: Photo Card */}
+          <div className="lg:col-span-4">
+            <div className="relative group rounded-3xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-secondary)] shadow-xl transition-all duration-300 hover:border-[var(--color-primary)]">
+              <div className="relative w-full aspect-[4/5] overflow-hidden bg-slate-900">
+                <Image
+                  src={aboutData.avatarUrl}
+                  alt={aboutData.name}
+                  fill
+                  priority
+                  className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
-              <div className="relative rounded-3xl overflow-hidden border border-slate-700/80 bg-slate-900/90 shadow-2xl p-3">
-                <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden bg-slate-950">
-                  <Image
-                    src={aboutData.avatarUrl}
-                    alt={aboutData.name}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 450px"
-                    className="object-cover object-top filter contrast-105 group-hover:scale-105 transition-transform duration-700"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f19] via-transparent to-transparent opacity-80" />
+                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-white/90">
+                  <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 font-mono">
+                    <MapPin size={12} className="text-rose-400" />
+                    {aboutData.location}
+                  </span>
+                  <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/30 text-emerald-300 backdrop-blur-md border border-emerald-500/40 font-mono text-[11px] font-semibold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                    Open for Roles
+                  </span>
+                </div>
+              </div>
 
-                  {/* Floating Location Badge */}
-                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs font-mono">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/90 backdrop-blur-md border border-slate-700/80 text-slate-200">
-                      <MapPin size={13} className="text-rose-400" />
-                      {aboutData.location}
-                    </span>
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/90 backdrop-blur-md border border-emerald-500/40 text-emerald-300">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                      Open for Roles
+              {/* Card Meta Footer */}
+              <div className="p-5 border-t border-[var(--color-border)] bg-[var(--color-bg-tertiary)]">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-bold text-base text-[var(--color-text-primary)]">
+                      {aboutData.name}
+                    </h3>
+                    <p className="text-xs text-[var(--color-primary-light)] font-mono mt-0.5">
+                      {aboutData.title}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[11px] font-mono text-[var(--color-text-muted)]">
+                      Class of 2026
                     </span>
                   </div>
-                </div>
-
-                {/* Name & Title Bar */}
-                <div className="mt-4 px-2 pb-2">
-                  <h3 className="text-xl font-bold text-white flex items-center justify-between">
-                    <span>{aboutData.name}</span>
-                    <span className="text-xs font-mono font-normal text-slate-400">Class of 2026</span>
-                  </h3>
-                  <p className="text-xs text-[var(--color-primary-light)] font-mono mt-1">
-                    {aboutData.title}
-                  </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Bio & Details (7 Cols) */}
-          <div className="lg:col-span-7 space-y-6">
+          {/* Right Column: Narrative + Key Credentials */}
+          <div className="lg:col-span-8 space-y-6">
             {/* Bio Paragraphs */}
             <div className="space-y-4 text-sm sm:text-base leading-relaxed text-[var(--color-text-secondary)] font-normal">
               {aboutData.bio.map((paragraph, idx) => (
@@ -107,19 +109,39 @@ export default function AboutSection() {
 
             {/* Credential Pills */}
             <div className="pt-2">
-              <h4 className="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
-                <Sparkles size={13} className="text-amber-400" />
+              <h4 className="text-xs font-mono uppercase tracking-wider text-[var(--color-text-muted)] mb-3 flex items-center gap-2">
+                <Sparkles size={13} className="text-amber-500" />
                 Key Highlights &amp; Credentials
               </h4>
               <div className="flex flex-wrap gap-2.5">
-                {aboutData.pills.map((pill, idx) => (
-                  <span
-                    key={idx}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 font-medium hover:border-[var(--color-primary)]/50 hover:text-white transition-all shadow-sm"
-                  >
-                    {pill}
-                  </span>
-                ))}
+                {aboutData.pills.map((pill, idx) => {
+                  const isAiTrainer = pill.includes("Outlier & Alignerr");
+                  const isDiscovery = pill.includes("Discovery Academy");
+
+                  return (
+                    <span
+                      key={idx}
+                      className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)] text-xs text-[var(--color-text-secondary)] font-medium hover:border-[var(--color-primary)] hover:text-[var(--color-text-primary)] transition-all shadow-sm"
+                    >
+                      {isAiTrainer ? (
+                        <>
+                          <span className="flex items-center gap-1.5">
+                            <OutlierIcon className="w-3.5 h-3.5" />
+                            <AlignerrIcon className="w-3.5 h-3.5" />
+                          </span>
+                          <span>Outlier &amp; Alignerr AI Trainer (2023 - Present)</span>
+                        </>
+                      ) : isDiscovery ? (
+                        <>
+                          <DiscoveryAcademyIcon className="w-4 h-4" variant="round" />
+                          <span>STEM &amp; Robotics Instructor — Discovery Academy</span>
+                        </>
+                      ) : (
+                        pill
+                      )}
+                    </span>
+                  );
+                })}
               </div>
             </div>
 
@@ -130,7 +152,7 @@ export default function AboutSection() {
                   key={idx}
                   className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-3.5 text-center shadow-md transition-all hover:border-[var(--color-primary)]"
                 >
-                  <div className="text-lg sm:text-xl font-extrabold text-[var(--color-primary-light)] font-mono">
+                  <div className="text-lg sm:text-xl font-extrabold text-[var(--color-primary)] font-mono">
                     {stat.value}
                   </div>
                   <div className="text-[11px] text-[var(--color-text-secondary)] mt-1 uppercase font-mono tracking-wider font-semibold">
@@ -164,4 +186,3 @@ export default function AboutSection() {
     </section>
   );
 }
-

@@ -8,7 +8,7 @@ export const aboutData: AboutData = {
   bio: [
     "I am a Backend Engineer & AI Engineer with a strong foundation in Competitive Programming. I graduated in Computer Science (June 2026), specializing in high-performance backend architecture, microservices, and AI model evaluation.",
     "Since February 2023, I have been working as a Freelance AI Trainer & Evaluator with frontier platforms including Outlier and Alignerr. I help train and fine-tune state-of-the-art Large Language Models (LLMs) via RLHF, writing complex algorithmic reasoning problems in Python & C++, validating model outputs, and conducting in-depth code reviews.",
-    "I am an active Open Source contributor to GitLab's core enterprise codebase (gitlab-org/gitlab). As a STEM & Robotics coach, I led my young student team to 3rd Place in the Champions Coach Code Challenge (Oct 2026), and I regularly teach algorithmic problem solving on YouTube.",
+    "I am an active Open Source contributor to GitLab's core enterprise codebase (gitlab-org/gitlab). At Discovery Academy for Science and Technology, I teach STEM and robotics, supervise impactful graduation projects, and led my student team to 3rd Place in the Champions Coach Code Challenge (Oct 2026).",
   ],
   pills: [
     "🚀 Backend Engineer & AI Engineer",
@@ -17,7 +17,7 @@ export const aboutData: AboutData = {
     "⚡ 2,500+ Algorithmic Problems Solved",
     "🦊 GitLab Core Contributor (gitlab-org/gitlab)",
     "🏆 4× ECPC Contestant & National Finalist",
-    "💡 STEM & Robotics Instructor",
+    "💡 STEM & Robotics Instructor — Discovery Academy",
   ],
   stats: [
     { label: "Problems Solved", value: "2,500+" },

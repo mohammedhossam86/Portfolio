@@ -102,7 +102,7 @@ const iconDictionary: Record<string, IconType | LucideIcon> = {
 export default function SkillsGrid() {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // On mobile, show top 4 cards by default unless expanded
+  // On mobile, show top 6 cards by default unless expanded
   const visibleGroups = isExpanded ? skillGroups : skillGroups.slice(0, 6);
 
   return (
@@ -121,27 +121,27 @@ export default function SkillsGrid() {
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
-        {/* ── Section Title (Exact style from screenshot) ── */}
+        {/* ── Section Title ── */}
         <div className="flex flex-col items-center text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight">
-            Skills
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-stone-900 dark:text-white tracking-tight">
+            Skills &amp; Technologies
           </h2>
           {/* Subtle Accent Line */}
-          <div className="w-12 h-1 rounded-full bg-amber-400 mt-2.5 mb-3 shadow-[0_0_12px_rgba(251,191,36,0.5)]" />
-          <p className="text-xs sm:text-sm text-slate-400 font-mono tracking-wide">
-            The languages, systems, and tools I use.
+          <div className="w-12 h-1 rounded-full bg-[var(--color-primary)] mt-2.5 mb-3 shadow-sm" />
+          <p className="text-xs sm:text-sm text-stone-600 dark:text-slate-400 font-mono tracking-wide">
+            The programming languages, frameworks, databases, and DevOps systems I engineer with.
           </p>
         </div>
 
         {/* ── Bento Grid of Categorized Skill Cards ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 items-start">
           {visibleGroups.map((group) => (
             <div
               key={group.id}
-              className="relative rounded-3xl border border-slate-800/90 bg-[#0b0e18]/90 backdrop-blur-xl p-5 sm:p-6 shadow-xl hover:border-slate-700/80 hover:shadow-2xl hover:shadow-[var(--color-primary)]/5 transition-all duration-300 flex flex-col justify-start group/card"
+              className="relative rounded-3xl border border-orange-200/80 dark:border-slate-800/90 bg-white/90 dark:bg-[#0b0e18]/90 backdrop-blur-xl p-5 sm:p-6 shadow-sm hover:border-[var(--color-primary)] hover:shadow-xl hover:shadow-orange-500/5 dark:hover:shadow-[var(--color-primary)]/5 transition-all duration-300 flex flex-col justify-start group/card"
             >
               {/* Category Header with colored bullet */}
-              <div className="flex items-center gap-2.5 mb-6 select-none">
+              <div className="flex items-center gap-2.5 mb-5 select-none">
                 <span
                   className="w-2.5 h-2.5 rounded-full shrink-0 shadow-sm"
                   style={{
@@ -149,12 +149,12 @@ export default function SkillsGrid() {
                     boxShadow: `0 0 10px ${group.dotColor}`,
                   }}
                 />
-                <h3 className="text-xs font-mono font-bold tracking-widest text-slate-300 uppercase">
+                <h3 className="text-xs font-mono font-bold tracking-widest text-stone-700 dark:text-slate-300 uppercase">
                   {group.title}
                 </h3>
               </div>
 
-              {/* Skills 4-Column Grid — perfectly aligned under header with no empty void */}
+              {/* Skills 4-Column Grid */}
               <div className="grid grid-cols-4 gap-y-4 gap-x-2 sm:gap-x-3 items-start justify-items-center w-full">
                 {group.items.map((skill) => {
                   const IconComponent =
@@ -166,7 +166,7 @@ export default function SkillsGrid() {
                       className="group/item flex flex-col items-center justify-start gap-1.5 w-full max-w-[72px] cursor-default"
                     >
                       {/* Icon Container */}
-                      <div className="w-12 h-12 rounded-2xl bg-slate-900/90 border border-slate-800/90 flex items-center justify-center text-slate-400 transition-all duration-200 group-hover/item:scale-110 group-hover/item:border-slate-600 group-hover/item:bg-slate-800/80 shadow-sm">
+                      <div className="w-12 h-12 rounded-2xl bg-orange-50/80 dark:bg-slate-900/90 border border-orange-200/60 dark:border-slate-800/90 flex items-center justify-center text-stone-500 dark:text-slate-400 transition-all duration-200 group-hover/item:scale-110 group-hover/item:border-[var(--color-primary)] group-hover/item:bg-white dark:group-hover/item:bg-slate-800/80 shadow-xs">
                         <IconComponent
                           size={22}
                           className="group-hover/item:scale-105 transition-transform"
@@ -176,8 +176,8 @@ export default function SkillsGrid() {
                         />
                       </div>
 
-                      {/* Skill Name — cleanly formatted with single line and no overlap */}
-                      <span className="text-[10px] sm:text-[11px] font-mono text-slate-300 group-hover/item:text-white text-center tracking-tight truncate w-full transition-colors mt-0.5">
+                      {/* Skill Name */}
+                      <span className="text-[10px] sm:text-[11px] font-mono text-stone-600 dark:text-slate-300 group-hover/item:text-stone-900 dark:group-hover/item:text-white text-center tracking-tight truncate w-full transition-colors mt-0.5">
                         {skill.name}
                       </span>
                     </div>
@@ -193,7 +193,7 @@ export default function SkillsGrid() {
           <div className="mt-8 flex justify-center sm:hidden">
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 border border-slate-700 text-xs font-mono text-slate-300 hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-orange-50 dark:bg-slate-900 border border-orange-200 dark:border-slate-700 text-xs font-mono text-stone-700 dark:text-slate-300 hover:text-stone-900 dark:hover:text-white transition-colors"
             >
               {isExpanded ? (
                 <>

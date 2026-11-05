@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { journeyMilestones } from "@/data/journey";
 import { JourneyMilestone } from "@/types";
 import JourneyWorld from "./JourneyWorld";
+import { OutlierIcon, AlignerrIcon, DiscoveryAcademyIcon } from "@/components/ui/BrandIcons";
 import {
   Compass,
   Trophy,
@@ -17,10 +18,13 @@ import {
   ChevronRight,
   LayoutGrid,
   Car,
+  Sparkles,
 } from "lucide-react";
 
 export default function JourneyTimeline() {
-  const [viewMode, setViewMode] = useState<"drive" | "cards">("drive");
+  // Default to cards view and default to work category as requested
+  const [viewMode, setViewMode] = useState<"drive" | "cards">("cards");
+  const [selectedCategory, setSelectedCategory] = useState<string>("work");
   const [selectedMilestone, setSelectedMilestone] = useState<JourneyMilestone | null>(null);
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
 
@@ -45,67 +49,117 @@ export default function JourneyTimeline() {
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case "education":
-        return <GraduationCap size={16} className="text-cyan-400" />;
+        return <GraduationCap size={16} className="text-cyan-500 dark:text-cyan-400" />;
       case "achievement":
-        return <Trophy size={16} className="text-amber-400" />;
+        return <Trophy size={16} className="text-amber-500 dark:text-amber-400" />;
       case "work":
-        return <Briefcase size={16} className="text-purple-400" />;
+        return <Briefcase size={16} className="text-orange-500 dark:text-purple-400" />;
       default:
-        return <Compass size={16} className="text-emerald-400" />;
+        return <Compass size={16} className="text-emerald-500 dark:text-emerald-400" />;
     }
   };
+
+  const categories = [
+    { id: "work", label: "Work Experience", icon: Briefcase },
+    { id: "all", label: "All Milestones", icon: Compass },
+    { id: "achievement", label: "Competitions & Awards", icon: Trophy },
+    { id: "education", label: "Education & Degree", icon: GraduationCap },
+  ];
+
+  const filteredMilestones =
+    selectedCategory === "all"
+      ? journeyMilestones
+      : journeyMilestones.filter((m) => m.category === selectedCategory);
 
   return (
     <section
       id="journey"
-      className="relative pt-20 sm:pt-28 pb-10 overflow-hidden"
+      className="relative pt-20 sm:pt-28 pb-14 overflow-hidden"
     >
-      {/* ── Section Header (Seamlessly floating above the open highway) ── */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 mb-6">
+      {/* ── Section Header ── */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 mb-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/30 text-[var(--color-accent-light)] text-xs font-mono uppercase tracking-wider mb-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[var(--color-primary-light)] text-xs font-mono uppercase tracking-wider mb-2">
               <Compass size={13} />
-              Open World Experience
+              Career &amp; Learning Odyssey
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white">
-              Drive Through My <span className="text-gradient">Journey</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-stone-900 dark:text-white">
+              My Professional <span className="text-gradient">Journey</span>
             </h2>
-            <p className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">
-              The highway is woven into the page background. Steer across lanes and stations using <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-cyan-300">W/A/S/D</kbd> or <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-cyan-300">Arrows</kbd>. Get close to any landmark and press <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-amber-300">SPACE</kbd> to inspect!
+            <p className="text-xs sm:text-sm text-stone-600 dark:text-slate-400 mt-2 font-mono">
+              Explore my work experience, competitive programming milestones, and university graduation. Switch to the interactive Highway Drive to steer a sports car across the career road!
             </p>
           </div>
 
-          {/* View Mode Switcher */}
-          <div className="flex items-center gap-2 bg-[#0b0e1a]/90 border border-slate-800 p-1.5 rounded-2xl backdrop-blur-xl">
-            <button
-              onClick={() => setViewMode("drive")}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
-                viewMode === "drive"
-                  ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25"
-                  : "text-slate-400 hover:text-white"
-              }`}
-            >
-              <Car size={15} />
-              <span>Full Highway Drive</span>
-            </button>
-
+          {/* View Mode Switcher (Highway Drive vs Cards Grid) */}
+          <div className="flex items-center gap-1.5 bg-orange-50/80 dark:bg-[#0b0e1a]/90 border border-orange-200 dark:border-slate-800 p-1.5 rounded-2xl backdrop-blur-xl shadow-sm">
             <button
               onClick={() => setViewMode("cards")}
               className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
                 viewMode === "cards"
-                  ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-[var(--color-primary)] text-white shadow-md shadow-orange-500/25"
+                  : "text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white"
               }`}
             >
               <LayoutGrid size={15} />
               <span>Cards Grid ({journeyMilestones.length})</span>
             </button>
+
+            <button
+              onClick={() => setViewMode("drive")}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
+                viewMode === "drive"
+                  ? "bg-[var(--color-primary)] text-white shadow-md shadow-orange-500/25"
+                  : "text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white"
+              }`}
+            >
+              <Car size={15} />
+              <span>Highway Drive 🏎️</span>
+            </button>
           </div>
         </div>
+
+        {/* ── Category Filter Tabs (Always visible in cards view) ── */}
+        {viewMode === "cards" && (
+          <div className="mt-8 flex flex-wrap items-center gap-2 border-b border-orange-200/80 dark:border-slate-800/80 pb-4">
+            {categories.map((cat) => {
+              const Icon = cat.icon;
+              const count =
+                cat.id === "all"
+                  ? journeyMilestones.length
+                  : journeyMilestones.filter((m) => m.category === cat.id).length;
+              const isSelected = selectedCategory === cat.id;
+
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-semibold transition-all duration-200 ${
+                    isSelected
+                      ? "bg-[var(--color-primary)] text-white shadow-sm"
+                      : "bg-white/80 dark:bg-slate-900/60 border border-orange-200/60 dark:border-slate-800 text-stone-600 dark:text-slate-400 hover:border-[var(--color-primary)]/50 hover:text-stone-900 dark:hover:text-white"
+                  }`}
+                >
+                  <Icon size={14} />
+                  <span>{cat.label}</span>
+                  <span
+                    className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+                      isSelected
+                        ? "bg-white/20 text-white"
+                        : "bg-orange-100 dark:bg-slate-800 text-orange-700 dark:text-slate-400"
+                    }`}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
-      {/* ── Main Full-Bleed Content ── */}
+      {/* ── Main Content ── */}
       {viewMode === "drive" ? (
         <div className="relative w-full">
           <JourneyWorld
@@ -116,49 +170,84 @@ export default function JourneyTimeline() {
       ) : (
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {journeyMilestones.map((m) => (
-              <div
-                key={m.id}
-                onClick={() => openModal(m)}
-                className="group relative rounded-3xl border border-slate-800 bg-[#0b0e18]/90 backdrop-blur-xl p-6 transition-all duration-300 hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/10 cursor-pointer flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-3 mb-4">
-                    <span className="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-                      {getCategoryIcon(m.category)}
-                    </span>
-                    <span className="text-xs font-mono text-cyan-400">
-                      {m.date}
-                    </span>
-                  </div>
+            {filteredMilestones.map((m) => {
+              const isAiTrainer = m.id === "ai-trainer";
+              const isDiscovery = m.id === "discovery-academy";
 
-                  <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors mb-2">
-                    {m.title}
-                  </h3>
-
-                  <p className="text-xs text-slate-400 leading-relaxed line-clamp-3 mb-4">
-                    {m.description}
-                  </p>
-                </div>
-
-                {m.imageUrl && (
-                  <div className="relative w-full h-36 rounded-2xl overflow-hidden border border-slate-800 mt-2">
-                    <Image
-                      src={m.imageUrl}
-                      alt={m.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    {m.images && m.images.length > 1 && (
-                      <div className="absolute bottom-2 right-2 px-2 py-1 rounded-lg bg-black/80 text-[10px] font-mono text-white flex items-center gap-1 backdrop-blur-md">
-                        <Images size={12} />
-                        <span>{m.images.length} photos</span>
+              return (
+                <div
+                  key={m.id}
+                  onClick={() => openModal(m)}
+                  className="group relative rounded-3xl border border-orange-200/80 dark:border-slate-800 bg-white/90 dark:bg-[#0b0e18]/90 backdrop-blur-xl p-6 transition-all duration-300 hover:border-[var(--color-primary)] hover:shadow-xl hover:shadow-orange-500/10 dark:hover:shadow-cyan-500/10 cursor-pointer flex flex-col justify-between shadow-sm"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-3 mb-4">
+                      <div className="flex items-center gap-2">
+                        <span className="p-2 rounded-xl bg-orange-50 dark:bg-slate-900 border border-orange-200 dark:border-slate-800">
+                          {getCategoryIcon(m.category)}
+                        </span>
+                        {/* Outlier & Alignerr Icons */}
+                        {isAiTrainer && (
+                          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-orange-50 dark:bg-slate-900 border border-orange-200/80 dark:border-slate-800">
+                            <OutlierIcon className="w-4 h-4" />
+                            <span className="text-[10px] font-mono font-bold text-orange-600 dark:text-orange-400">Outlier</span>
+                            <span className="text-stone-300 dark:text-slate-600">/</span>
+                            <AlignerrIcon className="w-4 h-4" />
+                            <span className="text-[10px] font-mono font-bold text-indigo-600 dark:text-indigo-400">Alignerr</span>
+                          </div>
+                        )}
+                        {/* Discovery Academy Logo */}
+                        {isDiscovery && (
+                          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-orange-50 dark:bg-slate-900 border border-orange-200/80 dark:border-slate-800">
+                            <DiscoveryAcademyIcon className="w-4 h-4" variant="round" />
+                            <span className="text-[10px] font-mono font-bold text-purple-600 dark:text-purple-400">Discovery</span>
+                          </div>
+                        )}
                       </div>
-                    )}
+                      <span className="text-xs font-mono font-bold text-[var(--color-primary)]">
+                        {m.date}
+                      </span>
+                    </div>
+
+                    <h3 className="text-base font-bold text-stone-900 dark:text-white group-hover:text-[var(--color-primary)] transition-colors mb-2">
+                      {m.title}
+                    </h3>
+
+                    <p className="text-xs text-stone-600 dark:text-slate-400 leading-relaxed line-clamp-3 mb-4">
+                      {m.description}
+                    </p>
                   </div>
-                )}
-              </div>
-            ))}
+
+                  {m.imageUrl ? (
+                    <div className="relative w-full h-36 rounded-2xl overflow-hidden border border-orange-200/80 dark:border-slate-800 mt-2 bg-orange-50/50 dark:bg-slate-900/50">
+                      <Image
+                        src={m.imageUrl}
+                        alt={m.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      {m.images && m.images.length > 1 && (
+                        <div className="absolute bottom-2 right-2 px-2 py-1 rounded-lg bg-black/80 text-[10px] font-mono text-white flex items-center gap-1 backdrop-blur-md">
+                          <Images size={12} />
+                          <span>{m.images.length} photos</span>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="flex flex-wrap gap-1.5 mt-2">
+                      {m.tags?.map((t, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2 py-0.5 rounded-lg bg-orange-100/60 dark:bg-slate-900 border border-orange-200/60 dark:border-slate-800 text-[10px] font-mono text-stone-600 dark:text-slate-400"
+                        >
+                          #{t}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
