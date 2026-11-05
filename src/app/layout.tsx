@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { siteMetadata } from "@/data";
-import Script from "next/script";
 import "./globals.css";
 
 // ─── SEO Metadata ────────────────────────────────────────────────────────────
@@ -42,20 +41,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
-        <Script
-          id="theme-init"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              try {
-                if (localStorage.getItem('theme') === 'light') {
-                  document.documentElement.classList.remove('dark');
-                  document.documentElement.classList.add('light');
-                }
-              } catch (e) {}
-            `,
-          }}
-        />
+        <script src="/theme-init.js" />
       </head>
       <body className="font-sans antialiased">
         {children}
