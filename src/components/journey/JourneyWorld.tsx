@@ -404,19 +404,19 @@ export default function JourneyWorld({
       {/* ── Top Floating HUD Dashboard Overlay ── */}
       <div className="absolute top-6 left-6 right-6 z-40 flex flex-wrap items-center justify-between gap-4 pointer-events-none">
         {/* Speedometer & Station Tracker */}
-        <div className="flex items-center gap-3.5 p-2.5 px-4 rounded-2xl bg-white/95 dark:bg-[#0b0e1a]/85 border border-orange-200 dark:border-slate-700/60 backdrop-blur-2xl shadow-xl pointer-events-auto">
+        <div className="flex items-center gap-3.5 p-2.5 px-4 rounded-2xl bg-white/95 dark:bg-[#0c0c10]/90 border border-orange-200/80 dark:border-zinc-800 backdrop-blur-2xl shadow-xl pointer-events-auto">
           <div className="flex items-center gap-2 font-mono text-xs">
-            <span className="w-2.5 h-2.5 rounded-full bg-orange-500 dark:bg-cyan-400 animate-pulse shadow-sm" />
-            <span className="text-stone-500 dark:text-slate-400">CRUISE SPEED:</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-orange-500 dark:bg-emerald-400 animate-pulse shadow-sm" />
+            <span className="text-stone-500 dark:text-zinc-400">CRUISE SPEED:</span>
             <strong className="text-stone-900 dark:text-white text-base tracking-tight">{speedKmh}</strong>
-            <span className="text-[11px] text-orange-600 dark:text-cyan-400 font-bold">KM/H</span>
+            <span className="text-[11px] text-orange-600 dark:text-zinc-300 font-bold">KM/H</span>
           </div>
 
-          <div className="h-5 w-px bg-orange-200 dark:bg-slate-700/80" />
+          <div className="h-5 w-px bg-orange-200 dark:bg-zinc-800" />
 
           <div className="flex items-center gap-2 font-mono text-xs">
-            <span className="text-stone-500 dark:text-slate-400">LANDMARK:</span>
-            <strong className="text-orange-600 dark:text-amber-300 text-sm">
+            <span className="text-stone-500 dark:text-zinc-400">LANDMARK:</span>
+            <strong className="text-orange-600 dark:text-zinc-100 text-sm">
               #{activeStationIdx + 1} of {milestones.length}
             </strong>
           </div>
@@ -427,7 +427,7 @@ export default function JourneyWorld({
           <button
             onClick={() => driveToStation(activeStationIdx - 1)}
             disabled={activeStationIdx === 0}
-            className="p-3 rounded-2xl bg-white/95 dark:bg-[#0b0e1a]/85 border border-orange-200 dark:border-slate-700/60 text-stone-700 dark:text-slate-300 hover:text-stone-900 dark:hover:text-white hover:border-orange-400 dark:hover:border-cyan-500/50 active:scale-95 disabled:opacity-30 transition-all shadow-md backdrop-blur-2xl"
+            className="p-3 rounded-2xl bg-white/95 dark:bg-[#0c0c10]/90 border border-orange-200/80 dark:border-zinc-800 text-stone-700 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-white hover:border-orange-400 dark:hover:border-zinc-600 active:scale-95 disabled:opacity-30 transition-all shadow-md backdrop-blur-2xl"
             title="Drive to Previous Milestone"
           >
             <ChevronLeft size={18} />
@@ -437,18 +437,18 @@ export default function JourneyWorld({
             onClick={toggleAutoCruise}
             className={`inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-xs font-mono font-semibold transition-all border shadow-md backdrop-blur-2xl active:scale-95 ${
               autoCruise
-                ? "bg-orange-500 text-white border-orange-500 dark:bg-amber-500/25 dark:text-amber-300 dark:border-amber-400 shadow-orange-500/20"
-                : "bg-white/95 dark:bg-[#0b0e1a]/85 border-orange-200 dark:border-slate-700/60 text-stone-700 dark:text-slate-200 hover:text-stone-900 dark:hover:text-white hover:border-orange-400"
+                ? "bg-orange-600 text-white border-orange-600 dark:bg-zinc-100 dark:text-zinc-950 dark:border-zinc-100 shadow-orange-500/20 font-bold"
+                : "bg-white/95 dark:bg-[#0c0c10]/90 border-orange-200/80 dark:border-zinc-800 text-stone-700 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-white hover:border-orange-400 dark:hover:border-zinc-600"
             }`}
           >
-            <Play size={14} className={autoCruise ? "animate-spin text-white dark:text-amber-400" : ""} />
+            <Play size={14} className={autoCruise ? "animate-spin text-white dark:text-zinc-950" : ""} />
             <span>{autoCruise ? "Auto-Cruise Active" : "Auto-Cruise Mode"}</span>
           </button>
 
           <button
             onClick={() => driveToStation(activeStationIdx + 1)}
             disabled={activeStationIdx === milestones.length - 1}
-            className="p-3 rounded-2xl bg-white/95 dark:bg-[#0b0e1a]/85 border border-orange-200 dark:border-slate-700/60 text-stone-700 dark:text-slate-300 hover:text-stone-900 dark:hover:text-white hover:border-orange-400 dark:hover:border-cyan-500/50 active:scale-95 disabled:opacity-30 transition-all shadow-md backdrop-blur-2xl"
+            className="p-3 rounded-2xl bg-white/95 dark:bg-[#0c0c10]/90 border border-orange-200/80 dark:border-zinc-800 text-stone-700 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-white hover:border-orange-400 dark:hover:border-zinc-600 active:scale-95 disabled:opacity-30 transition-all shadow-md backdrop-blur-2xl"
             title="Drive to Next Milestone"
           >
             <ChevronRight size={18} />
@@ -493,9 +493,9 @@ export default function JourneyWorld({
           const dist = Math.abs(carX - sx);
 
           // Distance-based night discovery lighting:
-          // In the dark highway, billboards illuminate dynamically as the headlights sweep over them!
-          const illumination = Math.max(0.18, Math.min(1, 1 - (dist - 140) / 440));
-          const isIlluminated = illumination > 0.45;
+          // Milestones stay clearly visible from afar (baseline 0.68) and glow as headlights approach
+          const illumination = Math.max(0.68, Math.min(1, 1 - (dist - 160) / 480));
+          const isIlluminated = illumination > 0.78;
 
           return (
             <div
@@ -503,24 +503,24 @@ export default function JourneyWorld({
               style={{
                 left: `${sx}px`,
                 top: "85px",
-                opacity: isNear ? 1 : illumination,
-                transform: `scale(${isNear ? 1.04 : 0.94 + illumination * 0.06})`,
+                opacity: isNear ? 1 : Math.max(0.72, illumination),
+                transform: `scale(${isNear ? 1.03 : 0.96 + illumination * 0.04})`,
                 filter: isNear
-                  ? "brightness(1.15) drop-shadow(0 0 25px rgba(56, 189, 248, 0.6))"
+                  ? "brightness(1.08) drop-shadow(0 15px 35px rgba(0,0,0,0.65))"
                   : isIlluminated
-                  ? `brightness(${0.8 + illumination * 0.25}) drop-shadow(0 0 ${illumination * 16}px rgba(56, 189, 248, 0.35))`
-                  : "brightness(0.35) contrast(0.85)",
+                  ? "brightness(1) drop-shadow(0 8px 20px rgba(0,0,0,0.45))"
+                  : "brightness(0.85) contrast(0.95)",
                 transition: "opacity 0.2s ease-out, transform 0.2s ease-out, filter 0.2s ease-out",
               }}
               className="absolute -translate-x-1/2 w-[310px] sm:w-[350px] z-20 flex flex-col items-center select-none"
             >
-              {/* Grand Spot Light Beam Shining Down on the Highway (Powers up when discovered!) */}
+              {/* Elegant Spotlight Beam Shining Down on the Milestone */}
               <div
-                className="absolute -top-12 w-44 h-[420px] pointer-events-none transition-opacity duration-300"
+                className="absolute -top-12 w-48 h-[420px] pointer-events-none transition-opacity duration-300"
                 style={{
                   background:
-                    "conic-gradient(from 180deg at 50% 0%, rgba(56, 189, 248, 0.4) 0deg, transparent 70deg, transparent 290deg, rgba(56, 189, 248, 0.4) 360deg)",
-                  opacity: isNear ? 0.95 : isIlluminated ? (illumination - 0.45) * 1.8 : 0.04,
+                    "conic-gradient(from 180deg at 50% 0%, rgba(251, 191, 36, 0.22) 0deg, transparent 70deg, transparent 290deg, rgba(251, 191, 36, 0.22) 360deg)",
+                  opacity: isNear ? 0.95 : isIlluminated ? (illumination - 0.7) * 3 : 0.08,
                   filter: "blur(16px)",
                 }}
               />
@@ -530,17 +530,15 @@ export default function JourneyWorld({
                 onClick={() => onInspectMilestone(milestone)}
                 style={{
                   borderColor: isNear
-                    ? "rgba(56, 189, 248, 0.95)"
+                    ? "#f97316"
                     : isIlluminated
-                    ? `rgba(56, 189, 248, ${0.3 + illumination * 0.5})`
-                    : "rgba(51, 65, 85, 0.3)",
+                    ? "rgba(255, 255, 255, 0.25)"
+                    : "rgba(255, 255, 255, 0.12)",
                   boxShadow: isNear
-                    ? "0 0 35px rgba(56, 189, 248, 0.55), 0 20px 40px rgba(0,0,0,0.85)"
-                    : isIlluminated
-                    ? "0 10px 25px rgba(0,0,0,0.6)"
-                    : "0 6px 16px rgba(0,0,0,0.4)",
+                    ? "0 0 25px rgba(249, 115, 22, 0.25), 0 16px 36px rgba(0,0,0,0.7)"
+                    : "0 8px 22px rgba(0,0,0,0.45)",
                 }}
-                className="relative w-full rounded-3xl bg-white/95 dark:bg-[#0c0c10]/95 backdrop-blur-2xl p-4 sm:p-5 transition-all duration-200 border cursor-pointer hover:border-orange-500 dark:hover:border-zinc-500 group/station shadow-xl"
+                className="relative w-full rounded-3xl bg-white dark:bg-[#0c0c10] backdrop-blur-2xl p-4 sm:p-5 transition-all duration-200 border cursor-pointer hover:border-orange-500 dark:hover:border-zinc-500 group/station shadow-xl"
               >
                 {/* Header: Date + Category Badge */}
                 <div className="flex items-center justify-between gap-3 mb-3">
@@ -561,7 +559,7 @@ export default function JourneyWorld({
                     )}
                   </div>
 
-                  <span className="text-xs font-mono text-orange-600 dark:text-cyan-400 uppercase tracking-widest font-extrabold">
+                  <span className="text-xs font-mono text-orange-600 dark:text-zinc-300 uppercase tracking-widest font-extrabold">
                     Station #{idx + 1}
                   </span>
                 </div>
@@ -572,14 +570,14 @@ export default function JourneyWorld({
                 </h4>
 
                 {/* Description */}
-                <p className="text-xs sm:text-sm text-stone-600 dark:text-slate-300 line-clamp-2 leading-relaxed mb-4">
+                <p className="text-xs sm:text-sm text-stone-600 dark:text-zinc-300 line-clamp-2 leading-relaxed mb-4">
                   {milestone.description}
                 </p>
 
                 {/* Thumbnail Preview & Action Button */}
-                <div className="flex items-center justify-between pt-3 border-t border-orange-200/80 dark:border-slate-800">
+                <div className="flex items-center justify-between pt-3 border-t border-orange-200/80 dark:border-zinc-800">
                   {milestone.imageUrl ? (
-                    <div className="relative w-20 h-12 rounded-xl overflow-hidden border border-orange-200 dark:border-slate-700 shadow-md">
+                    <div className="relative w-20 h-12 rounded-xl overflow-hidden border border-orange-200 dark:border-zinc-700 shadow-md">
                       <Image
                         src={milestone.imageUrl}
                         alt={milestone.title}
@@ -599,7 +597,7 @@ export default function JourneyWorld({
                       {milestone.tags?.slice(0, 3).map((tag) => (
                         <span
                           key={tag}
-                          className="text-[10px] font-mono px-2 py-0.5 rounded-lg bg-orange-100/70 dark:bg-slate-900 text-stone-600 dark:text-slate-400 border border-orange-200 dark:border-slate-800"
+                          className="text-[10px] font-mono px-2 py-0.5 rounded-lg bg-orange-100/70 dark:bg-zinc-900 text-stone-600 dark:text-zinc-400 border border-orange-200 dark:border-zinc-800"
                         >
                           #{tag}
                         </span>
@@ -607,7 +605,7 @@ export default function JourneyWorld({
                     </div>
                   )}
 
-                  <button className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-orange-500/10 hover:bg-orange-500 text-orange-600 hover:text-white dark:bg-cyan-500/10 dark:hover:bg-cyan-500 dark:text-cyan-300 dark:hover:text-black font-mono text-xs font-bold transition-all shadow-md active:scale-95">
+                  <button className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white font-mono text-xs font-bold transition-all shadow-md active:scale-95">
                     <span>Inspect</span>
                     <Maximize2 size={12} />
                   </button>
@@ -615,13 +613,13 @@ export default function JourneyWorld({
               </div>
 
               {/* Station Roadside Pillar Base */}
-              <div className="w-2 h-14 bg-gradient-to-b from-slate-600 to-slate-800 mt-1 rounded-full shadow-lg" />
+              <div className="w-2 h-14 bg-gradient-to-b from-zinc-600 to-zinc-900 mt-1 rounded-full shadow-lg" />
               {/* Ground Reflective Base Stud */}
               <div
                 className="w-16 h-3 rounded-full mt-[-2px] transition-all"
                 style={{
-                  backgroundColor: isNear ? "#22d3ee" : "#334155",
-                  boxShadow: isNear ? "0 0 16px #22d3ee" : "none",
+                  backgroundColor: isNear ? "#f97316" : "#3f3f46",
+                  boxShadow: isNear ? "0 0 16px #f97316" : "none",
                 }}
               />
             </div>
@@ -634,44 +632,44 @@ export default function JourneyWorld({
             top: `${ROAD_MIN_Y - 40}px`,
             bottom: "0px",
           }}
-          className="absolute left-0 right-0 bg-[#090d18] border-t-4 border-slate-700 shadow-[inset_0_15px_40px_rgba(0,0,0,0.85)]"
+          className="absolute left-0 right-0 bg-[#101015] dark:bg-[#0d0d12] border-t-2 border-zinc-700/80 shadow-[inset_0_20px_50px_rgba(0,0,0,0.9)]"
         >
-          {/* Glowing Curbside Neon Guide (Cyan) */}
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-cyan-400/90 shadow-[0_0_14px_#22d3ee]" />
+          {/* Reflective Curbside Guardrail Line (Warm Amber) */}
+          <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-zinc-600 via-amber-400 to-zinc-600 shadow-[0_0_12px_rgba(251,191,36,0.4)]" />
 
           {/* Lane Divider 1 (White Dashes) */}
           <div
-            className="absolute top-28 left-0 right-0 h-1.5 opacity-60"
+            className="absolute top-28 left-0 right-0 h-1.5 opacity-75"
             style={{
               backgroundImage:
-                "repeating-linear-gradient(to right, #e2e8f0 0px, #e2e8f0 36px, transparent 36px, transparent 72px)",
+                "repeating-linear-gradient(to right, rgba(255, 255, 255, 0.75) 0px, rgba(255, 255, 255, 0.75) 42px, transparent 42px, transparent 84px)",
             }}
           />
 
           {/* Center Double Golden Highway Lines */}
           <div className="absolute top-64 left-0 right-0 flex flex-col gap-2">
             <div
-              className="h-1.5 opacity-85"
+              className="h-1.5 opacity-90"
               style={{
                 backgroundImage:
-                  "repeating-linear-gradient(to right, #facc15 0px, #facc15 48px, transparent 48px, transparent 84px)",
+                  "repeating-linear-gradient(to right, #f59e0b 0px, #f59e0b 52px, transparent 52px, transparent 92px)",
               }}
             />
             <div
-              className="h-1.5 opacity-85"
+              className="h-1.5 opacity-90"
               style={{
                 backgroundImage:
-                  "repeating-linear-gradient(to right, #facc15 0px, #facc15 48px, transparent 48px, transparent 84px)",
+                  "repeating-linear-gradient(to right, #f59e0b 0px, #f59e0b 52px, transparent 52px, transparent 92px)",
               }}
             />
           </div>
 
           {/* Lane Divider 2 (White Dashes) */}
           <div
-            className="absolute top-100 left-0 right-0 h-1.5 opacity-60"
+            className="absolute top-100 left-0 right-0 h-1.5 opacity-75"
             style={{
               backgroundImage:
-                "repeating-linear-gradient(to right, #e2e8f0 0px, #e2e8f0 36px, transparent 36px, transparent 72px)",
+                "repeating-linear-gradient(to right, rgba(255, 255, 255, 0.75) 0px, rgba(255, 255, 255, 0.75) 42px, transparent 42px, transparent 84px)",
             }}
           />
 
@@ -680,7 +678,7 @@ export default function JourneyWorld({
             <div
               key={i}
               style={{ left: `${getStationX(i) - 60}px` }}
-              className="absolute top-48 -translate-y-1/2 flex items-center gap-3 font-mono text-xs font-black text-slate-700/80 tracking-widest pointer-events-none select-none uppercase"
+              className="absolute top-48 -translate-y-1/2 flex items-center gap-3 font-mono text-xs font-bold text-zinc-500/80 dark:text-zinc-600 tracking-widest pointer-events-none select-none uppercase"
             >
               <span>&gt;&gt;&gt;</span>
               <span>CAREER HIGHWAY • MILESTONE {i + 1}</span>
@@ -689,11 +687,11 @@ export default function JourneyWorld({
           ))}
         </div>
 
-        {/* ── Dynamic Night Darkness & Headlight Discovery Exploration Mask ── */}
+        {/* ── Dynamic Night Darkness & Headlight Discovery Exploration Mask (Balanced & Clear) ── */}
         <div
           className="absolute inset-0 pointer-events-none z-25"
           style={{
-            background: `radial-gradient(ellipse 520px 380px at ${carX}px ${carY}px, transparent 20%, rgba(5, 7, 14, 0.45) 55%, rgba(4, 6, 12, 0.88) 90%)`,
+            background: `radial-gradient(ellipse 720px 480px at ${carX}px ${carY}px, transparent 35%, rgba(10, 10, 14, 0.22) 65%, rgba(6, 6, 9, 0.55) 95%)`,
           }}
         />
 
@@ -732,27 +730,27 @@ export default function JourneyWorld({
       {/* ── Bottom HUD Legend & Mobile Touch D-Pad ── */}
       <div className="absolute bottom-6 left-6 right-6 z-40 flex items-center justify-between gap-4 pointer-events-none">
         {/* Desktop Controls Legend */}
-        <div className="hidden sm:inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white/95 dark:bg-[#0b0e1a]/85 border border-orange-200 dark:border-slate-700/60 text-xs font-mono text-stone-700 dark:text-slate-300 backdrop-blur-2xl shadow-xl">
+        <div className="hidden sm:inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white/95 dark:bg-[#0c0c10]/90 border border-orange-200/80 dark:border-zinc-800 text-xs font-mono text-stone-700 dark:text-zinc-300 backdrop-blur-2xl shadow-xl">
           <span>Drive:</span>
-          <kbd className="px-2 py-0.5 rounded bg-orange-100 dark:bg-slate-800 text-orange-700 dark:text-cyan-300 border border-orange-200 dark:border-slate-700">W</kbd>
-          <kbd className="px-2 py-0.5 rounded bg-orange-100 dark:bg-slate-800 text-orange-700 dark:text-cyan-300 border border-orange-200 dark:border-slate-700">A</kbd>
-          <kbd className="px-2 py-0.5 rounded bg-orange-100 dark:bg-slate-800 text-orange-700 dark:text-cyan-300 border border-orange-200 dark:border-slate-700">S</kbd>
-          <kbd className="px-2 py-0.5 rounded bg-orange-100 dark:bg-slate-800 text-orange-700 dark:text-cyan-300 border border-orange-200 dark:border-slate-700">D</kbd>
+          <kbd className="px-2 py-0.5 rounded bg-orange-100 dark:bg-zinc-800 text-orange-700 dark:text-zinc-200 border border-orange-200 dark:border-zinc-700">W</kbd>
+          <kbd className="px-2 py-0.5 rounded bg-orange-100 dark:bg-zinc-800 text-orange-700 dark:text-zinc-200 border border-orange-200 dark:border-zinc-700">A</kbd>
+          <kbd className="px-2 py-0.5 rounded bg-orange-100 dark:bg-zinc-800 text-orange-700 dark:text-zinc-200 border border-orange-200 dark:border-zinc-700">S</kbd>
+          <kbd className="px-2 py-0.5 rounded bg-orange-100 dark:bg-zinc-800 text-orange-700 dark:text-zinc-200 border border-orange-200 dark:border-zinc-700">D</kbd>
           <span>or</span>
-          <span className="text-orange-600 dark:text-cyan-300 font-bold">Arrow Keys</span>
-          <span className="text-stone-300 dark:text-slate-600">•</span>
+          <span className="text-orange-600 dark:text-zinc-100 font-bold">Arrow Keys</span>
+          <span className="text-stone-300 dark:text-zinc-700">•</span>
           <span>Inspect:</span>
-          <kbd className="px-2.5 py-0.5 rounded bg-orange-100 dark:bg-slate-800 text-orange-700 dark:text-amber-300 border border-orange-200 dark:border-slate-700 font-bold">SPACE</kbd>
+          <kbd className="px-2.5 py-0.5 rounded bg-orange-100 dark:bg-zinc-800 text-orange-700 dark:text-zinc-100 border border-orange-200 dark:border-zinc-700 font-bold">SPACE</kbd>
         </div>
 
         {/* Mobile Touch D-Pad */}
-        <div className="flex sm:hidden items-center gap-2 pointer-events-auto bg-white/95 dark:bg-[#0b0e1a]/90 p-2 rounded-2xl border border-orange-200 dark:border-slate-700 backdrop-blur-2xl shadow-2xl">
+        <div className="flex sm:hidden items-center gap-2 pointer-events-auto bg-white/95 dark:bg-[#0c0c10]/95 p-2 rounded-2xl border border-orange-200/80 dark:border-zinc-800 backdrop-blur-2xl shadow-2xl">
           <button
             onTouchStart={() => (keysPressed.current["ArrowLeft"] = true)}
             onTouchEnd={() => delete keysPressed.current["ArrowLeft"]}
             onMouseDown={() => (keysPressed.current["ArrowLeft"] = true)}
             onMouseUp={() => delete keysPressed.current["ArrowLeft"]}
-            className="p-3 rounded-xl bg-slate-800 text-white active:bg-cyan-500 active:text-black transition-colors"
+            className="p-3 rounded-xl bg-zinc-800 text-white active:bg-orange-500 active:text-white transition-colors"
           >
             <ArrowLeft size={18} />
           </button>
@@ -762,7 +760,7 @@ export default function JourneyWorld({
               onTouchEnd={() => delete keysPressed.current["ArrowUp"]}
               onMouseDown={() => (keysPressed.current["ArrowUp"] = true)}
               onMouseUp={() => delete keysPressed.current["ArrowUp"]}
-              className="p-2.5 rounded-xl bg-slate-800 text-white active:bg-cyan-500 active:text-black transition-colors"
+              className="p-2.5 rounded-xl bg-zinc-800 text-white active:bg-orange-500 active:text-white transition-colors"
             >
               <ArrowUp size={16} />
             </button>
@@ -771,7 +769,7 @@ export default function JourneyWorld({
               onTouchEnd={() => delete keysPressed.current["ArrowDown"]}
               onMouseDown={() => (keysPressed.current["ArrowDown"] = true)}
               onMouseUp={() => delete keysPressed.current["ArrowDown"]}
-              className="p-2.5 rounded-xl bg-slate-800 text-white active:bg-cyan-500 active:text-black transition-colors"
+              className="p-2.5 rounded-xl bg-zinc-800 text-white active:bg-orange-500 active:text-white transition-colors"
             >
               <ArrowDown size={16} />
             </button>
@@ -781,7 +779,7 @@ export default function JourneyWorld({
             onTouchEnd={() => delete keysPressed.current["ArrowRight"]}
             onMouseDown={() => (keysPressed.current["ArrowRight"] = true)}
             onMouseUp={() => delete keysPressed.current["ArrowRight"]}
-            className="p-3 rounded-xl bg-slate-800 text-white active:bg-cyan-500 active:text-black transition-colors"
+            className="p-3 rounded-xl bg-zinc-800 text-white active:bg-orange-500 active:text-white transition-colors"
           >
             <ArrowRight size={18} />
           </button>
