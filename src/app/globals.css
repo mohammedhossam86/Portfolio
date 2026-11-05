@@ -38,27 +38,144 @@
   --gradient-bg: radial-gradient(ellipse at top, #111118 0%, #0a0a0f 70%);
 }
 
-/* ─── Light Mode Overrides ────────────────────────────────────────────────── */
+/* ─── Light Mode Overrides (Warm Orange & White Aesthetic) ───────────────── */
 
 html.light {
   color-scheme: light;
 
-  /* Light theme backgrounds */
-  --color-bg-primary: #f8fafc;     /* Slate-50 */
+  /* Brand Colors: Vibrant Orange & Warm Amber */
+  --color-primary: #ea580c;        /* Orange-600 */
+  --color-primary-light: #f97316;  /* Orange-500 */
+  --color-primary-dark: #c2410c;   /* Orange-700 */
+  --color-accent: #f59e0b;         /* Amber-500 */
+  --color-accent-light: #fb923c;   /* Orange-400 */
+
+  /* Light Theme Backgrounds: Crisp White & Warm Orange Tint */
+  --color-bg-primary: #fffaf5;     /* Warm white / light orange glow */
   --color-bg-secondary: #ffffff;   /* Pure white cards */
-  --color-bg-tertiary: #f1f5f9;    /* Slate-100 surfaces */
+  --color-bg-tertiary: #fff7ed;    /* Warm orange surface (orange-50) */
 
-  /* Text */
-  --color-text-primary: #0f172a;   /* Slate-900 */
-  --color-text-secondary: #475569; /* Slate-600 */
-  --color-text-muted: #94a3b8;     /* Slate-400 */
+  /* Text: Deep Rich Charcoal for maximum readability */
+  --color-text-primary: #1c1917;   /* Stone-900 */
+  --color-text-secondary: #44403c; /* Stone-700 */
+  --color-text-muted: #78716c;     /* Stone-500 */
 
-  /* Borders */
-  --color-border: #e2e8f0;         /* Slate-200 */
-  --color-border-hover: #cbd5e1;   /* Slate-300 */
+  /* Borders: Soft Warm Orange Accents */
+  --color-border: #fed7aa;         /* Orange-200 */
+  --color-border-hover: #f97316;   /* Orange-500 */
 
   /* Gradients */
-  --gradient-bg: radial-gradient(ellipse at top, #ffffff 0%, #f8fafc 70%);
+  --gradient-primary: linear-gradient(135deg, #ea580c 0%, #f97316 50%, #f59e0b 100%);
+  --gradient-bg: radial-gradient(ellipse at top, #fff7ed 0%, #fffaf5 70%);
+}
+
+/* ─── Light Mode Global Element Overrides ─────────────────────────────────── */
+
+html.light body,
+html.light main {
+  background-color: #fffaf5 !important;
+  color: #1c1917 !important;
+}
+
+/* Transform Dark Cards to Crisp White & Warm Orange Cards */
+html.light .bg-\[\#0b0e18\],
+html.light .bg-\[\#0b0e18\]\/90,
+html.light .bg-\[\#0b0e18\]\/95,
+html.light .bg-\[\#0a0d18\],
+html.light .bg-\[\#0a0d16\],
+html.light .bg-\[\#0a0d16\]\/95,
+html.light .bg-\[\#070912\],
+html.light .bg-\[\#0b0e1a\],
+html.light .bg-\[\#0b0e1a\]\/85,
+html.light .bg-\[\#0b0e1a\]\/90,
+html.light .bg-\[\#0b0e1a\]\/95,
+html.light .bg-\[\#0d1220\],
+html.light .bg-slate-900,
+html.light .bg-slate-900\/80,
+html.light .bg-slate-900\/90,
+html.light .bg-slate-900\/95,
+html.light .bg-slate-950 {
+  background-color: #ffffff !important;
+  border-color: #fed7aa !important;
+  box-shadow: 0 10px 25px -5px rgba(234, 88, 12, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Secondary Pills & Inner Buttons */
+html.light .bg-slate-800,
+html.light .bg-slate-800\/70,
+html.light .bg-slate-800\/80,
+html.light .bg-slate-800\/90 {
+  background-color: #fff7ed !important;
+  border-color: #fed7aa !important;
+  color: #9a3412 !important;
+}
+
+/* Borders in Light Mode */
+html.light .border-slate-800,
+html.light .border-slate-800\/80,
+html.light .border-slate-800\/90,
+html.light .border-slate-700,
+html.light .border-slate-700\/60,
+html.light .border-slate-700\/80 {
+  border-color: #fed7aa !important;
+}
+
+/* Text Overrides for Light Mode */
+html.light .text-white,
+html.light h1.text-white,
+html.light h2.text-white,
+html.light h3.text-white,
+html.light h4.text-white {
+  color: #1c1917 !important;
+}
+
+html.light .text-slate-200,
+html.light .text-slate-300 {
+  color: #292524 !important;
+}
+
+html.light .text-slate-400 {
+  color: #57534e !important;
+}
+
+html.light .text-slate-500 {
+  color: #78716c !important;
+}
+
+/* Text Gradient in Light Mode (Warm Orange to Amber) */
+html.light .text-gradient {
+  background: linear-gradient(135deg, #ea580c 0%, #f97316 60%, #f59e0b 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Journey Highway Section in Light Mode */
+html.light #journey {
+  background: linear-gradient(to bottom, #fffaf5, #fff7ed, #fffaf5) !important;
+}
+
+html.light .bg-\[\#05070f\] {
+  background-color: #fffaf5 !important;
+}
+
+html.light .from-\[\#05070f\] {
+  --tw-gradient-from: #fffaf5 var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgba(255, 250, 245, 0) var(--tw-gradient-to-position) !important;
+}
+
+html.light .bg-\[\#090d18\] {
+  background-color: #f8fafc !important;
+  border-top-color: #f97316 !important;
+}
+
+html.light .text-slate-700\/80 {
+  color: #ea580c !important;
+}
+
+html.light ::selection {
+  background: #ea580c;
+  color: white;
 }
 
 /* ─── Base Styles ─────────────────────────────────────────────────────────── */

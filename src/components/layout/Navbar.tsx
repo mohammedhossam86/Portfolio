@@ -51,20 +51,30 @@ export default function Navbar() {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const lastScrollY = useRef(0);
 
-  // ─── Sync Theme from document class ───────────────────────────────────────
+  // ─── Sync Theme from document class or localStorage ───────────────────────
   useEffect(() => {
-    const isLight = document.documentElement.classList.contains("light");
-    setTheme(isLight ? "light" : "dark");
-  }, []);
-
-  const toggleTheme = () => {
-    if (theme === "dark") {
+    const saved = localStorage.getItem("theme");
+    if (saved === "light" || document.documentElement.classList.contains("light")) {
       document.documentElement.classList.remove("dark");
       document.documentElement.classList.add("light");
       setTheme("light");
     } else {
       document.documentElement.classList.remove("light");
       document.documentElement.classList.add("dark");
+      setTheme("dark");
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    if (theme === "dark") {
+      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.add("light");
+      localStorage.setItem("theme", "light");
+      setTheme("light");
+    } else {
+      document.documentElement.classList.remove("light");
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
       setTheme("dark");
     }
   };
@@ -216,7 +226,7 @@ export default function Navbar() {
               {theme === "dark" ? (
                 <Sun size={18} className="text-amber-400" />
               ) : (
-                <Moon size={18} className="text-indigo-600" />
+                <Moon size={18} className="text-orange-500" />
               )}
             </button>
 
@@ -230,7 +240,7 @@ export default function Navbar() {
                 {theme === "dark" ? (
                   <Sun size={18} className="text-amber-400" />
                 ) : (
-                  <Moon size={18} className="text-indigo-600" />
+                  <Moon size={18} className="text-orange-500" />
                 )}
               </button>
 
