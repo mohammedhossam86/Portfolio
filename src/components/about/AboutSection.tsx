@@ -128,12 +128,12 @@ export default function AboutSection() {
               {aboutData.stats.map((stat, idx) => (
                 <div
                   key={idx}
-                  className="rounded-2xl border border-slate-800 bg-[#0c101a]/80 p-3.5 text-center shadow-inner"
+                  className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)] p-3.5 text-center shadow-md transition-all hover:border-[var(--color-primary)]"
                 >
-                  <div className="text-lg sm:text-xl font-extrabold text-white font-mono">
+                  <div className="text-lg sm:text-xl font-extrabold text-[var(--color-primary-light)] font-mono">
                     {stat.value}
                   </div>
-                  <div className="text-[11px] text-slate-400 mt-1 uppercase font-mono tracking-wider">
+                  <div className="text-[11px] text-[var(--color-text-secondary)] mt-1 uppercase font-mono tracking-wider font-semibold">
                     {stat.label}
                   </div>
                 </div>
@@ -152,7 +152,7 @@ export default function AboutSection() {
               </a>
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-slate-500 text-slate-200 font-semibold text-sm transition-all duration-200 active:scale-95"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-bg-tertiary)] border border-[var(--color-border)] hover:border-[var(--color-primary)] text-[var(--color-text-primary)] font-semibold text-sm transition-all duration-200 active:scale-95"
               >
                 <Mail size={16} />
                 Let&apos;s Connect

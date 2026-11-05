@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { siteMetadata } from "@/data";
+import Script from "next/script";
 import "./globals.css";
 
 // ─── SEO Metadata ────────────────────────────────────────────────────────────
@@ -41,7 +42,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
-        <script
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               try {

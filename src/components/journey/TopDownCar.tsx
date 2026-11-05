@@ -21,7 +21,7 @@ export default function TopDownCar({ className = "", isDriving = true }: TopDown
         className="absolute -bottom-28 left-1/2 -translate-x-1/2 w-48 h-36 pointer-events-none opacity-80"
         style={{
           background:
-            "conic-gradient(from 180deg at 50% 0%, rgba(34, 211, 238, 0.5) 0deg, rgba(99, 102, 241, 0.2) 35deg, transparent 70deg, transparent 290deg, rgba(99, 102, 241, 0.2) 325deg, rgba(34, 211, 238, 0.5) 360deg)",
+            "conic-gradient(from 180deg at 50% 0%, var(--car-beam, rgba(34, 211, 238, 0.5)) 0deg, var(--car-beam-conic, rgba(99, 102, 241, 0.2)) 35deg, transparent 70deg, transparent 290deg, var(--car-beam-conic, rgba(99, 102, 241, 0.2)) 325deg, var(--car-beam, rgba(34, 211, 238, 0.5)) 360deg)",
           filter: "blur(8px)",
         }}
       />
@@ -32,7 +32,7 @@ export default function TopDownCar({ className = "", isDriving = true }: TopDown
           <motion.div
             className="w-2.5 h-6 rounded-full"
             style={{
-              background: "linear-gradient(to top, #38bdf8, #6366f1, transparent)",
+              background: "linear-gradient(to top, var(--car-stripe, #38bdf8), var(--car-body-3, #6366f1), transparent)",
               filter: "blur(2px)",
             }}
             animate={{ scaleY: [0.8, 1.4, 0.8], opacity: [0.6, 1, 0.6] }}
@@ -41,7 +41,7 @@ export default function TopDownCar({ className = "", isDriving = true }: TopDown
           <motion.div
             className="w-2.5 h-6 rounded-full"
             style={{
-              background: "linear-gradient(to top, #38bdf8, #6366f1, transparent)",
+              background: "linear-gradient(to top, var(--car-stripe, #38bdf8), var(--car-body-3, #6366f1), transparent)",
               filter: "blur(2px)",
             }}
             animate={{ scaleY: [0.8, 1.4, 0.8], opacity: [0.6, 1, 0.6] }}
@@ -60,17 +60,17 @@ export default function TopDownCar({ className = "", isDriving = true }: TopDown
         <defs>
           {/* Main Body Gradient */}
           <linearGradient id="bodyGradTop" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#1e1b4b" />
-            <stop offset="35%" stopColor="#4338ca" />
-            <stop offset="70%" stopColor="#6366f1" />
-            <stop offset="100%" stopColor="#06b6d4" />
+            <stop offset="0%" stopColor="var(--car-body-1, #1e1b4b)" />
+            <stop offset="35%" stopColor="var(--car-body-2, #4338ca)" />
+            <stop offset="70%" stopColor="var(--car-body-3, #6366f1)" />
+            <stop offset="100%" stopColor="var(--car-body-4, #06b6d4)" />
           </linearGradient>
 
           {/* Roof / Windshield Glass */}
           <linearGradient id="windshieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="#0a0d18" />
             <stop offset="50%" stopColor="#0f172a" />
-            <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="var(--car-stripe, #38bdf8)" stopOpacity="0.8" />
           </linearGradient>
 
           {/* Tire Tread */}
@@ -82,7 +82,7 @@ export default function TopDownCar({ className = "", isDriving = true }: TopDown
         </defs>
 
         {/* ── Underglow Neon Aura ── */}
-        <ellipse cx="38" cy="68" rx="34" ry="58" fill="#06b6d4" opacity="0.35" filter="blur(6px)" />
+        <ellipse cx="38" cy="68" rx="34" ry="58" fill="var(--car-underglow, #06b6d4)" opacity="0.4" filter="blur(6px)" />
 
         {/* ── 4 Wheels / Tires ── */}
         {/* Front Left */}
@@ -110,43 +110,43 @@ export default function TopDownCar({ className = "", isDriving = true }: TopDown
             Z
           "
           fill="url(#bodyGradTop)"
-          stroke="#38bdf8"
+          stroke="var(--car-stripe, #38bdf8)"
           strokeWidth="1.2"
         />
 
         {/* ── Dual Racing Stripes ── */}
-        <line x1="35" y1="12" x2="35" y2="133" stroke="#22d3ee" strokeWidth="1.5" opacity="0.7" />
-        <line x1="41" y1="12" x2="41" y2="133" stroke="#22d3ee" strokeWidth="1.5" opacity="0.7" />
+        <line x1="35" y1="12" x2="35" y2="133" stroke="var(--car-stripe, #22d3ee)" strokeWidth="1.5" opacity="0.8" />
+        <line x1="41" y1="12" x2="41" y2="133" stroke="var(--car-stripe, #22d3ee)" strokeWidth="1.5" opacity="0.8" />
 
         {/* ── Front Windshield ── */}
         <path
           d="M20 78 C25 74, 51 74, 56 78 L53 96 C48 99, 28 99, 23 96 Z"
           fill="url(#windshieldGrad)"
-          stroke="#38bdf8"
+          stroke="var(--car-stripe, #38bdf8)"
           strokeWidth="0.8"
         />
 
         {/* ── Cabin Roof ── */}
-        <rect x="23" y="52" width="30" height="26" rx="4" fill="#080a14" stroke="#4338ca" strokeWidth="0.75" />
+        <rect x="23" y="52" width="30" height="26" rx="4" fill="#080a14" stroke="var(--car-body-2, #4338ca)" strokeWidth="0.75" />
 
         {/* ── Rear Windshield ── */}
         <path
           d="M23 48 C28 50, 48 50, 53 48 L55 36 C50 34, 26 34, 21 36 Z"
           fill="#0c101c"
-          stroke="#6366f1"
+          stroke="var(--car-body-3, #6366f1)"
           strokeWidth="0.8"
         />
 
         {/* ── Side Mirrors ── */}
-        <path d="M12 76 L6 73 L6 80 Z" fill="#4338ca" stroke="#38bdf8" strokeWidth="0.5" />
-        <path d="M64 76 L70 73 L70 80 Z" fill="#4338ca" stroke="#38bdf8" strokeWidth="0.5" />
+        <path d="M12 76 L6 73 L6 80 Z" fill="var(--car-body-2, #4338ca)" stroke="var(--car-stripe, #38bdf8)" strokeWidth="0.5" />
+        <path d="M64 76 L70 73 L70 80 Z" fill="var(--car-body-2, #4338ca)" stroke="var(--car-stripe, #38bdf8)" strokeWidth="0.5" />
 
         {/* ── Rear Spoiler ── */}
-        <rect x="15" y="12" width="46" height="5" rx="2" fill="#06b6d4" stroke="#22d3ee" strokeWidth="0.75" />
+        <rect x="15" y="12" width="46" height="5" rx="2" fill="var(--car-body-3, #06b6d4)" stroke="var(--car-stripe, #22d3ee)" strokeWidth="0.75" />
 
-        {/* ── Dual Glowing Front Headlights (LED White/Cyan) ── */}
-        <ellipse cx="22" cy="128" rx="4.5" ry="3" fill="#ffffff" filter="drop-shadow(0 0 6px #22d3ee)" />
-        <ellipse cx="54" cy="128" rx="4.5" ry="3" fill="#ffffff" filter="drop-shadow(0 0 6px #22d3ee)" />
+        {/* ── Dual Glowing Front Headlights (LED White) ── */}
+        <ellipse cx="22" cy="128" rx="4.5" ry="3" fill="#ffffff" filter="drop-shadow(0 0 6px var(--car-underglow, #22d3ee))" />
+        <ellipse cx="54" cy="128" rx="4.5" ry="3" fill="#ffffff" filter="drop-shadow(0 0 6px var(--car-underglow, #22d3ee))" />
 
         {/* ── Dual Red LED Taillights ── */}
         <rect x="18" y="10" width="7" height="2.5" rx="1" fill="#ef4444" filter="drop-shadow(0 0 5px #ef4444)" />

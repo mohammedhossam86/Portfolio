@@ -116,23 +116,22 @@ export default function JourneyWorld({
     [milestones.length]
   );
 
-  // Proximity Calculation (Pure math helper)
+  // Proximity Calculation (Pure math helper based on road distance)
   const calculateProximity = useCallback(
-    (x: number, y: number) => {
+    (x: number) => {
       let closestIdx = -1;
       let minDistance = Infinity;
 
       for (let i = 0; i < milestones.length; i++) {
         const sx = getStationX(i);
-        const sy = STATION_Y;
-        const dist = Math.hypot(x - sx, y - sy);
-        if (dist < minDistance) {
-          minDistance = dist;
+        const dx = Math.abs(x - sx);
+        if (dx < minDistance) {
+          minDistance = dx;
           closestIdx = i;
         }
       }
 
-      if (minDistance < PROXIMITY_THRESHOLD && closestIdx !== -1) {
+      if (minDistance < 280 && closestIdx !== -1) {
         if (activeStationIdxRef.current !== closestIdx) {
           setActiveStationIdx(closestIdx);
         }
@@ -246,8 +245,8 @@ export default function JourneyWorld({
       p.x = Math.max(140, Math.min(totalWorldWidth - 160, p.x));
       p.y = Math.max(ROAD_MIN_Y, Math.min(ROAD_MAX_Y, p.y));
 
-      // Calculate proximity to milestone landmarks
-      calculateProximity(p.x, p.y);
+      // Calculate proximity to milestone landmarks based on car X
+      calculateProximity(p.x);
 
       // Commit frame to React state for UI rendering
       setCarX(p.x);
@@ -310,8 +309,9 @@ export default function JourneyWorld({
       }
 
       if (key === " ") {
-        if (focusedMilestoneRef.current) {
-          onInspectMilestone(focusedMilestoneRef.current);
+        const target = focusedMilestoneRef.current || milestones[activeStationIdxRef.current];
+        if (target) {
+          onInspectMilestone(target);
         }
       } else if (isNavKey) {
         keysPressed.current[key] = true;
@@ -380,8 +380,8 @@ export default function JourneyWorld({
       className="relative w-full h-[780px] sm:h-[840px] overflow-hidden select-none outline-none"
     >
       {/* ── Seamless Top & Bottom Vignette Fades into Page Background ── */}
-      <div className="absolute top-0 left-0 right-0 h-36 bg-gradient-to-b from-[#05070f] via-[#05070f]/80 to-transparent pointer-events-none z-30" />
-      <div className="absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-t from-[#05070f] via-[#05070f]/80 to-transparent pointer-events-none z-30" />
+      <div className="absolute top-0 left-0 right-0 h-36 bg-gradient-to-b from-[var(--color-bg-primary)] via-[var(--color-bg-primary)]/80 to-transparent pointer-events-none z-30" />
+      <div className="absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-t from-[var(--color-bg-primary)] via-[var(--color-bg-primary)]/80 to-transparent pointer-events-none z-30" />
 
       {/* ── Top Floating HUD Dashboard Overlay ── */}
       <div className="absolute top-6 left-6 right-6 z-40 flex flex-wrap items-center justify-between gap-4 pointer-events-none">
@@ -447,7 +447,7 @@ export default function JourneyWorld({
         }}
       >
         {/* ── Background Deep Atmosphere & Night Horizon ── */}
-        <div className="absolute inset-0 bg-[#05070f]">
+        <div className="absolute inset-0 bg-[var(--color-bg-primary)]">
           {/* Subtle Grid Stars & Nebula */}
           <div
             className="absolute top-0 left-0 right-0 h-72 opacity-20 pointer-events-none"
@@ -472,7 +472,7 @@ export default function JourneyWorld({
         {milestones.map((milestone, idx) => {
           const sx = getStationX(idx);
           const isNear = focusedMilestone?.id === milestone.id;
-          const dist = Math.hypot(carX - sx, carY - STATION_Y);
+          const dist = Math.abs(carX - sx);
           const proximity = Math.max(0, 1 - dist / 380);
 
           return (
