@@ -229,8 +229,8 @@ function RoleRotator({ roles }: { roles: string[] }) {
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
           <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
         </span>
-        <span className="text-stone-500 dark:text-zinc-400 font-bold text-xs select-none shrink-0 font-mono">
-          AI //
+        <span className="text-stone-400 dark:text-zinc-500 font-bold text-sm select-none shrink-0 font-mono">
+          &gt;
         </span>
         <div className="relative overflow-hidden min-h-[22px] flex items-center">
           <AnimatePresence mode="wait">

@@ -42,15 +42,15 @@ export default function AboutSection() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="mb-14"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/30 text-[var(--color-primary-light)] text-xs font-mono uppercase tracking-wider mb-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-100 dark:bg-zinc-900 border border-stone-200 dark:border-zinc-800 text-stone-700 dark:text-zinc-300 text-xs font-mono uppercase tracking-wider mb-3">
             <User size={13} />
             About Me
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--color-text-primary)]">
-            Backend &amp; <span className="text-gradient">AI Engineer</span>
+            Software &amp; <span className="text-gradient">Backend Engineer</span>
           </h2>
           <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mt-2 max-w-2xl">
-            Passionate about high-performance distributed systems, robust backend architecture, competitive programming, and fine-tuning frontier AI models.
+            Building reliable, high-concurrency distributed systems, scalable APIs, and solving non-trivial algorithmic problems.
           </p>
         </motion.div>
 

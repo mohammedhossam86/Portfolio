@@ -155,7 +155,7 @@ export default function SkillsGrid() {
                 stiffness: 240,
                 damping: 22,
               }}
-              className="relative rounded-3xl border border-orange-200/80 dark:border-slate-800/90 bg-white/90 dark:bg-[#0b0e18]/90 backdrop-blur-xl p-5 sm:p-6 shadow-sm hover:border-[var(--color-primary)] hover:shadow-xl hover:shadow-orange-500/5 dark:hover:shadow-[var(--color-primary)]/5 transition-all duration-300 flex flex-col justify-start group/card"
+              className="relative rounded-3xl border border-orange-200/80 dark:border-zinc-800/90 bg-white/90 dark:bg-[#0c0c10] backdrop-blur-xl p-5 sm:p-6 shadow-sm hover:border-orange-400 dark:hover:border-zinc-600 hover:shadow-xl transition-all duration-300 flex flex-col justify-start group/card"
             >
               {/* Category Header with colored bullet */}
               <div className="flex items-center gap-2.5 mb-5 select-none">
@@ -166,7 +166,7 @@ export default function SkillsGrid() {
                     boxShadow: `0 0 10px ${group.dotColor}`,
                   }}
                 />
-                <h3 className="text-xs font-mono font-bold tracking-widest text-stone-700 dark:text-slate-300 uppercase">
+                <h3 className="text-xs font-mono font-bold tracking-widest text-stone-800 dark:text-zinc-200 uppercase">
                   {group.title}
                 </h3>
               </div>
@@ -183,7 +183,7 @@ export default function SkillsGrid() {
                       className="group/item flex flex-col items-center justify-start gap-1.5 w-full max-w-[72px] cursor-default"
                     >
                       {/* Icon Container */}
-                      <div className="w-12 h-12 rounded-2xl bg-orange-50/80 dark:bg-slate-900/90 border border-orange-200/60 dark:border-slate-800/90 flex items-center justify-center text-stone-500 dark:text-slate-400 transition-all duration-200 group-hover/item:scale-110 group-hover/item:border-[var(--color-primary)] group-hover/item:bg-white dark:group-hover/item:bg-slate-800/80 shadow-xs">
+                      <div className="w-12 h-12 rounded-2xl bg-orange-50/80 dark:bg-zinc-900/80 border border-orange-200/60 dark:border-zinc-800 flex items-center justify-center text-stone-600 dark:text-zinc-300 transition-all duration-200 group-hover/item:scale-110 group-hover/item:border-orange-400 dark:group-hover/item:border-zinc-500 group-hover/item:bg-white dark:group-hover/item:bg-zinc-800 shadow-xs">
                         <IconComponent
                           size={22}
                           className="group-hover/item:scale-105 transition-transform"
@@ -194,7 +194,7 @@ export default function SkillsGrid() {
                       </div>
 
                       {/* Skill Name */}
-                      <span className="text-[10px] sm:text-[11px] font-mono text-stone-600 dark:text-slate-300 group-hover/item:text-stone-900 dark:group-hover/item:text-white text-center tracking-tight truncate w-full transition-colors mt-0.5">
+                      <span className="text-[10px] sm:text-[11px] font-mono text-stone-600 dark:text-zinc-400 group-hover/item:text-stone-900 dark:group-hover/item:text-zinc-100 text-center tracking-tight truncate w-full transition-colors mt-0.5">
                         {skill.name}
                       </span>
                     </div>
@@ -210,7 +210,7 @@ export default function SkillsGrid() {
           <div className="mt-8 flex justify-center sm:hidden">
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-orange-50 dark:bg-slate-900 border border-orange-200 dark:border-slate-700 text-xs font-mono text-stone-700 dark:text-slate-300 hover:text-stone-900 dark:hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-orange-50 dark:bg-zinc-900 border border-orange-200 dark:border-zinc-800 text-xs font-mono text-stone-700 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-white transition-colors"
             >
               {isExpanded ? (
                 <>

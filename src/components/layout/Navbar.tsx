@@ -67,17 +67,59 @@ export default function Navbar() {
     }
   }, []);
 
-  const toggleTheme = () => {
-    if (theme === "dark") {
-      document.documentElement.classList.remove("dark");
-      document.documentElement.classList.add("light");
-      localStorage.setItem("theme", "light");
-      setTheme("light");
+  const toggleTheme = (e?: React.MouseEvent<HTMLButtonElement>) => {
+    const isDark = theme === "dark";
+    const newTheme = isDark ? "light" : "dark";
+
+    const applyTheme = () => {
+      if (newTheme === "light") {
+        document.documentElement.classList.remove("dark");
+        document.documentElement.classList.add("light");
+        localStorage.setItem("theme", "light");
+        setTheme("light");
+      } else {
+        document.documentElement.classList.remove("light");
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+        setTheme("dark");
+      }
+    };
+
+    // Circular liquid spill transition via View Transitions API
+    if (
+      typeof document !== "undefined" &&
+      "startViewTransition" in document &&
+      e &&
+      e.clientX !== undefined
+    ) {
+      const x = e.clientX;
+      const y = e.clientY;
+      const endRadius = Math.hypot(
+        Math.max(x, window.innerWidth - x),
+        Math.max(y, window.innerHeight - y)
+      );
+
+      const transition = (document as unknown as { startViewTransition: (cb: () => void) => { ready: Promise<void> } }).startViewTransition(() => {
+        applyTheme();
+      });
+
+      transition.ready.then(() => {
+        document.documentElement.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${endRadius}px at ${x}px ${y}px)`,
+            ],
+          },
+          {
+            duration: 600,
+            easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+            pseudoElement: "::view-transition-new(root)",
+          }
+        );
+      });
     } else {
-      document.documentElement.classList.remove("light");
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-      setTheme("dark");
+      applyTheme();
     }
   };
 
@@ -175,7 +217,7 @@ export default function Navbar() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
             <span className="font-mono text-xs sm:text-sm font-bold tracking-wider text-stone-900 dark:text-white group-hover:text-stone-600 dark:group-hover:text-zinc-300 transition-colors">
-              HOSSAM<span className="text-stone-400 dark:text-zinc-500 font-normal">.AI</span>
+              Mohammed Hossam
             </span>
           </a>
 
@@ -300,7 +342,7 @@ export default function Navbar() {
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
                   <span className="font-mono text-[10px] uppercase tracking-widest text-stone-500 dark:text-zinc-400 font-bold">
-                    SYSTEM NAVIGATION
+                    PORTFOLIO NAVIGATION
                   </span>
                 </div>
                 <button

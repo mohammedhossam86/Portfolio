@@ -46,6 +46,7 @@ export default function JourneyWorld({
   // React state for DOM rendering
   const [carX, setCarX] = useState(STATION_START_X);
   const [carY, setCarY] = useState(580);
+  const [cameraX, setCameraX] = useState(0);
   const [carAngle, setCarAngle] = useState(0); // 0 = facing right
   const [isDriving, setIsDriving] = useState(false);
   const [speedKmh, setSpeedKmh] = useState(0);
@@ -59,6 +60,7 @@ export default function JourneyWorld({
   const carPhysics = useRef({
     x: STATION_START_X,
     y: 580,
+    camX: 0,
     vx: 0,
     vy: 0,
     angle: 0,
@@ -183,8 +185,8 @@ export default function JourneyWorld({
           p.autoCruiseActive = false;
         }
 
-        // Accelerate car
-        const accel = 950 * dt;
+        // Responsive acceleration
+        const accel = 1200 * dt;
         p.vx += ax * accel;
         p.vy += ay * accel;
 
@@ -199,10 +201,11 @@ export default function JourneyWorld({
         p.targetAngle = (Math.atan2(p.vy, p.vx) * 180) / Math.PI;
         p.isDriving = true;
       } else if (p.targetX !== null) {
-        // Automated cruising to target landmark
+        // Smooth automated cruising to target landmark
         const dx = p.targetX - p.x;
+        const dist = Math.abs(dx);
 
-        if (Math.abs(dx) <= 6) {
+        if (dist <= 4) {
           // Arrived smoothly at station
           p.x = p.targetX;
           p.vx = 0;
@@ -223,18 +226,18 @@ export default function JourneyWorld({
         } else {
           // Smooth glide towards targetX
           const dir = Math.sign(dx);
-          const desiredSpeed = dir * Math.min(MAX_SPEED, Math.max(90, Math.abs(dx) * 2.8));
-          p.vx += (desiredSpeed - p.vx) * Math.min(1, 9 * dt);
-          p.vy *= 0.88; // stay in current lane
+          const desiredSpeed = dir * Math.min(MAX_SPEED, Math.max(120, dist * 3.2));
+          p.vx += (desiredSpeed - p.vx) * Math.min(1, 10 * dt);
+          p.vy += (540 - p.y) * Math.min(1, 6 * dt); // softly center in cruise lane
 
           p.targetAngle = dir > 0 ? 0 : 180;
           p.isDriving = true;
         }
       } else {
         // Natural friction & braking
-        p.vx *= Math.pow(0.12, dt);
-        p.vy *= Math.pow(0.12, dt);
-        if (Math.hypot(p.vx, p.vy) < 4) {
+        p.vx *= Math.pow(0.04, dt);
+        p.vy *= Math.pow(0.04, dt);
+        if (Math.hypot(p.vx, p.vy) < 3) {
           p.vx = 0;
           p.vy = 0;
           p.isDriving = false;
@@ -253,6 +256,12 @@ export default function JourneyWorld({
       // Bound boundaries
       p.x = Math.max(140, Math.min(totalWorldWidth - 160, p.x));
       p.y = Math.max(ROAD_MIN_Y, Math.min(ROAD_MAX_Y, p.y));
+
+      // Direct smooth Camera Lerp (100% fluid, no CSS transition judder!)
+      const maxScroll = Math.max(0, totalWorldWidth - viewportWidth);
+      const idealCamX = Math.max(0, Math.min(maxScroll, p.x - viewportWidth / 2));
+      p.camX += (idealCamX - p.camX) * Math.min(1, 10 * dt);
+      setCameraX(Math.round(p.camX));
 
       // Calculate proximity to milestone landmarks based on car position (curbside proximity)
       calculateProximity(p.x, p.y);
@@ -449,10 +458,10 @@ export default function JourneyWorld({
 
       {/* ── Seamless Full-Width Background Canvas (Pans with Car) ── */}
       <div
-        className="absolute top-0 bottom-0 left-0 h-full transition-transform duration-75 ease-out"
+        className="absolute top-0 bottom-0 left-0 h-full will-change-transform"
         style={{
           width: `${totalWorldWidth}px`,
-          transform: `translateX(-${targetCamX}px)`,
+          transform: `translateX(-${cameraX}px)`,
         }}
       >
         {/* ── Background Deep Atmosphere & Night Horizon ── */}
@@ -683,7 +692,7 @@ export default function JourneyWorld({
 
         {/* ── Dynamic Night Darkness & Headlight Discovery Exploration Mask ── */}
         <div
-          className="absolute inset-0 pointer-events-none z-25 transition-opacity duration-200"
+          className="absolute inset-0 pointer-events-none z-25"
           style={{
             background: `radial-gradient(ellipse 520px 380px at ${carX}px ${carY}px, transparent 20%, rgba(5, 7, 14, 0.45) 55%, rgba(4, 6, 12, 0.88) 90%)`,
           }}
@@ -696,7 +705,7 @@ export default function JourneyWorld({
             top: `${carY}px`,
             transform: `translate(-50%, -50%) rotate(${carAngle - 90}deg) scale(0.8)`,
           }}
-          className="absolute z-30 pointer-events-none transition-transform duration-75"
+          className="absolute z-30 pointer-events-none will-change-transform"
         >
           <TopDownCar isDriving={isDriving} />
         </div>
