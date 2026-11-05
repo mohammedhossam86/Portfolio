@@ -15,10 +15,8 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  Flame,
   LayoutGrid,
   Car,
-  ExternalLink,
 } from "lucide-react";
 
 export default function JourneyTimeline() {
@@ -60,71 +58,65 @@ export default function JourneyTimeline() {
   return (
     <section
       id="journey"
-      className="relative py-20 sm:py-32 overflow-hidden border-t border-[var(--color-border)]/50"
+      className="relative pt-20 sm:pt-28 pb-10 overflow-hidden"
     >
-      {/* ── Background Atmosphere ── */}
-      <div
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full pointer-events-none opacity-20"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, var(--color-primary), var(--color-accent), transparent 70%)",
-          filter: "blur(130px)",
-        }}
-      />
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
-        {/* ── Section Header ── */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-14">
+      {/* ── Section Header (Seamlessly floating above the open highway) ── */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 mb-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/30 text-[var(--color-accent-light)] text-xs font-mono uppercase tracking-wider mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/30 text-[var(--color-accent-light)] text-xs font-mono uppercase tracking-wider mb-2">
               <Compass size={13} />
-              Open World Boulevard
+              Open World Experience
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white">
               Drive Through My <span className="text-gradient">Journey</span>
             </h2>
             <p className="text-xs sm:text-sm text-slate-400 mt-2 font-mono">
-              Navigate the sports car across the highway using <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-cyan-300">W/A/S/D</kbd> or <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-cyan-300">Arrows</kbd>. Drive near milestones to light them up, and press <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-amber-300">SPACE</kbd> to inspect!
+              The highway is woven into the page background. Steer across lanes and stations using <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-cyan-300">W/A/S/D</kbd> or <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-cyan-300">Arrows</kbd>. Get close to any landmark and press <kbd className="px-1.5 py-0.5 rounded bg-slate-800 text-amber-300">SPACE</kbd> to inspect!
             </p>
           </div>
 
-          {/* View Switcher: Interactive Drive vs Grid Cards */}
-          <div className="flex items-center gap-2 bg-slate-900/90 border border-slate-800 p-1.5 rounded-2xl backdrop-blur-xl">
+          {/* View Mode Switcher */}
+          <div className="flex items-center gap-2 bg-[#0b0e1a]/90 border border-slate-800 p-1.5 rounded-2xl backdrop-blur-xl">
             <button
               onClick={() => setViewMode("drive")}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-semibold transition-all ${
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
                 viewMode === "drive"
                   ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25"
                   : "text-slate-400 hover:text-white"
               }`}
             >
               <Car size={15} />
-              <span>Drive Mode</span>
+              <span>Full Highway Drive</span>
             </button>
 
             <button
               onClick={() => setViewMode("cards")}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-semibold transition-all ${
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
                 viewMode === "cards"
                   ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25"
                   : "text-slate-400 hover:text-white"
               }`}
             >
               <LayoutGrid size={15} />
-              <span>Cards View ({journeyMilestones.length})</span>
+              <span>Cards Grid ({journeyMilestones.length})</span>
             </button>
           </div>
         </div>
+      </div>
 
-        {/* ── Main Viewport Content ── */}
-        {viewMode === "drive" ? (
+      {/* ── Main Full-Bleed Content ── */}
+      {viewMode === "drive" ? (
+        <div className="relative w-full">
           <JourneyWorld
             milestones={journeyMilestones}
             onInspectMilestone={openModal}
           />
-        ) : (
+        </div>
+      ) : (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {journeyMilestones.map((m, idx) => (
+            {journeyMilestones.map((m) => (
               <div
                 key={m.id}
                 onClick={() => openModal(m)}
@@ -168,8 +160,8 @@ export default function JourneyTimeline() {
               </div>
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* ── Multi-Photo Interactive Modal ── */}
       <AnimatePresence>
