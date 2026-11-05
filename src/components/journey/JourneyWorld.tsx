@@ -30,7 +30,7 @@ interface JourneyWorldProps {
 
 // Grand Open-World Geometry & Boundaries
 const STATION_START_X = 420;
-const STATION_GAP = 560;
+const STATION_GAP = 780;
 const ROAD_MIN_Y = 440;
 const ROAD_MAX_Y = 720;
 const STATION_Y = 240;
@@ -482,24 +482,36 @@ export default function JourneyWorld({
           const sx = getStationX(idx);
           const isNear = focusedMilestone?.id === milestone.id;
           const dist = Math.abs(carX - sx);
-          const proximity = Math.max(0, 1 - dist / 380);
+
+          // Distance-based night discovery lighting:
+          // In the dark highway, billboards illuminate dynamically as the headlights sweep over them!
+          const illumination = Math.max(0.18, Math.min(1, 1 - (dist - 140) / 440));
+          const isIlluminated = illumination > 0.45;
 
           return (
             <div
               key={milestone.id}
               style={{
                 left: `${sx}px`,
-                top: "80px",
+                top: "85px",
+                opacity: isNear ? 1 : illumination,
+                transform: `scale(${isNear ? 1.04 : 0.94 + illumination * 0.06})`,
+                filter: isNear
+                  ? "brightness(1.15) drop-shadow(0 0 25px rgba(56, 189, 248, 0.6))"
+                  : isIlluminated
+                  ? `brightness(${0.8 + illumination * 0.25}) drop-shadow(0 0 ${illumination * 16}px rgba(56, 189, 248, 0.35))`
+                  : "brightness(0.35) contrast(0.85)",
+                transition: "opacity 0.2s ease-out, transform 0.2s ease-out, filter 0.2s ease-out",
               }}
-              className="absolute -translate-x-1/2 w-[380px] sm:w-[420px] z-20 flex flex-col items-center"
+              className="absolute -translate-x-1/2 w-[310px] sm:w-[350px] z-20 flex flex-col items-center select-none"
             >
-              {/* Grand Spot Light Beam Shining Down on the Highway */}
+              {/* Grand Spot Light Beam Shining Down on the Highway (Powers up when discovered!) */}
               <div
-                className="absolute -top-12 w-48 h-[420px] pointer-events-none transition-opacity duration-300"
+                className="absolute -top-12 w-44 h-[420px] pointer-events-none transition-opacity duration-300"
                 style={{
                   background:
-                    "conic-gradient(from 180deg at 50% 0%, rgba(56, 189, 248, 0.3) 0deg, transparent 70deg, transparent 290deg, rgba(56, 189, 248, 0.3) 360deg)",
-                  opacity: 0.25 + proximity * 0.75,
+                    "conic-gradient(from 180deg at 50% 0%, rgba(56, 189, 248, 0.4) 0deg, transparent 70deg, transparent 290deg, rgba(56, 189, 248, 0.4) 360deg)",
+                  opacity: isNear ? 0.95 : isIlluminated ? (illumination - 0.45) * 1.8 : 0.04,
                   filter: "blur(16px)",
                 }}
               />
@@ -508,15 +520,18 @@ export default function JourneyWorld({
               <div
                 onClick={() => onInspectMilestone(milestone)}
                 style={{
-                  transform: `scale(${1 + proximity * 0.05})`,
                   borderColor: isNear
                     ? "rgba(56, 189, 248, 0.95)"
-                    : `rgba(51, 65, 85, ${0.4 + proximity * 0.45})`,
+                    : isIlluminated
+                    ? `rgba(56, 189, 248, ${0.3 + illumination * 0.5})`
+                    : "rgba(51, 65, 85, 0.3)",
                   boxShadow: isNear
-                    ? "0 0 35px rgba(56, 189, 248, 0.5), 0 20px 40px rgba(0,0,0,0.85)"
-                    : "0 12px 30px rgba(0,0,0,0.75)",
+                    ? "0 0 35px rgba(56, 189, 248, 0.55), 0 20px 40px rgba(0,0,0,0.85)"
+                    : isIlluminated
+                    ? "0 10px 25px rgba(0,0,0,0.6)"
+                    : "0 6px 16px rgba(0,0,0,0.4)",
                 }}
-                className="relative w-full rounded-3xl bg-white/95 dark:bg-[#0b0e1a]/95 backdrop-blur-2xl p-5 sm:p-6 transition-all duration-200 border border-orange-200/80 dark:border-slate-800 cursor-pointer hover:border-orange-500 dark:hover:border-cyan-400 group/station shadow-xl"
+                className="relative w-full rounded-3xl bg-white/95 dark:bg-[#0b0e1a]/95 backdrop-blur-2xl p-4 sm:p-5 transition-all duration-200 border cursor-pointer hover:border-orange-500 dark:hover:border-cyan-400 group/station shadow-xl"
               >
                 {/* Header: Date + Category Badge */}
                 <div className="flex items-center justify-between gap-3 mb-3">
@@ -653,7 +668,7 @@ export default function JourneyWorld({
           />
 
           {/* Highway Asphalt Road Signage */}
-          {Array.from({ length: 9 }).map((_, i) => (
+          {milestones.map((_, i) => (
             <div
               key={i}
               style={{ left: `${getStationX(i) - 60}px` }}
@@ -666,12 +681,20 @@ export default function JourneyWorld({
           ))}
         </div>
 
-        {/* ── Playable 2D Top-Down Sports Car ── */}
+        {/* ── Dynamic Night Darkness & Headlight Discovery Exploration Mask ── */}
+        <div
+          className="absolute inset-0 pointer-events-none z-25 transition-opacity duration-200"
+          style={{
+            background: `radial-gradient(ellipse 520px 380px at ${carX}px ${carY}px, transparent 20%, rgba(5, 7, 14, 0.45) 55%, rgba(4, 6, 12, 0.88) 90%)`,
+          }}
+        />
+
+        {/* ── Playable 2D Top-Down Sports Car (Compact Sleek Scale) ── */}
         <div
           style={{
             left: `${carX}px`,
             top: `${carY}px`,
-            transform: `translate(-50%, -50%) rotate(${carAngle - 90}deg) scale(1.15)`,
+            transform: `translate(-50%, -50%) rotate(${carAngle - 90}deg) scale(0.8)`,
           }}
           className="absolute z-30 pointer-events-none transition-transform duration-75"
         >
@@ -683,7 +706,7 @@ export default function JourneyWorld({
           <div
             style={{
               left: `${carX}px`,
-              top: `${carY - 95}px`,
+              top: `${carY - 75}px`,
             }}
             className="absolute -translate-x-1/2 z-40 pointer-events-auto"
           >

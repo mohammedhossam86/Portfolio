@@ -60,3 +60,4 @@ export function DiscoveryAcademyIcon({ className = "w-5 h-5", variant = "round" 
     </div>
   );
 }
+

@@ -9,28 +9,39 @@ interface TopDownCarProps {
 
 /**
  * Photorealistic 2D Top-Down Sports Car (7oskaaa / elgemmy style)
- * Designed for vertical road driving downwards.
- * Features dual glowing LED headlights casting beams down the road,
- * neon cyan underglow, racing stripes, and dual red taillights.
+ * Designed for highway navigation and night discovery exploration.
+ * Features dual long-range glowing LED high-beams casting forward into the dark,
+ * neon underglow, racing stripes, and dual red taillights.
  */
 export default function TopDownCar({ className = "", isDriving = true }: TopDownCarProps) {
   return (
     <div className={`relative inline-flex flex-col items-center select-none ${className}`}>
-      {/* ── Dual Headlight Beams (casting forward/downward onto asphalt) ── */}
+      {/* ── High-Beam Dual Headlight Cones (Casting Forward into the Dark Highway) ── */}
       <div
-        className="absolute -bottom-28 left-1/2 -translate-x-1/2 w-48 h-36 pointer-events-none opacity-80"
+        className="absolute -bottom-56 left-1/2 -translate-x-1/2 w-80 h-64 pointer-events-none"
         style={{
           background:
-            "conic-gradient(from 180deg at 50% 0%, var(--car-beam, rgba(34, 211, 238, 0.5)) 0deg, var(--car-beam-conic, rgba(99, 102, 241, 0.2)) 35deg, transparent 70deg, transparent 290deg, var(--car-beam-conic, rgba(99, 102, 241, 0.2)) 325deg, var(--car-beam, rgba(34, 211, 238, 0.5)) 360deg)",
+            "conic-gradient(from 180deg at 50% 0%, var(--car-beam, rgba(34, 211, 238, 0.8)) 0deg, var(--car-beam-conic, rgba(254, 243, 199, 0.45)) 30deg, transparent 65deg, transparent 295deg, var(--car-beam-conic, rgba(254, 243, 199, 0.45)) 330deg, var(--car-beam, rgba(34, 211, 238, 0.8)) 360deg)",
+          filter: "blur(14px)",
+          opacity: 0.95,
+        }}
+      />
+
+      {/* ── Intense Core Headlight Discovery Beam ── */}
+      <div
+        className="absolute -bottom-36 left-1/2 -translate-x-1/2 w-48 h-44 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.95), var(--car-underglow, rgba(56, 189, 248, 0.6)) 50%, transparent 80%)",
           filter: "blur(8px)",
         }}
       />
 
       {/* ── Nitro Exhaust Thruster Flames (behind the car / top side) ── */}
       {isDriving && (
-        <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex items-center gap-6 pointer-events-none">
+        <div className="absolute -top-5 left-1/2 -translate-x-1/2 flex items-center gap-5 pointer-events-none">
           <motion.div
-            className="w-2.5 h-6 rounded-full"
+            className="w-2 h-5 rounded-full"
             style={{
               background: "linear-gradient(to top, var(--car-stripe, #38bdf8), var(--car-body-3, #6366f1), transparent)",
               filter: "blur(2px)",
@@ -39,7 +50,7 @@ export default function TopDownCar({ className = "", isDriving = true }: TopDown
             transition={{ duration: 0.2, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.div
-            className="w-2.5 h-6 rounded-full"
+            className="w-2 h-5 rounded-full"
             style={{
               background: "linear-gradient(to top, var(--car-stripe, #38bdf8), var(--car-body-3, #6366f1), transparent)",
               filter: "blur(2px)",
@@ -50,10 +61,10 @@ export default function TopDownCar({ className = "", isDriving = true }: TopDown
         </div>
       )}
 
-      {/* ── SVG Top-Down Car Body ── */}
+      {/* ── Compact Sleek Top-Down Car Body ── */}
       <svg
         viewBox="0 0 76 136"
-        className="w-16 sm:w-20 h-auto drop-shadow-[0_16px_28px_rgba(6,182,212,0.4)]"
+        className="w-12 sm:w-14 h-auto drop-shadow-[0_12px_24px_rgba(6,182,212,0.45)]"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -82,7 +93,7 @@ export default function TopDownCar({ className = "", isDriving = true }: TopDown
         </defs>
 
         {/* ── Underglow Neon Aura ── */}
-        <ellipse cx="38" cy="68" rx="34" ry="58" fill="var(--car-underglow, #06b6d4)" opacity="0.4" filter="blur(6px)" />
+        <ellipse cx="38" cy="68" rx="34" ry="58" fill="var(--car-underglow, #06b6d4)" opacity="0.45" filter="blur(6px)" />
 
         {/* ── 4 Wheels / Tires ── */}
         {/* Front Left */}
@@ -155,4 +166,3 @@ export default function TopDownCar({ className = "", isDriving = true }: TopDown
     </div>
   );
 }
-
