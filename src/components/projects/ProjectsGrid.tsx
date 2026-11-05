@@ -15,12 +15,16 @@ import {
   ArrowRight,
   Layers,
   Cpu,
+  ChevronDown,
+  ChevronUp,
+  Play,
 } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 
 export default function ProjectsGrid() {
   const [activeTab, setActiveTab] = useState<"projects" | "blog">("projects");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [showAllProjects, setShowAllProjects] = useState<boolean>(false);
 
   const categories = [
     { id: "all", label: "All Projects" },
@@ -34,8 +38,13 @@ export default function ProjectsGrid() {
       ? projects
       : projects.filter((p) => p.category === selectedCategory);
 
+  // Show 4 projects initially to keep mobile scroll fast, or all if toggled
+  const displayedProjects = showAllProjects
+    ? filteredProjects
+    : filteredProjects.slice(0, 4);
+
   return (
-    <section id="projects" className="relative py-24 sm:py-32 overflow-hidden">
+    <section id="projects" className="relative py-20 sm:py-32 overflow-hidden border-t border-[var(--color-border)]/50">
       {/* ── Background Glow ── */}
       <div
         className="absolute top-1/4 right-1/4 w-[550px] h-[350px] rounded-full pointer-events-none opacity-20"
@@ -46,19 +55,19 @@ export default function ProjectsGrid() {
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         {/* ── Header ── */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-14">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/30 text-[var(--color-accent-light)] text-xs font-mono uppercase tracking-wider mb-2">
               <FolderKanban size={14} />
-              Engineered Systems
+              Featured Work
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--color-text-primary)]">
-              Featured <span className="text-gradient">Projects &amp; Blog</span>
+              Engineered <span className="text-gradient">Projects &amp; Blog</span>
             </h2>
             <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mt-2 max-w-xl">
-              From multi-service AI platforms and enterprise backend architectures to pathfinding game algorithms.
+              Production-ready backend platforms, distributed systems, and real-time algorithmic games.
             </p>
           </div>
 
@@ -72,7 +81,7 @@ export default function ProjectsGrid() {
                   : "text-[var(--color-text-secondary)] hover:text-white"
               }`}
             >
-              <Layers size={16} />
+              <Layers size={15} />
               Projects ({projects.length})
             </button>
             <button
@@ -83,23 +92,26 @@ export default function ProjectsGrid() {
                   : "text-[var(--color-text-secondary)] hover:text-white"
               }`}
             >
-              <BookOpen size={16} />
-              Technical Blog ({blogPosts.length})
+              <BookOpen size={15} />
+              Blog ({blogPosts.length})
             </button>
           </div>
         </div>
 
         {/* ── Sub-category Filter (For Projects view) ── */}
         {activeTab === "projects" && (
-          <div className="flex flex-wrap gap-2 mb-10">
+          <div className="flex flex-wrap gap-2 mb-8">
             {categories.map((cat) => (
               <button
                 key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 ${
+                onClick={() => {
+                  setSelectedCategory(cat.id);
+                  setShowAllProjects(false);
+                }}
+                className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 ${
                   selectedCategory === cat.id
-                    ? "bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/25"
-                    : "bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)] hover:text-white border border-[var(--color-border)] hover:border-[var(--color-border-hover)]"
+                    ? "bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/25"
+                    : "bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)] hover:text-white border border-[var(--color-border)]"
                 }`}
               >
                 {cat.label}
@@ -111,22 +123,46 @@ export default function ProjectsGrid() {
         {/* ── Content View ── */}
         <AnimatePresence mode="wait">
           {activeTab === "projects" ? (
-            <motion.div
-              key="projects-grid"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
-            >
-              {filteredProjects.map((project, idx) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  isFeatured={project.isFeatured && idx === 0}
-                />
-              ))}
-            </motion.div>
+            <div className="space-y-8">
+              <motion.div
+                key="projects-grid"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.3 }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+              >
+                {displayedProjects.map((project, idx) => (
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    isFeatured={project.isFeatured && idx === 0}
+                  />
+                ))}
+              </motion.div>
+
+              {/* Show More / Show Less Collapsible Toggle */}
+              {filteredProjects.length > 4 && (
+                <div className="flex justify-center pt-2">
+                  <button
+                    onClick={() => setShowAllProjects(!showAllProjects)}
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-slate-900 border border-slate-700 text-xs sm:text-sm font-mono text-slate-300 hover:text-white hover:border-[var(--color-primary)] transition-all shadow-md active:scale-95"
+                  >
+                    {showAllProjects ? (
+                      <>
+                        <span>Show Less</span>
+                        <ChevronUp size={15} />
+                      </>
+                    ) : (
+                      <>
+                        <span>View All Projects ({filteredProjects.length})</span>
+                        <ChevronDown size={15} />
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <motion.div
               key="blog-grid"
@@ -148,7 +184,7 @@ export default function ProjectsGrid() {
 }
 
 // =============================================================================
-// Project Card Sub-Component (Bento Grid Style)
+// Project Card Sub-Component (Bento Grid Style with Live Demo Buttons)
 // =============================================================================
 
 interface ProjectCardProps {
@@ -158,92 +194,110 @@ interface ProjectCardProps {
 
 function ProjectCard({ project, isFeatured = false }: ProjectCardProps) {
   const isGraduation = project.category === "graduation";
+  const isGame = project.category === "game";
 
   return (
     <div
-      className={`group relative flex flex-col justify-between rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)]/90 backdrop-blur-xl p-6 sm:p-8 transition-all duration-300 hover:border-[var(--color-primary)] hover:shadow-2xl hover:shadow-[var(--color-primary)]/15 ${
+      className={`group relative flex flex-col justify-between rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)]/90 backdrop-blur-xl p-6 sm:p-7 transition-all duration-300 hover:border-[var(--color-primary)] hover:shadow-2xl hover:shadow-[var(--color-primary)]/15 ${
         isFeatured ? "md:col-span-2 lg:col-span-2" : "col-span-1"
       }`}
     >
-      {/* Top Header */}
       <div>
+        {/* Top Header Category & Action Icons */}
         <div className="flex items-center justify-between gap-4 mb-4">
           <div className="flex items-center gap-2">
             <span
-              className={`p-2.5 rounded-xl border ${
+              className={`p-2 rounded-xl border ${
                 isGraduation
                   ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/30"
-                  : project.category === "game"
+                  : isGame
                   ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
                   : "bg-cyan-500/10 text-cyan-400 border-cyan-500/30"
               }`}
             >
-              {isGraduation ? <Cpu size={18} /> : <Code2 size={18} />}
+              {isGraduation ? <Cpu size={16} /> : isGame ? <Play size={16} /> : <Code2 size={16} />}
             </span>
             <span className="text-xs font-mono font-semibold uppercase tracking-wider text-[var(--color-primary-light)]">
               {project.category}
             </span>
           </div>
 
-          {/* GitHub link button */}
-          {project.repoUrl && (
-            <a
-              href={project.repoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`View ${project.title} on GitHub`}
-              className="p-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] text-[var(--color-text-secondary)] hover:text-white hover:border-white/40 transition-colors"
-            >
-              <FaGithub size={18} />
-            </a>
-          )}
+          {/* Direct Quick Links */}
+          <div className="flex items-center gap-2">
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target={project.liveUrl.startsWith("#") ? "_self" : "_blank"}
+                rel="noopener noreferrer"
+                title="Live Demo"
+                className="p-2 rounded-xl border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20 hover:text-white transition-colors"
+              >
+                <ExternalLink size={15} />
+              </a>
+            )}
+            {project.repoUrl && (
+              <a
+                href={project.repoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="View Source on GitHub"
+                className="p-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] text-[var(--color-text-secondary)] hover:text-white hover:border-white/40 transition-colors"
+              >
+                <FaGithub size={15} />
+              </a>
+            )}
+          </div>
         </div>
 
         {/* Title */}
-        <h3 className="text-xl sm:text-2xl font-bold text-[var(--color-text-primary)] group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-[var(--color-accent-light)] transition-all mb-3">
+        <h3 className="text-xl sm:text-2xl font-bold text-[var(--color-text-primary)] group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-[var(--color-accent-light)] transition-all mb-3 leading-snug">
           {project.title}
         </h3>
 
-        {/* Description */}
-        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-6">
+        {/* Clean, Simple Description */}
+        <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] leading-relaxed mb-6 font-normal">
           {project.description}
         </p>
-
-        {/* Long description for featured graduation project */}
-        {isFeatured && project.longDescription && (
-          <div className="mb-6 p-4 rounded-2xl bg-[var(--color-bg-tertiary)] border border-[var(--color-border)] text-xs text-[var(--color-text-secondary)] leading-relaxed font-mono">
-            {project.longDescription}
-          </div>
-        )}
       </div>
 
-      {/* Bottom Footer: Tech Stack Tags + Link */}
+      {/* Bottom Footer: Tech Stack Tags + Action Buttons */}
       <div className="space-y-4 pt-4 border-t border-[var(--color-border)]/60">
         <div className="flex flex-wrap gap-1.5">
           {project.techStack.map((tech) => (
             <span
               key={tech}
-              className="text-[11px] font-mono px-2.5 py-1 rounded-lg bg-[var(--color-bg-tertiary)] text-[var(--color-text-muted)] border border-[var(--color-border)]"
+              className="text-[10px] sm:text-[11px] font-mono px-2.5 py-0.5 rounded-lg bg-[var(--color-bg-tertiary)] text-[var(--color-text-muted)] border border-[var(--color-border)]"
             >
               {tech}
             </span>
           ))}
         </div>
 
-        {project.repoUrl && (
-          <a
-            href={project.repoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-[var(--color-primary-light)] hover:text-[var(--color-accent-light)] transition-colors group/link"
-          >
-            <span>Explore Source Code</span>
-            <ArrowRight
-              size={13}
-              className="transition-transform group-hover/link:translate-x-1"
-            />
-          </a>
-        )}
+        {/* Action Buttons Row */}
+        <div className="flex items-center gap-3 pt-1">
+          {project.liveUrl && (
+            <a
+              href={project.liveUrl}
+              target={project.liveUrl.startsWith("#") ? "_self" : "_blank"}
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-light)] text-white text-xs font-semibold font-mono transition-all shadow-md active:scale-95"
+            >
+              <ExternalLink size={12} />
+              <span>Live Demo</span>
+            </a>
+          )}
+          {project.repoUrl && (
+            <a
+              href={project.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-slate-500 text-slate-300 hover:text-white text-xs font-semibold font-mono transition-all active:scale-95"
+            >
+              <FaGithub size={12} />
+              <span>Source Code</span>
+            </a>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -259,7 +313,7 @@ function BlogCard({ post }: { post: BlogPost }) {
       href={post.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative flex flex-col justify-between rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)]/90 backdrop-blur-xl p-6 sm:p-8 transition-all duration-300 hover:border-[var(--color-primary)] hover:shadow-2xl hover:shadow-[var(--color-primary)]/15"
+      className="group relative flex flex-col justify-between rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)]/90 backdrop-blur-xl p-6 sm:p-7 transition-all duration-300 hover:border-[var(--color-primary)] hover:shadow-2xl hover:shadow-[var(--color-primary)]/15"
     >
       <div>
         <div className="flex items-center justify-between text-xs font-mono text-[var(--color-primary-light)] mb-4">
@@ -271,7 +325,7 @@ function BlogCard({ post }: { post: BlogPost }) {
           {post.title}
         </h3>
 
-        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-6">
+        <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] leading-relaxed mb-6">
           {post.excerpt}
         </p>
       </div>
@@ -281,7 +335,7 @@ function BlogCard({ post }: { post: BlogPost }) {
           {post.tags.map((tag) => (
             <span
               key={tag}
-              className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-[var(--color-bg-tertiary)] text-[var(--color-text-muted)]"
+              className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-[var(--color-bg-tertiary)] text-[var(--color-text-muted)]"
             >
               #{tag}
             </span>
@@ -295,4 +349,3 @@ function BlogCard({ post }: { post: BlogPost }) {
     </a>
   );
 }
-

@@ -1,17 +1,15 @@
 import { Project } from "@/types";
 
 // =============================================================================
-// Featured Projects Showcase — Data-Driven UI
+// Featured Projects Showcase — Clean & Authentic Data
 // =============================================================================
 
 export const projects: Project[] = [
   {
     id: "mindmate-alzheimer",
-    title: "MindMate — Alzheimer AI & IoT Platform",
+    title: "MindMate — Alzheimer AI & IoT Healthcare Platform",
     description:
-      "Full-stack graduation project linking a Node.js/TypeScript REST API with a Dockerized FastAPI AI service (RetinaFace + ResNet50) and ESP32 hardware for real-time patient tracking and caregiver alerts.",
-    longDescription:
-      "Architected a multi-service backend with Mongoose Discriminators for multi-role modeling (patient, caregiver, admin), CRON scheduling, Firebase push notifications, and JWT RBAC middleware.",
+      "Full-stack graduation platform linking a Node.js REST API with an AI face recognition service (RetinaFace + ResNet50) and ESP32 hardware for real-time patient tracking and caregiver alerts.",
     category: "graduation",
     techStack: [
       "Node.js",
@@ -25,6 +23,7 @@ export const projects: Project[] = [
     ],
     imageUrl: "/images/projects/mindmate.png",
     repoUrl: "https://github.com/MindMate-Project",
+    liveUrl: "https://github.com/MindMate-Project",
     isFeatured: true,
     date: "2026-06",
   },
@@ -32,13 +31,11 @@ export const projects: Project[] = [
     id: "online-shop-backend",
     title: "Online Shop — Enterprise Backend System",
     description:
-      "Production-grade backend system with a 3-tier Role-Based Access Control (RBAC) architecture (Guest, Customer, Provider), complete order lifecycle management, and strict server-side price validation.",
-    longDescription:
-      "Eliminated unhandled promise rejections using centralized AppError classes and async controller wrappers. Enforced route-level ownership checks preventing cross-user data leakage.",
+      "Production-grade backend system with a 3-tier Role-Based Access Control (RBAC) architecture, complete order lifecycle management, and strict server-side price validation.",
     category: "backend",
     techStack: [
       "Node.js",
-      "Express v5",
+      "Express",
       "MongoDB",
       "JWT",
       "Multer",
@@ -54,12 +51,12 @@ export const projects: Project[] = [
     id: "codesync",
     title: "CodeSync — Real-Time Collaborative Workspace",
     description:
-      "Real-time collaborative developer platform built in TypeScript featuring bidirectional WebSockets communication, live document sync, and Joi payload validation.",
+      "Real-time collaborative developer platform featuring bidirectional WebSockets communication, live document sync, and Joi payload validation.",
     category: "backend",
     techStack: [
       "TypeScript",
       "Node.js",
-      "Express v5",
+      "Express",
       "Socket.IO",
       "JWT",
       "Joi",
@@ -71,13 +68,14 @@ export const projects: Project[] = [
   },
   {
     id: "tom-jerry-ai",
-    title: "Tom & Jerry — AI Pathfinding & Terminal Game",
+    title: "Tom & Jerry — AI Pathfinding Arena (BFS, Dijkstra & A*)",
     description:
-      "Interactive 2D game with AI-driven pathfinding algorithms (BFS / A* / Dijkstra), dynamic obstacle generation, and multi-level difficulty modes playable both in the terminal and browser.",
+      "Interactive 2D game comparing BFS, Dijkstra, and A* search algorithms in real-time. Features dynamic obstacle generation, step-by-step path visualizer, and playable browser CLI terminal.",
     category: "game",
-    techStack: ["Python", "Algorithms", "Pathfinding", "Pygame", "xterm.js"],
+    techStack: ["Python", "Algorithms", "A* Search", "Dijkstra", "BFS", "TypeScript"],
     imageUrl: "/images/projects/tom-jerry.png",
     repoUrl: "https://github.com/mohammedhossam86/Tom-Jerry",
+    liveUrl: "#arcade",
     isFeatured: true,
     date: "2026-04",
   },
@@ -98,6 +96,7 @@ export const projects: Project[] = [
     ],
     imageUrl: "/images/projects/blog.png",
     repoUrl: "https://github.com/mohammedhossam86/Blog-Website",
+    liveUrl: "https://github.com/mohammedhossam86/Blog-Website",
     isFeatured: false,
     date: "2026-01",
   },

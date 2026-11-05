@@ -2,18 +2,19 @@ import { AboutData } from "@/types";
 
 export const aboutData: AboutData = {
   name: "Mohammed Hossam",
-  title: "Software Engineer · Backend & Competitive Programmer · AI Trainer",
+  title: "Backend Engineer & AI Engineer",
   location: "Cairo, Egypt",
   avatarUrl: "/images/profile.jpg",
   bio: [
-    "I am a Software Engineer and dedicated Competitive Programmer with a deep focus on Backend Architecture, Distributed Systems, and AI model evaluation. I hold a Computer Science degree (graduated June 2026), having spent years solving complex algorithmic problems and building robust server-side applications.",
-    "Since February 2023, I have been working as an AI Trainer & Evaluator on frontier platforms including Outlier and Alignerr. I help train and fine-tune Large Language Models (LLMs) through Reinforcement Learning from Human Feedback (RLHF), authoring multi-step algorithmic challenges in Python & C++, verifying reasoning chains, and validating production code quality.",
-    "I am an active Open Source contributor, writing code directly for GitLab's core enterprise codebase (gitlab-org/gitlab). Teaching and mentorship are at the core of my journey: as a STEM & Robotics coach, I guided my young team to 3rd Place in the Champions Coach Code Challenge (Oct 2026), and I regularly share free algorithmic tutorials on YouTube.",
+    "I am a Backend Engineer & AI Engineer with a strong foundation in Competitive Programming. I graduated in Computer Science (June 2026), specializing in high-performance backend architecture, microservices, and AI model evaluation.",
+    "Since February 2023, I have been working as a Freelance AI Trainer & Evaluator with frontier platforms including Outlier and Alignerr. I help train and fine-tune state-of-the-art Large Language Models (LLMs) via RLHF, writing complex algorithmic reasoning problems in Python & C++, validating model outputs, and conducting in-depth code reviews.",
+    "I am an active Open Source contributor to GitLab's core enterprise codebase (gitlab-org/gitlab). As a STEM & Robotics coach, I led my young student team to 3rd Place in the Champions Coach Code Challenge (Oct 2026), and I regularly teach algorithmic problem solving on YouTube.",
   ],
   pills: [
+    "🚀 Backend Engineer & AI Engineer",
     "🎓 CS Graduate (June 2026)",
-    "⚡ 2,500+ Algorithmic Problems Solved",
     "🤖 Outlier & Alignerr AI Trainer (2023 - Present)",
+    "⚡ 2,500+ Algorithmic Problems Solved",
     "🦊 GitLab Core Contributor (gitlab-org/gitlab)",
     "🏆 4× ECPC Contestant & National Finalist",
     "💡 STEM & Robotics Instructor",
@@ -25,4 +26,3 @@ export const aboutData: AboutData = {
     { label: "Students Mentored", value: "200+" },
   ],
 };
-

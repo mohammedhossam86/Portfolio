@@ -1,8 +1,10 @@
 // =============================================================================
-// Tom & Jerry Game Engine — TypeScript Port of Mohammed Hossam's Game.py
+// Tom & Jerry Game Engine — Multi-Algorithm Pathfinding Arena
 // =============================================================================
-// Features exact A* (A-Star) search algorithm with Manhattan distance heuristic,
-// dynamic map generation per difficulty level, and ANSI terminal color formatting.
+// Features interactive algorithm comparisons:
+// 1. A* Search: Heuristic-guided search (Manhattan distance) - fastest in open grids
+// 2. Dijkstra: Uniform cost search - optimal path without heuristic
+// 3. BFS (Breadth-First Search): Level-by-level queue traversal - baseline unweighted
 // =============================================================================
 
 export type GridPosition = [number, number];
@@ -10,6 +12,13 @@ export type GridPosition = [number, number];
 export type GameLevel = 0 | 1 | 2; // 0 = Easy, 1 = Medium, 2 = Hard
 
 export type GameStatus = "idle" | "playing" | "won" | "lost";
+
+export type PathfindingAlgorithm = "astar" | "dijkstra" | "bfs";
+
+export interface PathResult {
+  path: GridPosition[];
+  nodesExplored: number;
+}
 
 export interface GameState {
   height: number;
@@ -23,6 +32,8 @@ export interface GameState {
   status: GameStatus;
   moves: number;
   lastTomPath: GridPosition[];
+  algorithm: PathfindingAlgorithm;
+  nodesExplored: number;
 }
 
 // ─── Manhattan Distance Heuristic ────────────────────────────────────────────
@@ -31,15 +42,16 @@ export function manhattanDistance(a: GridPosition, b: GridPosition): number {
   return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]);
 }
 
-// ─── A* Pathfinding Search Algorithm (Port of Game.py) ──────────────────────
+// ─── Search Algorithms (A*, Dijkstra, BFS) ──────────────────────────────────
 
-export function findAStarPath(
+export function findPath(
   start: GridPosition,
   end: GridPosition,
   gridHeight: number,
   gridWidth: number,
-  obstacles: GridPosition[]
-): GridPosition[] {
+  obstacles: GridPosition[],
+  algo: PathfindingAlgorithm = "astar"
+): PathResult {
   const obstacleSet = new Set(obstacles.map((o) => `${o[0]},${o[1]}`));
 
   function isValid(pos: GridPosition): boolean {
@@ -52,35 +64,116 @@ export function findAStarPath(
     );
   }
 
-  function getNeighbours(pos: GridPosition): GridPosition[] {
-    const directions: GridPosition[] = [
-      [-1, 0],
-      [1, 0],
-      [0, -1],
-      [0, 1],
-    ];
-    const neighbours: GridPosition[] = [];
-    for (const [di, dj] of directions) {
-      const nextPos: GridPosition = [pos[0] + di, pos[1] + dj];
-      if (isValid(nextPos)) {
-        neighbours.push(nextPos);
+  const directions: GridPosition[] = [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ];
+
+  // 1. Breadth-First Search (BFS)
+  if (algo === "bfs") {
+    const queue: GridPosition[] = [start];
+    const visited = new Set<string>([`${start[0]},${start[1]}`]);
+    const cameFrom = new Map<string, GridPosition>();
+    let nodesExplored = 0;
+
+    while (queue.length > 0) {
+      const current = queue.shift()!;
+      nodesExplored++;
+
+      if (current[0] === end[0] && current[1] === end[1]) {
+        const path: GridPosition[] = [];
+        let curr: GridPosition | undefined = current;
+        while (curr && cameFrom.has(`${curr[0]},${curr[1]}`)) {
+          path.unshift(curr);
+          curr = cameFrom.get(`${curr[0]},${curr[1]}`);
+        }
+        return { path, nodesExplored };
+      }
+
+      for (const [di, dj] of directions) {
+        const next: GridPosition = [current[0] + di, current[1] + dj];
+        const nextKey = `${next[0]},${next[1]}`;
+        if (isValid(next) && !visited.has(nextKey)) {
+          visited.add(nextKey);
+          cameFrom.set(nextKey, current);
+          queue.push(next);
+        }
       }
     }
-    return neighbours;
+    return { path: [], nodesExplored };
   }
 
+  // 2. Dijkstra Algorithm (Uniform-Cost Search without Heuristic)
+  if (algo === "dijkstra") {
+    const openList: GridPosition[] = [start];
+    const closedSet = new Set<string>();
+    const cameFrom = new Map<string, GridPosition>();
+    const dist = new Map<string, number>();
+    dist.set(`${start[0]},${start[1]}`, 0);
+    let nodesExplored = 0;
+
+    while (openList.length > 0) {
+      let lowestIdx = 0;
+      let lowestVal = Infinity;
+      for (let i = 0; i < openList.length; i++) {
+        const key = `${openList[i][0]},${openList[i][1]}`;
+        const d = dist.get(key) ?? Infinity;
+        if (d < lowestVal) {
+          lowestVal = d;
+          lowestIdx = i;
+        }
+      }
+
+      const current = openList.splice(lowestIdx, 1)[0];
+      const currentKey = `${current[0]},${current[1]}`;
+      nodesExplored++;
+
+      if (current[0] === end[0] && current[1] === end[1]) {
+        const path: GridPosition[] = [];
+        let curr: GridPosition | undefined = current;
+        while (curr && cameFrom.has(`${curr[0]},${curr[1]}`)) {
+          path.unshift(curr);
+          curr = cameFrom.get(`${curr[0]},${curr[1]}`);
+        }
+        return { path, nodesExplored };
+      }
+
+      closedSet.add(currentKey);
+
+      for (const [di, dj] of directions) {
+        const next: GridPosition = [current[0] + di, current[1] + dj];
+        const nextKey = `${next[0]},${next[1]}`;
+        if (!isValid(next) || closedSet.has(nextKey)) continue;
+
+        const newDist = (dist.get(currentKey) ?? 0) + 1;
+        const existingDist = dist.get(nextKey) ?? Infinity;
+
+        if (!openList.some((p) => p[0] === next[0] && p[1] === next[1])) {
+          openList.push(next);
+        } else if (newDist >= existingDist) {
+          continue;
+        }
+
+        cameFrom.set(nextKey, current);
+        dist.set(nextKey, newDist);
+      }
+    }
+    return { path: [], nodesExplored };
+  }
+
+  // 3. A* Search Algorithm (Default: f = g + h)
   const openList: GridPosition[] = [start];
   const closedSet = new Set<string>();
   const cameFrom = new Map<string, GridPosition>();
-
   const gScore = new Map<string, number>();
   gScore.set(`${start[0]},${start[1]}`, 0);
-
   const fScore = new Map<string, number>();
   fScore.set(`${start[0]},${start[1]}`, manhattanDistance(start, end));
+  let nodesExplored = 0;
 
   while (openList.length > 0) {
-    // Pick node with lowest fScore
     let lowestIdx = 0;
     let lowestVal = Infinity;
     for (let i = 0; i < openList.length; i++) {
@@ -92,165 +185,57 @@ export function findAStarPath(
       }
     }
 
-    const current = openList[lowestIdx];
+    const current = openList.splice(lowestIdx, 1)[0];
     const currentKey = `${current[0]},${current[1]}`;
+    nodesExplored++;
 
     if (current[0] === end[0] && current[1] === end[1]) {
-      // Reconstruct path: list of steps leading from start to end (excluding start)
       const path: GridPosition[] = [];
       let curr: GridPosition | undefined = current;
       while (curr && cameFrom.has(`${curr[0]},${curr[1]}`)) {
         path.unshift(curr);
         curr = cameFrom.get(`${curr[0]},${curr[1]}`);
       }
-      return path;
+      return { path, nodesExplored };
     }
 
-    openList.splice(lowestIdx, 1);
     closedSet.add(currentKey);
 
-    for (const neighbour of getNeighbours(current)) {
-      const neighbourKey = `${neighbour[0]},${neighbour[1]}`;
-      if (closedSet.has(neighbourKey)) continue;
+    for (const [di, dj] of directions) {
+      const next: GridPosition = [current[0] + di, current[1] + dj];
+      const nextKey = `${next[0]},${next[1]}`;
+      if (!isValid(next) || closedSet.has(nextKey)) continue;
 
-      const tentativeGScore = (gScore.get(currentKey) ?? 0) + 1;
-      const existingGScore = gScore.get(neighbourKey) ?? Infinity;
+      const tentativeG = (gScore.get(currentKey) ?? 0) + 1;
+      const existingG = gScore.get(nextKey) ?? Infinity;
 
-      if (!openList.some((p) => p[0] === neighbour[0] && p[1] === neighbour[1])) {
-        openList.push(neighbour);
-      } else if (tentativeGScore >= existingGScore) {
+      if (!openList.some((p) => p[0] === next[0] && p[1] === next[1])) {
+        openList.push(next);
+      } else if (tentativeG >= existingG) {
         continue;
       }
 
-      cameFrom.set(neighbourKey, current);
-      gScore.set(neighbourKey, tentativeGScore);
-      fScore.set(
-        neighbourKey,
-        tentativeGScore + manhattanDistance(neighbour, end)
-      );
+      cameFrom.set(nextKey, current);
+      gScore.set(nextKey, tentativeG);
+      fScore.set(nextKey, tentativeG + manhattanDistance(next, end));
     }
   }
 
-  return [];
+  return { path: [], nodesExplored };
 }
 
-// ─── Map Generator (Port of Maps.py with guaranteed convergence) ────────────
-
-export function generateMap(level: GameLevel) {
-  let width = 7;
-  let height = 7;
-  let obstacleCount = 2;
-
-  if (level === 0) {
-    width = 7;
-    height = 7;
-    obstacleCount = 2;
-  } else if (level === 1) {
-    width = 9;
-    height = 8;
-    obstacleCount = 4;
-  } else {
-    width = 11;
-    height = 9;
-    obstacleCount = 7;
-  }
-
-  // 1. Pick Exit position
-  const exit: GridPosition = [
-    Math.floor(Math.random() * height),
-    Math.floor(Math.random() * width),
-  ];
-
-  // 2. Pick Jerry (rat) position: moderate distance from exit (e.g. 2 to 4 steps)
-  // so Jerry has a head start and Tom can start further away
-  let rat: GridPosition = [0, 0];
-  let ratFound = false;
-  for (let attempt = 0; attempt < 100; attempt++) {
-    const candidate: GridPosition = [
-      Math.floor(Math.random() * height),
-      Math.floor(Math.random() * width),
-    ];
-    const distToExit = manhattanDistance(candidate, exit);
-    const maxRatDist = Math.max(2, Math.floor((width + height) * 0.4));
-    if (
-      (candidate[0] !== exit[0] || candidate[1] !== exit[1]) &&
-      distToExit >= 2 &&
-      distToExit <= maxRatDist
-    ) {
-      rat = candidate;
-      ratFound = true;
-      break;
-    }
-  }
-
-  if (!ratFound) {
-    rat = [(exit[0] + 2) % height, (exit[1] + 2) % width];
-    if (rat[0] === exit[0] && rat[1] === exit[1]) {
-      rat = [(exit[0] + 1) % height, exit[1]];
-    }
-  }
-
-  // 3. Pick Tom (cat) position: strictly farther from exit than rat, and dist(cat, rat) >= minDistance
-  const minDistToRat = level === 0 ? 3 : level === 1 ? 4 : 5;
-  const distRatExit = manhattanDistance(rat, exit);
-  let cat: GridPosition = [0, 0];
-  let catFound = false;
-
-  for (let attempt = 0; attempt < 200; attempt++) {
-    const candidate: GridPosition = [
-      Math.floor(Math.random() * height),
-      Math.floor(Math.random() * width),
-    ];
-    const distCatExit = manhattanDistance(candidate, exit);
-    const distCatRat = manhattanDistance(candidate, rat);
-
-    if (
-      (candidate[0] !== exit[0] || candidate[1] !== exit[1]) &&
-      (candidate[0] !== rat[0] || candidate[1] !== rat[1]) &&
-      distCatRat >= minDistToRat &&
-      distCatExit > distRatExit
-    ) {
-      cat = candidate;
-      catFound = true;
-      break;
-    }
-  }
-
-  if (!catFound) {
-    // Guaranteed fallback: opposite corner
-    cat = [height - 1 - exit[0], width - 1 - exit[1]];
-    if ((cat[0] === rat[0] && cat[1] === rat[1]) || (cat[0] === exit[0] && cat[1] === exit[1])) {
-      cat = [(cat[0] + 2) % height, (cat[1] + 2) % width];
-    }
-  }
-
-  // 4. Generate obstacles: ensure they never block Jerry from Exit
-  const obstacles: GridPosition[] = [];
-  for (let i = 0; i < obstacleCount; i++) {
-    for (let attempts = 0; attempts < 30; attempts++) {
-      const obs: GridPosition = [
-        Math.floor(Math.random() * height),
-        Math.floor(Math.random() * width),
-      ];
-      const isColliding =
-        (obs[0] === exit[0] && obs[1] === exit[1]) ||
-        (obs[0] === rat[0] && obs[1] === rat[1]) ||
-        (obs[0] === cat[0] && obs[1] === cat[1]) ||
-        obstacles.some((o) => o[0] === obs[0] && o[1] === obs[1]);
-
-      if (!isColliding) {
-        // Ensure path from Jerry to Exit remains solvable
-        const testPath = findAStarPath(rat, exit, height, width, [...obstacles, obs]);
-        if (testPath.length > 0) {
-          obstacles.push(obs);
-          break;
-        }
-      }
-    }
-  }
-
-  return { height, width, exit, rat, cat, obstacles };
+// Shortcut alias for backwards compatibility
+export function findAStarPath(
+  start: GridPosition,
+  end: GridPosition,
+  gridHeight: number,
+  gridWidth: number,
+  obstacles: GridPosition[]
+): GridPosition[] {
+  return findPath(start, end, gridHeight, gridWidth, obstacles, "astar").path;
 }
+
+// ─── Deterministic Default Maps for SSR Prerendering ─────────────────────────
 
 export const DEFAULT_MAPS: Record<
   GameLevel,
@@ -303,12 +288,127 @@ export const DEFAULT_MAPS: Record<
   },
 };
 
+// ─── Map Generator with Guaranteed Solvability ───────────────────────────────
+
+export function generateMap(level: GameLevel) {
+  let width = 7;
+  let height = 7;
+  let obstacleCount = 2;
+
+  if (level === 0) {
+    width = 7;
+    height = 7;
+    obstacleCount = 2;
+  } else if (level === 1) {
+    width = 9;
+    height = 8;
+    obstacleCount = 4;
+  } else {
+    width = 11;
+    height = 9;
+    obstacleCount = 7;
+  }
+
+  const exit: GridPosition = [
+    Math.floor(Math.random() * height),
+    Math.floor(Math.random() * width),
+  ];
+
+  let rat: GridPosition = [0, 0];
+  let ratFound = false;
+  for (let attempt = 0; attempt < 100; attempt++) {
+    const candidate: GridPosition = [
+      Math.floor(Math.random() * height),
+      Math.floor(Math.random() * width),
+    ];
+    const distToExit = manhattanDistance(candidate, exit);
+    const maxRatDist = Math.max(2, Math.floor((width + height) * 0.4));
+    if (
+      (candidate[0] !== exit[0] || candidate[1] !== exit[1]) &&
+      distToExit >= 2 &&
+      distToExit <= maxRatDist
+    ) {
+      rat = candidate;
+      ratFound = true;
+      break;
+    }
+  }
+
+  if (!ratFound) {
+    rat = [(exit[0] + 2) % height, (exit[1] + 2) % width];
+    if (rat[0] === exit[0] && rat[1] === exit[1]) {
+      rat = [(exit[0] + 1) % height, exit[1]];
+    }
+  }
+
+  const minDistToRat = level === 0 ? 3 : level === 1 ? 4 : 5;
+  const distRatExit = manhattanDistance(rat, exit);
+  let cat: GridPosition = [0, 0];
+  let catFound = false;
+
+  for (let attempt = 0; attempt < 200; attempt++) {
+    const candidate: GridPosition = [
+      Math.floor(Math.random() * height),
+      Math.floor(Math.random() * width),
+    ];
+    const distCatExit = manhattanDistance(candidate, exit);
+    const distCatRat = manhattanDistance(candidate, rat);
+
+    if (
+      (candidate[0] !== exit[0] || candidate[1] !== exit[1]) &&
+      (candidate[0] !== rat[0] || candidate[1] !== rat[1]) &&
+      distCatRat >= minDistToRat &&
+      distCatExit > distRatExit
+    ) {
+      cat = candidate;
+      catFound = true;
+      break;
+    }
+  }
+
+  if (!catFound) {
+    cat = [height - 1 - exit[0], width - 1 - exit[1]];
+    if ((cat[0] === rat[0] && cat[1] === rat[1]) || (cat[0] === exit[0] && cat[1] === exit[1])) {
+      cat = [(cat[0] + 2) % height, (cat[1] + 2) % width];
+    }
+  }
+
+  const obstacles: GridPosition[] = [];
+  for (let i = 0; i < obstacleCount; i++) {
+    for (let attempts = 0; attempts < 30; attempts++) {
+      const obs: GridPosition = [
+        Math.floor(Math.random() * height),
+        Math.floor(Math.random() * width),
+      ];
+      const isColliding =
+        (obs[0] === exit[0] && obs[1] === exit[1]) ||
+        (obs[0] === rat[0] && obs[1] === rat[1]) ||
+        (obs[0] === cat[0] && obs[1] === cat[1]) ||
+        obstacles.some((o) => o[0] === obs[0] && o[1] === obs[1]);
+
+      if (!isColliding) {
+        const testPath = findPath(rat, exit, height, width, [...obstacles, obs], "astar");
+        if (testPath.path.length > 0) {
+          obstacles.push(obs);
+          break;
+        }
+      }
+    }
+  }
+
+  return { height, width, exit, rat, cat, obstacles };
+}
+
 // ─── Game Controller Class ───────────────────────────────────────────────────
 
 export class TomAndJerryGame {
   private state: GameState;
 
-  constructor(level: GameLevel = 0, randomize: boolean = false) {
+  constructor(
+    level: GameLevel = 0,
+    randomize: boolean = false,
+    algo: PathfindingAlgorithm = "astar"
+  ) {
     const map = randomize ? generateMap(level) : DEFAULT_MAPS[level];
     const grid: string[][] = Array.from({ length: map.height }, () =>
       Array.from({ length: map.width }, () => "-")
@@ -333,11 +433,17 @@ export class TomAndJerryGame {
       status: "playing",
       moves: 0,
       lastTomPath: [],
+      algorithm: algo,
+      nodesExplored: 0,
     };
   }
 
   public getState(): GameState {
     return { ...this.state };
+  }
+
+  public setAlgorithm(algo: PathfindingAlgorithm) {
+    this.state.algorithm = algo;
   }
 
   public moveRat(direction: "up" | "down" | "left" | "right"): {
@@ -356,7 +462,6 @@ export class TomAndJerryGame {
     else if (direction === "left") nextPos = [ratPos[0], ratPos[1] - 1];
     else if (direction === "right") nextPos = [ratPos[0], ratPos[1] + 1];
 
-    // Validate boundaries and obstacles
     if (
       nextPos[0] < 0 ||
       nextPos[0] >= height ||
@@ -367,12 +472,10 @@ export class TomAndJerryGame {
       return { moved: false, state: this.getState() };
     }
 
-    // Move Jerry
     grid[ratPos[0]][ratPos[1]] = "-";
     this.state.ratPos = nextPos;
     this.state.moves += 1;
 
-    // Check Win Condition: Jerry reached Exit
     if (nextPos[0] === this.state.exitPos[0] && nextPos[1] === this.state.exitPos[1]) {
       grid[nextPos[0]][nextPos[1]] = "W";
       this.state.status = "won";
@@ -381,24 +484,26 @@ export class TomAndJerryGame {
 
     grid[nextPos[0]][nextPos[1]] = "J";
 
-    // Tom's Turn (AI move using A*)
     this.moveCat();
 
     return { moved: true, state: this.getState() };
   }
 
   private moveCat() {
-    const { catPos, ratPos, exitPos, height, width, obstacles, grid } = this.state;
+    const { catPos, ratPos, exitPos, height, width, obstacles, grid, algorithm } =
+      this.state;
 
-    // Run A* path to Jerry and path to Exit
-    const pathToRat = findAStarPath(catPos, ratPos, height, width, obstacles);
-    const pathToExit = findAStarPath(catPos, exitPos, height, width, obstacles);
+    const resultToRat = findPath(catPos, ratPos, height, width, obstacles, algorithm);
+    const resultToExit = findPath(catPos, exitPos, height, width, obstacles, algorithm);
+
+    const pathToRat = resultToRat.path;
+    const pathToExit = resultToExit.path;
 
     this.state.lastTomPath = pathToRat;
+    this.state.nodesExplored = resultToRat.nodesExplored;
 
     let nextCatPos = catPos;
 
-    // Case 1: Tom is 1 step away from Jerry -> Caught!
     if (pathToRat.length === 1) {
       nextCatPos = pathToRat[0];
       grid[catPos[0]][catPos[1]] = "-";
@@ -408,28 +513,21 @@ export class TomAndJerryGame {
       return;
     }
 
-    // Case 2: Tom has a path to Jerry > 1 step
     if (pathToRat.length > 1) {
-      // If path to exit is blocked or path to Jerry is shorter/equal, pursue Jerry
       if (pathToExit.length === 0 || pathToRat.length <= pathToExit.length) {
         nextCatPos = pathToRat[0];
       } else {
-        // Otherwise head towards exit to intercept Jerry
         nextCatPos = pathToExit[0];
       }
     } else if (pathToExit.length > 0) {
-      // Jerry is unreachable, move towards exit
       nextCatPos = pathToExit[0];
     } else {
-      // Both unreachable, stay in place
       nextCatPos = catPos;
     }
 
-    // Move Tom
     grid[catPos[0]][catPos[1]] = "-";
     this.state.catPos = nextCatPos;
 
-    // Check if Tom caught Jerry on this step
     if (nextCatPos[0] === this.state.ratPos[0] && nextCatPos[1] === this.state.ratPos[1]) {
       grid[nextCatPos[0]][nextCatPos[1]] = "X";
       this.state.status = "lost";
@@ -438,35 +536,26 @@ export class TomAndJerryGame {
     }
   }
 
-  // ─── ANSI Terminal Renderer ────────────────────────────────────────────────
-
   public renderAnsi(): string {
-    const { grid, height, width, status, moves, catPos, ratPos, exitPos } =
+    const { grid, height, width, status, moves, catPos, ratPos, exitPos, algorithm, nodesExplored } =
       this.state;
 
-    let out = "\x1b[2J\x1b[H"; // Clear screen & move to top
-    out += "\x1b[1;36m=== TOM & JERRY A* SEARCH ARENA ===\x1b[0m\r\n";
-    out += `\x1b[90mMoves: \x1b[97m${moves}\x1b[90m | Jerry: \x1b[92m(${ratPos[0]},${ratPos[1]})\x1b[90m | Tom: \x1b[91m(${catPos[0]},${catPos[1]})\x1b[90m | Exit: \x1b[94m(${exitPos[0]},${exitPos[1]})\x1b[0m\r\n\r\n`;
+    let out = "\x1b[2J\x1b[H";
+    out += "\x1b[1;36m=== TOM & JERRY PATHFINDING ARENA (BFS · DIJKSTRA · A*) ===\x1b[0m\r\n";
+    out += `\x1b[90mActive Algorithm: \x1b[1;93m${algorithm.toUpperCase()}\x1b[90m | Nodes Evaluated: \x1b[96m${nodesExplored}\x1b[90m | Moves: \x1b[97m${moves}\x1b[0m\r\n`;
+    out += `\x1b[90mJerry: \x1b[92m(${ratPos[0]},${ratPos[1]})\x1b[90m | Tom: \x1b[91m(${catPos[0]},${catPos[1]})\x1b[90m | Exit: \x1b[94m(${exitPos[0]},${exitPos[1]})\x1b[0m\r\n\r\n`;
 
     for (let i = 0; i < height; i++) {
       let rowStr = "  ";
       for (let j = 0; j < width; j++) {
         const cell = grid[i][j];
-        if (cell === "J") {
-          rowStr += "\x1b[1;92m🐭 \x1b[0m";
-        } else if (cell === "T") {
-          rowStr += "\x1b[1;91m🐱 \x1b[0m";
-        } else if (cell === "E") {
-          rowStr += "\x1b[1;94m🚪 \x1b[0m";
-        } else if (cell === "#") {
-          rowStr += "\x1b[33m🧱 \x1b[0m";
-        } else if (cell === "W") {
-          rowStr += "\x1b[1;92m🎉 \x1b[0m";
-        } else if (cell === "X") {
-          rowStr += "\x1b[1;91m💥 \x1b[0m";
-        } else {
-          rowStr += "\x1b[90m · \x1b[0m";
-        }
+        if (cell === "J") rowStr += "\x1b[1;92m🐭 \x1b[0m";
+        else if (cell === "T") rowStr += "\x1b[1;91m🐱 \x1b[0m";
+        else if (cell === "E") rowStr += "\x1b[1;94m🚪 \x1b[0m";
+        else if (cell === "#") rowStr += "\x1b[33m🧱 \x1b[0m";
+        else if (cell === "W") rowStr += "\x1b[1;92m🎉 \x1b[0m";
+        else if (cell === "X") rowStr += "\x1b[1;91m💥 \x1b[0m";
+        else rowStr += "\x1b[90m · \x1b[0m";
       }
       out += rowStr + "\r\n";
     }
@@ -474,14 +563,12 @@ export class TomAndJerryGame {
     out += "\r\n";
 
     if (status === "won") {
-      out += "\x1b[1;92m🎉 WOW! Jerry reached the exit safely! YOU WON!\x1b[0m\r\n";
-      out += "\x1b[90mPress [R] to play again.\x1b[0m\r\n";
+      out += "\x1b[1;92m🎉 VICTORY! Jerry reached the exit safely! YOU WON!\x1b[0m\r\n";
     } else if (status === "lost") {
-      out += "\x1b[1;91m💥 GAME OVER! Tom intercepted Jerry with A* search!\x1b[0m\r\n";
-      out += "\x1b[90mPress [R] to try again.\x1b[0m\r\n";
+      out += `\x1b[1;91m💥 GAME OVER! Tom caught Jerry using ${algorithm.toUpperCase()}!\x1b[0m\r\n`;
     } else {
       out +=
-        "\x1b[90mControls: \x1b[97m[W/A/S/D]\x1b[90m or \x1b[97m[Arrow Keys]\x1b[90m | Restart: \x1b[97m[R]\x1b[0m\r\n";
+        "\x1b[90mControls: [W/A/S/D] or [Arrows] | Switch Algo: Type 'astar', 'dijkstra', 'bfs' | Restart: [R]\x1b[0m\r\n";
     }
 
     return out;

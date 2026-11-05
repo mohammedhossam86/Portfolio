@@ -130,6 +130,18 @@ export default function TerminalEmulator() {
       handleMove("left");
     } else if (["right", "r"].includes(cmd)) {
       handleMove("right");
+    } else if (cmd === "astar" || cmd === "algo astar") {
+      gameRef.current?.setAlgorithm("astar");
+      setGameState(gameRef.current!.getState());
+      setHistory((prev) => [...prev.slice(-6), "\x1b[36m>> Switched algorithm to A* Search (Heuristic)\x1b[0m"]);
+    } else if (cmd === "dijkstra" || cmd === "algo dijkstra") {
+      gameRef.current?.setAlgorithm("dijkstra");
+      setGameState(gameRef.current!.getState());
+      setHistory((prev) => [...prev.slice(-6), "\x1b[35m>> Switched algorithm to Dijkstra (Uniform Cost)\x1b[0m"]);
+    } else if (cmd === "bfs" || cmd === "algo bfs") {
+      gameRef.current?.setAlgorithm("bfs");
+      setGameState(gameRef.current!.getState());
+      setHistory((prev) => [...prev.slice(-6), "\x1b[32m>> Switched algorithm to BFS (Level-Order)\x1b[0m"]);
     } else {
       setHistory((prev) => [
         ...prev.slice(-6),
@@ -226,7 +238,55 @@ export default function TerminalEmulator() {
           <span>
             Tom Dist: <strong className="text-rose-400">{distToTom}</strong>
           </span>
+          <span className="hidden sm:inline text-slate-500">|</span>
+          <span className="hidden sm:inline">
+            Nodes Checked: <strong className="text-cyan-400">{gameState.nodesExplored}</strong>
+          </span>
         </div>
+
+        {/* Algorithm Switcher in Terminal HUD */}
+        <div className="flex items-center gap-1.5 rounded-lg bg-slate-900 border border-slate-800 p-0.5 text-[10px]">
+          <button
+            onClick={() => {
+              gameRef.current?.setAlgorithm("astar");
+              setGameState(gameRef.current!.getState());
+            }}
+            className={`px-2 py-0.5 rounded transition-colors ${
+              gameState.algorithm === "astar"
+                ? "bg-cyan-500/20 text-cyan-300 font-bold"
+                : "text-slate-400 hover:text-white"
+            }`}
+          >
+            A* Search
+          </button>
+          <button
+            onClick={() => {
+              gameRef.current?.setAlgorithm("dijkstra");
+              setGameState(gameRef.current!.getState());
+            }}
+            className={`px-2 py-0.5 rounded transition-colors ${
+              gameState.algorithm === "dijkstra"
+                ? "bg-purple-500/20 text-purple-300 font-bold"
+                : "text-slate-400 hover:text-white"
+            }`}
+          >
+            Dijkstra
+          </button>
+          <button
+            onClick={() => {
+              gameRef.current?.setAlgorithm("bfs");
+              setGameState(gameRef.current!.getState());
+            }}
+            className={`px-2 py-0.5 rounded transition-colors ${
+              gameState.algorithm === "bfs"
+                ? "bg-emerald-500/20 text-emerald-300 font-bold"
+                : "text-slate-400 hover:text-white"
+            }`}
+          >
+            BFS
+          </button>
+        </div>
+
         <div className="flex items-center gap-2">
           {status === "won" && (
             <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">

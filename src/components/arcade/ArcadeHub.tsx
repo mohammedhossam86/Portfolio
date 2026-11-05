@@ -30,13 +30,13 @@ export default function ArcadeHub() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/30 text-[var(--color-accent-light)] text-xs font-mono uppercase tracking-wider mb-2">
               <Gamepad2 size={14} />
-              Interactive Browser Arcade
+              Interactive AI Pathfinding Arena
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--color-text-primary)]">
-              Tom &amp; Jerry <span className="text-gradient">A* Search Arena</span>
+              Tom &amp; Jerry <span className="text-gradient">BFS · Dijkstra · A* Arena</span>
             </h2>
             <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mt-2 max-w-xl">
-              Play my terminal game directly in your browser. Tom uses the <strong className="text-white">A* Search algorithm</strong> with Manhattan heuristics to intercept Jerry before he reaches the exit!
+              Play my game directly in the browser and compare <strong className="text-white">A* Search</strong>, <strong className="text-white">Dijkstra</strong>, and <strong className="text-white">BFS</strong> in real-time to see how heuristics drastically reduce search space!
             </p>
           </div>
 

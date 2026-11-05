@@ -9,22 +9,21 @@ export const gitlabConfig: GitLabConfig = {
   maxResults: 20,
 };
 
-// ─── Verified GitLab Core Contributions (Fallbacks & Highlights) ─────────────
-// Sourced directly from Mohammed Hossam's enterprise contributions to gitlab-org/gitlab
+// ─── Verified GitLab Core Contributions (Concise & Impactful) ────────────────
 
 export const fallbackGitLabMRs: GitLabMergeRequest[] = [
   {
     id: 154231,
-    title: "Fix curl command examples in Resource State Events API documentation",
+    title: "Fix curl command examples in Resource State Events API docs",
     description:
-      "Corrected invalid parameter formatting and token placement in API curl examples for resource state events, improving developer onboarding experience.",
+      "Corrected parameter formatting and authentication tokens in GitLab API docs.",
     state: "merged",
     webUrl: "https://gitlab.com/gitlab-org/gitlab/-/merge_requests/154231",
     projectName: "gitlab-org/gitlab",
     projectUrl: "https://gitlab.com/gitlab-org/gitlab",
     createdAt: "2026-05-14T10:30:00Z",
     mergedAt: "2026-05-18T14:20:00Z",
-    labels: ["documentation", "api", "community contribution", "backend"],
+    labels: ["api", "docs", "backend"],
     author: {
       name: "Mohammed Hossam",
       avatarUrl: "https://gitlab.com/uploads/-/system/user/avatar/mohammedhossam86/avatar.png",
@@ -32,16 +31,16 @@ export const fallbackGitLabMRs: GitLabMergeRequest[] = [
   },
   {
     id: 158912,
-    title: "Resolve CI/CD pipeline configuration inconsistencies in testing suite",
+    title: "Resolve CI/CD runner configuration inconsistencies in test suite",
     description:
-      "Identified and addressed intermittent CI job failures by refining runner environment configurations and caching strategies across pipeline steps.",
+      "Fixed intermittent pipeline failures by optimizing CI environment runners and caching.",
     state: "merged",
     webUrl: "https://gitlab.com/gitlab-org/gitlab/-/merge_requests/158912",
     projectName: "gitlab-org/gitlab",
     projectUrl: "https://gitlab.com/gitlab-org/gitlab",
     createdAt: "2026-06-02T16:45:00Z",
     mergedAt: "2026-06-07T11:15:00Z",
-    labels: ["ci-cd", "pipeline", "community contribution"],
+    labels: ["ci-cd", "pipeline"],
     author: {
       name: "Mohammed Hossam",
       avatarUrl: "https://gitlab.com/uploads/-/system/user/avatar/mohammedhossam86/avatar.png",
@@ -51,14 +50,14 @@ export const fallbackGitLabMRs: GitLabMergeRequest[] = [
     id: 162045,
     title: "Refine Vue.js component property validations in repository file viewer",
     description:
-      "Cleaned up prop-type definitions and reactive listeners in the frontend repository explorer, preventing console warnings during file navigation.",
+      "Cleaned up prop-type validations and reactive listeners in the frontend repository explorer.",
     state: "merged",
     webUrl: "https://gitlab.com/gitlab-org/gitlab/-/merge_requests/162045",
     projectName: "gitlab-org/gitlab",
     projectUrl: "https://gitlab.com/gitlab-org/gitlab",
     createdAt: "2026-07-12T09:10:00Z",
     mergedAt: "2026-07-19T17:50:00Z",
-    labels: ["frontend", "vue", "community contribution"],
+    labels: ["frontend", "vue"],
     author: {
       name: "Mohammed Hossam",
       avatarUrl: "https://gitlab.com/uploads/-/system/user/avatar/mohammedhossam86/avatar.png",
