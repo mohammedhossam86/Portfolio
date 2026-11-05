@@ -128,12 +128,12 @@ export default function Navbar() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      if (currentScrollY < 50) {
+      if (currentScrollY < 40) {
         setIsVisible(true);
-      } else if (currentScrollY > lastScrollY.current + 8) {
+      } else if (currentScrollY > lastScrollY.current + 5) {
         setIsVisible(false);
         setIsMobileMenuOpen(false);
-      } else if (currentScrollY < lastScrollY.current - 8) {
+      } else if (currentScrollY < lastScrollY.current - 6) {
         setIsVisible(true);
       }
 
@@ -202,22 +202,23 @@ export default function Navbar() {
         initial={{ y: 0 }}
         animate={{ y: isVisible ? 0 : -90 }}
         transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none px-3 pt-3 sm:pt-4"
+        className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none px-2 sm:px-3 pt-2 sm:pt-4"
       >
-        {/* ── Futuristic AI Floating Capsule ──────────────────────────────── */}
-        <nav className="pointer-events-auto flex items-center justify-between gap-3 sm:gap-6 px-3.5 sm:px-5 h-11 sm:h-12 rounded-full border border-orange-200/80 dark:border-white/10 bg-white/90 dark:bg-[#08080b]/85 backdrop-blur-2xl shadow-xl shadow-black/5 dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] w-full max-w-5xl transition-all duration-300">
+        {/* ── Futuristic AI Floating Capsule (Ultra-compact & thumb-friendly on mobile) ── */}
+        <nav className="pointer-events-auto flex items-center justify-between gap-2 sm:gap-6 px-3 sm:px-5 h-10 sm:h-12 rounded-full border border-orange-200/80 dark:border-white/10 bg-white/95 dark:bg-[#08080b]/90 backdrop-blur-2xl shadow-lg shadow-black/5 dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] w-full max-w-5xl transition-all duration-300">
           {/* ── Left: AI Status & Monogram ── */}
           <a
             href="#hero"
             onClick={(e) => handleNavClick(e, "#hero")}
-            className="flex items-center gap-2 group select-none shrink-0"
+            className="flex items-center gap-1.5 sm:gap-2 group select-none shrink-0"
           >
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
             <span className="font-mono text-xs sm:text-sm font-bold tracking-wider text-stone-900 dark:text-white group-hover:text-stone-600 dark:group-hover:text-zinc-300 transition-colors">
-              Mohammed Hossam
+              <span className="inline sm:hidden">M. Hossam</span>
+              <span className="hidden sm:inline">Mohammed Hossam</span>
             </span>
           </a>
 
@@ -256,7 +257,7 @@ export default function Navbar() {
           </ul>
 
           {/* ── Right: Quick Action, Theme Switcher & Mobile Menu Toggle ── */}
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             {/* Quick CV Download (Desktop only) */}
             <a
               href="/cv.pdf"
@@ -271,12 +272,12 @@ export default function Navbar() {
             <button
               onClick={toggleTheme}
               aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-              className="flex items-center justify-center w-8 h-8 rounded-full border border-orange-200/80 dark:border-zinc-800 bg-orange-50/50 dark:bg-zinc-900/60 text-stone-700 dark:text-zinc-300 hover:border-orange-400 dark:hover:border-zinc-600 transition-all duration-200 active:scale-90"
+              className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-orange-200/80 dark:border-zinc-800 bg-orange-50/50 dark:bg-zinc-900/60 text-stone-700 dark:text-zinc-300 hover:border-orange-400 dark:hover:border-zinc-600 transition-all duration-200 active:scale-90"
             >
               {theme === "dark" ? (
-                <Sun size={15} className="text-amber-400" />
+                <Sun size={14} className="text-amber-400" />
               ) : (
-                <Moon size={15} className="text-orange-500" />
+                <Moon size={14} className="text-orange-500" />
               )}
             </button>
 
@@ -285,7 +286,7 @@ export default function Navbar() {
               onClick={() => setIsMobileMenuOpen((prev) => !prev)}
               aria-label="Toggle navigation menu"
               aria-expanded={isMobileMenuOpen}
-              className="md:hidden flex items-center justify-center w-8 h-8 rounded-full border border-orange-200/80 dark:border-zinc-800 bg-orange-50/50 dark:bg-zinc-900/60 text-stone-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-all active:scale-90"
+              className="md:hidden flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-orange-200/80 dark:border-zinc-800 bg-orange-50/50 dark:bg-zinc-900/60 text-stone-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-all active:scale-90"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {isMobileMenuOpen ? (
@@ -296,7 +297,7 @@ export default function Navbar() {
                     exit={{ rotate: 90, opacity: 0 }}
                     transition={{ duration: 0.15 }}
                   >
-                    <X size={16} />
+                    <X size={15} />
                   </motion.span>
                 ) : (
                   <motion.span
@@ -306,7 +307,7 @@ export default function Navbar() {
                     exit={{ rotate: -90, opacity: 0 }}
                     transition={{ duration: 0.15 }}
                   >
-                    <Menu size={16} />
+                    <Menu size={15} />
                   </motion.span>
                 )}
               </AnimatePresence>
@@ -335,7 +336,7 @@ export default function Navbar() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.96 }}
               transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed top-16 left-3 right-3 z-50 rounded-3xl border border-orange-200/80 dark:border-zinc-800 bg-white/95 dark:bg-[#09090d]/95 backdrop-blur-2xl shadow-2xl p-5 md:hidden max-h-[85vh] overflow-y-auto"
+              className="fixed top-14 left-3 right-3 z-50 rounded-2xl border border-orange-200/80 dark:border-zinc-800 bg-white/95 dark:bg-[#09090d]/95 backdrop-blur-2xl shadow-2xl p-4 md:hidden max-h-[85vh] overflow-y-auto"
             >
               {/* Header */}
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-orange-100 dark:border-zinc-800">

@@ -395,7 +395,7 @@ export default function JourneyWorld({
       onClick={() => {
         isHoveredRef.current = true;
       }}
-      className="relative w-full h-[780px] sm:h-[840px] overflow-hidden select-none outline-none"
+      className="relative w-full h-[680px] sm:h-[820px] overflow-hidden select-none outline-none touch-pan-y"
     >
       {/* ── Seamless Top & Bottom Vignette Fades into Page Background ── */}
       <div className="absolute top-0 left-0 right-0 h-36 bg-gradient-to-b from-[var(--color-bg-primary)] via-[var(--color-bg-primary)]/80 to-transparent pointer-events-none z-30" />

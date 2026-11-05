@@ -315,7 +315,7 @@ export default function HeroSection() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 max-w-4xl mx-auto px-6 py-24 flex flex-col items-start gap-6"
+        className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 pt-20 pb-10 sm:pt-28 sm:pb-20 flex flex-col items-start gap-4 sm:gap-6"
       >
         {/* Greeting */}
         <motion.p

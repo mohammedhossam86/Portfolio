@@ -294,8 +294,8 @@ export default function VisualGameCanvas() {
       )}
 
       {/* ── Visual Grid Board (Identical clean white/orange board styling to CLI mode) ── */}
-      <div className="w-full flex-1 p-6 bg-orange-50/20 dark:bg-[#08080a] flex flex-col items-center justify-center select-none overflow-x-auto min-h-[340px]">
-        <div className="inline-block border border-orange-200 dark:border-zinc-800 rounded-2xl p-4 sm:p-5 bg-white dark:bg-[#0f0f14] shadow-md dark:shadow-inner">
+      <div className="w-full flex-1 p-3 sm:p-6 bg-orange-50/20 dark:bg-[#08080a] flex flex-col items-center justify-center select-none overflow-x-auto min-h-[280px] touch-pan-y">
+        <div className="inline-block border border-orange-200 dark:border-zinc-800 rounded-2xl p-2.5 sm:p-5 bg-white dark:bg-[#0f0f14] shadow-md dark:shadow-inner">
           <div className="flex flex-col gap-1.5 sm:gap-2">
             {grid.map((row, r) => (
               <div key={r} className="flex gap-1.5 sm:gap-2 justify-center">

@@ -44,7 +44,7 @@ export default function ProjectsGrid() {
     : filteredProjects.slice(0, 4);
 
   return (
-    <section id="projects" className="relative py-20 sm:py-32 overflow-hidden border-t border-[var(--color-border)]/50">
+    <section id="projects" className="relative py-12 sm:py-28 overflow-hidden border-t border-[var(--color-border)]/50">
       {/* ── Background Glow ── */}
       <div
         className="absolute top-1/4 right-1/4 w-[550px] h-[350px] rounded-full pointer-events-none opacity-20"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { skillGroups } from "@/data/skills";
 import {
@@ -102,14 +102,22 @@ const iconDictionary: Record<string, IconType | LucideIcon> = {
 
 export default function SkillsGrid() {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // On mobile, show top 6 cards by default unless expanded
-  const visibleGroups = isExpanded ? skillGroups : skillGroups.slice(0, 6);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // On mobile, show top 4 cards by default so scrolling is compact, or all if expanded
+  const visibleGroups = isMobile && !isExpanded ? skillGroups.slice(0, 4) : skillGroups;
 
   return (
     <section
       id="skills"
-      className="relative py-20 sm:py-32 overflow-hidden border-t border-[var(--color-border)]/50"
+      className="relative py-12 sm:py-28 overflow-hidden border-t border-[var(--color-border)]/50"
     >
       {/* ── Background Aura ── */}
       <div
@@ -206,11 +214,11 @@ export default function SkillsGrid() {
         </div>
 
         {/* ── Mobile Expand/Collapse Toggle ── */}
-        {skillGroups.length > 6 && (
-          <div className="mt-8 flex justify-center sm:hidden">
+        {isMobile && skillGroups.length > 4 && (
+          <div className="mt-6 flex justify-center sm:hidden">
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-orange-50 dark:bg-zinc-900 border border-orange-200 dark:border-zinc-800 text-xs font-mono text-stone-700 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-orange-50 dark:bg-zinc-900 border border-orange-200 dark:border-zinc-800 text-xs font-mono font-semibold text-stone-700 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-white transition-colors shadow-xs"
             >
               {isExpanded ? (
                 <>
@@ -219,7 +227,7 @@ export default function SkillsGrid() {
                 </>
               ) : (
                 <>
-                  <span>Show All Categories</span>
+                  <span>Show All Categories ({skillGroups.length})</span>
                   <ChevronDown size={14} />
                 </>
               )}

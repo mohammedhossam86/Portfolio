@@ -32,7 +32,7 @@ export default function TeachingPlaylist() {
   };
 
   return (
-    <section id="teaching" className="relative py-24 sm:py-32 overflow-hidden border-t border-[var(--color-border)]/50">
+    <section id="teaching" className="relative py-12 sm:py-28 overflow-hidden border-t border-[var(--color-border)]/50">
       {/* ── Background Glow ── */}
       <div
         className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full pointer-events-none opacity-20"
@@ -43,7 +43,7 @@ export default function TeachingPlaylist() {
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         {/* ── Section Header ── */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}

@@ -21,8 +21,14 @@ export default function OpenSourceWidget() {
   const [mrs, setMrs] = useState<GitLabMergeRequest[]>(fallbackGitLabMRs);
   const [isSectionCollapsed, setIsSectionCollapsed] = useState(false);
   const [filter, setFilter] = useState<"all" | "merged" | "closed">("all");
-  const [visibleCount, setVisibleCount] = useState(8);
+  const [visibleCount, setVisibleCount] = useState(4);
   const [expandedMrId, setExpandedMrId] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth >= 640) {
+      setVisibleCount(8);
+    }
+  }, []);
 
   useEffect(() => {
     async function loadMRs() {
@@ -64,7 +70,7 @@ export default function OpenSourceWidget() {
   return (
     <section
       id="opensource"
-      className="relative py-20 sm:py-32 overflow-hidden border-t border-[var(--color-border)]/50"
+      className="relative py-12 sm:py-28 overflow-hidden border-t border-[var(--color-border)]/50"
     >
       {/* ── Background Glow ── */}
       <div

@@ -116,12 +116,12 @@ const itemVariants = {
 export default function FloatingSocialDock() {
   return (
     <>
-      {/* ── Desktop: Vertical dock on left side ── */}
+      {/* ── Desktop: Vertical dock on left side (Only on large desktop screens to prevent overlap on mobile/tablets) ── */}
       <motion.aside
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="fixed left-5 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-3.5 md:flex"
+        className="fixed left-5 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-3.5 xl:flex"
         aria-label="Social links"
       >
         {socialLinks.map((link: SocialLink) => (

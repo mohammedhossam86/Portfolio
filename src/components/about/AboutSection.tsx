@@ -21,7 +21,7 @@ export default function AboutSection() {
   return (
     <section
       id="about"
-      className="relative py-24 sm:py-32 overflow-hidden border-t border-[var(--color-border)]/50"
+      className="relative py-12 sm:py-28 overflow-hidden border-t border-[var(--color-border)]/50"
     >
       {/* ── Background Glow ── */}
       <div
@@ -33,7 +33,7 @@ export default function AboutSection() {
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         {/* ── Section Header ── */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}

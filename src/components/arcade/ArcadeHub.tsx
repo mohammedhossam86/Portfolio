@@ -10,7 +10,7 @@ import VisualGameCanvas from "./VisualGameCanvas";
 
 export default function ArcadeHub() {
   return (
-    <section id="arcade" className="relative py-24 sm:py-32 overflow-hidden border-t border-[var(--color-border)]/50">
+    <section id="arcade" className="relative py-12 sm:py-28 overflow-hidden border-t border-[var(--color-border)]/50">
       {/* ── Background Glow ── */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] rounded-full pointer-events-none opacity-20"
@@ -21,7 +21,7 @@ export default function ArcadeHub() {
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
+      <div className="relative z-10 max-w-7xl mx-auto px-3 sm:px-6">
         {/* ── Header ── */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}

@@ -28,7 +28,7 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="relative py-24 sm:py-32 overflow-hidden border-t border-[var(--color-border)]/50"
+      className="relative py-12 sm:py-28 overflow-hidden border-t border-[var(--color-border)]/50"
     >
       {/* ── Background Aura ── */}
       <div
