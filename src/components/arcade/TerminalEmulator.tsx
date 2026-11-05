@@ -78,6 +78,14 @@ export default function TerminalEmulator() {
         return;
       }
 
+      // ONLY intercept if user is interacting with the Arcade section!
+      const isInsideArcade =
+        target?.closest("#arcade") !== null ||
+        document.getElementById("arcade")?.matches(":hover") ||
+        document.activeElement?.closest("#arcade") !== null;
+
+      if (!isInsideArcade) return;
+
       const k = e.key.toLowerCase();
       const isMoveKey = [
         "arrowup",

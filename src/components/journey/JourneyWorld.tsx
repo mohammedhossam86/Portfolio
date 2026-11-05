@@ -20,7 +20,6 @@ import {
   Maximize2,
   ChevronRight,
   ChevronLeft,
-  Flame,
 } from "lucide-react";
 
 interface JourneyWorldProps {
@@ -28,13 +27,14 @@ interface JourneyWorldProps {
   onInspectMilestone: (milestone: JourneyMilestone) => void;
 }
 
-// Grand Open-World Dimensions & Physics
+// Grand Open-World Geometry & Boundaries
 const STATION_START_X = 420;
 const STATION_GAP = 560;
 const ROAD_MIN_Y = 440;
 const ROAD_MAX_Y = 720;
 const STATION_Y = 240;
 const PROXIMITY_THRESHOLD = 320;
+const MAX_SPEED = 480;
 
 export default function JourneyWorld({
   milestones,
@@ -42,7 +42,7 @@ export default function JourneyWorld({
 }: JourneyWorldProps) {
   const totalWorldWidth = STATION_START_X + milestones.length * STATION_GAP + 500;
 
-  // Car Physics State
+  // React state for DOM rendering
   const [carX, setCarX] = useState(STATION_START_X);
   const [carY, setCarY] = useState(580);
   const [carAngle, setCarAngle] = useState(0); // 0 = facing right
@@ -54,17 +54,42 @@ export default function JourneyWorld({
     milestones[0] || null
   );
 
-  // Viewport / Camera Scrolling
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const [viewportWidth, setViewportWidth] = useState(1200);
-  const isHoveredRef = useRef(false);
+  // References for 60fps Physics & Decoupled State
+  const carPhysics = useRef({
+    x: STATION_START_X,
+    y: 580,
+    vx: 0,
+    vy: 0,
+    angle: 0,
+    targetAngle: 0,
+    targetX: null as number | null,
+    isDriving: false,
+    autoCruiseActive: false,
+    autoCruiseTimer: null as NodeJS.Timeout | null,
+  });
 
-  // Keyboard Tracking
+  const focusedMilestoneRef = useRef<JourneyMilestone | null>(milestones[0] || null);
+  const activeStationIdxRef = useRef<number>(0);
+  const isHoveredRef = useRef(false);
   const keysPressed = useRef<{ [key: string]: boolean }>({});
   const animFrameRef = useRef<number | null>(null);
-  const targetXRef = useRef<number | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [viewportWidth, setViewportWidth] = useState(1200);
 
-  // Measure container viewport width dynamically
+  // Keep references in sync with state
+  useEffect(() => {
+    focusedMilestoneRef.current = focusedMilestone;
+  }, [focusedMilestone]);
+
+  useEffect(() => {
+    activeStationIdxRef.current = activeStationIdx;
+  }, [activeStationIdx]);
+
+  useEffect(() => {
+    carPhysics.current.autoCruiseActive = autoCruise;
+  }, [autoCruise]);
+
+  // Viewport resize tracking
   useEffect(() => {
     const updateWidth = () => {
       if (containerRef.current) {
@@ -76,116 +101,160 @@ export default function JourneyWorld({
     return () => window.removeEventListener("resize", updateWidth);
   }, []);
 
-  // ─── Station Coordinate Calculator ─────────────────────────────────────────
+  // Station Coordinate Resolver
   const getStationX = (index: number) => STATION_START_X + index * STATION_GAP;
 
-  // ─── Drive to Specific Station ─────────────────────────────────────────────
+  // Drive to a specific station (Smooth cruise)
   const driveToStation = useCallback(
     (index: number) => {
       const clamped = Math.max(0, Math.min(milestones.length - 1, index));
       const targetX = getStationX(clamped);
-      targetXRef.current = targetX;
+      carPhysics.current.targetX = targetX;
+      carPhysics.current.isDriving = true;
       setActiveStationIdx(clamped);
-      setIsDriving(true);
     },
     [milestones.length]
   );
 
-  // ─── Proximity Check ───────────────────────────────────────────────────────
-  const checkProximity = useCallback(
+  // Proximity Calculation (Pure math helper)
+  const calculateProximity = useCallback(
     (x: number, y: number) => {
       let closestIdx = -1;
       let minDistance = Infinity;
 
-      milestones.forEach((m, idx) => {
-        const sx = getStationX(idx);
+      for (let i = 0; i < milestones.length; i++) {
+        const sx = getStationX(i);
         const sy = STATION_Y;
         const dist = Math.hypot(x - sx, y - sy);
         if (dist < minDistance) {
           minDistance = dist;
-          closestIdx = idx;
+          closestIdx = i;
         }
-      });
+      }
 
       if (minDistance < PROXIMITY_THRESHOLD && closestIdx !== -1) {
-        setActiveStationIdx(closestIdx);
-        setFocusedMilestone(milestones[closestIdx]);
+        if (activeStationIdxRef.current !== closestIdx) {
+          setActiveStationIdx(closestIdx);
+        }
+        if (focusedMilestoneRef.current?.id !== milestones[closestIdx].id) {
+          setFocusedMilestone(milestones[closestIdx]);
+        }
       } else {
-        setFocusedMilestone(null);
+        if (focusedMilestoneRef.current !== null) {
+          setFocusedMilestone(null);
+        }
       }
     },
     [milestones]
   );
 
-  // ─── Physics & Animation Loop (Silky 60fps) ─────────────────────────────────
+  // ─── Continuous 60fps Physics Simulation Loop (Runs without teardown!) ──────
   useEffect(() => {
     let lastTime = performance.now();
 
-    const loop = (time: number) => {
-      const dt = Math.min((time - lastTime) / 1000, 0.1);
-      lastTime = time;
+    const loop = (currentTime: number) => {
+      const dt = Math.min((currentTime - lastTime) / 1000, 0.1);
+      lastTime = currentTime;
 
-      // Automated Drive To Station
-      if (targetXRef.current !== null) {
-        setCarX((prevX) => {
-          const targetX = targetXRef.current!;
-          const diff = targetX - prevX;
-          const step = Math.sign(diff) * Math.min(Math.abs(diff), 480 * dt);
+      const p = carPhysics.current;
+      const keys = keysPressed.current;
 
-          if (Math.abs(diff) <= 6) {
-            targetXRef.current = null;
-            setIsDriving(false);
-            setSpeedKmh(0);
-            return targetX;
+      // Check manual keyboard inputs
+      let ax = 0;
+      let ay = 0;
+      if (keys["ArrowRight"] || keys["d"] || keys["D"]) ax += 1;
+      if (keys["ArrowLeft"] || keys["a"] || keys["A"]) ax -= 1;
+      if (keys["ArrowUp"] || keys["w"] || keys["W"]) ay -= 1;
+      if (keys["ArrowDown"] || keys["s"] || keys["S"]) ay += 1;
+
+      if (ax !== 0 || ay !== 0) {
+        // Player is steering manually: cancel any automatic navigation
+        p.targetX = null;
+        if (p.autoCruiseActive) {
+          setAutoCruise(false);
+          p.autoCruiseActive = false;
+        }
+
+        // Accelerate car
+        const accel = 950 * dt;
+        p.vx += ax * accel;
+        p.vy += ay * accel;
+
+        // Clamp to maximum speed
+        const currentSpeed = Math.hypot(p.vx, p.vy);
+        if (currentSpeed > MAX_SPEED) {
+          p.vx = (p.vx / currentSpeed) * MAX_SPEED;
+          p.vy = (p.vy / currentSpeed) * MAX_SPEED;
+        }
+
+        // Target angle based on velocity vector
+        p.targetAngle = (Math.atan2(p.vy, p.vx) * 180) / Math.PI;
+        p.isDriving = true;
+      } else if (p.targetX !== null) {
+        // Automated cruising to target landmark
+        const dx = p.targetX - p.x;
+
+        if (Math.abs(dx) <= 6) {
+          // Arrived smoothly at station
+          p.x = p.targetX;
+          p.vx = 0;
+          p.vy = 0;
+          p.targetX = null;
+          p.isDriving = false;
+
+          // If auto-cruise is active, schedule next station drive after pause
+          if (p.autoCruiseActive) {
+            if (p.autoCruiseTimer) clearTimeout(p.autoCruiseTimer);
+            p.autoCruiseTimer = setTimeout(() => {
+              if (carPhysics.current.autoCruiseActive) {
+                const nextIdx = (activeStationIdxRef.current + 1) % milestones.length;
+                driveToStation(nextIdx);
+              }
+            }, 2600);
           }
-
-          const newX = prevX + step;
-          setCarAngle(step > 0 ? 0 : 180);
-          setSpeedKmh(Math.round(Math.abs(step) * 2.6));
-          checkProximity(newX, carY);
-          return newX;
-        });
-      } else {
-        // Manual Keyboard or Touch Movement
-        let vx = 0;
-        let vy = 0;
-        const keys = keysPressed.current;
-
-        if (keys["ArrowRight"] || keys["d"] || keys["D"]) vx += 1;
-        if (keys["ArrowLeft"] || keys["a"] || keys["A"]) vx -= 1;
-        if (keys["ArrowUp"] || keys["w"] || keys["W"]) vy -= 1;
-        if (keys["ArrowDown"] || keys["s"] || keys["S"]) vy += 1;
-
-        if (vx !== 0 || vy !== 0) {
-          setIsDriving(true);
-          const moveSpeed = 440 * dt;
-          const mag = Math.hypot(vx, vy);
-          const normX = (vx / mag) * moveSpeed;
-          const normY = (vy / mag) * moveSpeed;
-
-          // Calculate car rotation
-          const angleRad = Math.atan2(vy, vx);
-          const angleDeg = (angleRad * 180) / Math.PI;
-          setCarAngle(angleDeg);
-
-          setCarX((prevX) => {
-            const nextX = Math.max(140, Math.min(totalWorldWidth - 160, prevX + normX));
-            checkProximity(nextX, carY);
-            return nextX;
-          });
-
-          setCarY((prevY) => {
-            const nextY = Math.max(ROAD_MIN_Y, Math.min(ROAD_MAX_Y, prevY + normY));
-            checkProximity(carX, nextY);
-            return nextY;
-          });
-
-          setSpeedKmh(Math.round(moveSpeed * 3.4));
         } else {
-          setIsDriving(false);
-          setSpeedKmh((prev) => Math.max(0, prev - 5));
+          // Smooth glide towards targetX
+          const dir = Math.sign(dx);
+          const desiredSpeed = dir * Math.min(MAX_SPEED, Math.max(90, Math.abs(dx) * 2.8));
+          p.vx += (desiredSpeed - p.vx) * Math.min(1, 9 * dt);
+          p.vy *= 0.88; // stay in current lane
+
+          p.targetAngle = dir > 0 ? 0 : 180;
+          p.isDriving = true;
+        }
+      } else {
+        // Natural friction & braking
+        p.vx *= Math.pow(0.12, dt);
+        p.vy *= Math.pow(0.12, dt);
+        if (Math.hypot(p.vx, p.vy) < 4) {
+          p.vx = 0;
+          p.vy = 0;
+          p.isDriving = false;
         }
       }
+
+      // Smooth Angle Interpolation (Eliminates oscillation jitter!)
+      let angleDiff = ((p.targetAngle - p.angle + 180) % 360) - 180;
+      if (angleDiff < -180) angleDiff += 360;
+      p.angle += angleDiff * Math.min(1, 14 * dt);
+
+      // Integrate Position
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+
+      // Bound boundaries
+      p.x = Math.max(140, Math.min(totalWorldWidth - 160, p.x));
+      p.y = Math.max(ROAD_MIN_Y, Math.min(ROAD_MAX_Y, p.y));
+
+      // Calculate proximity to milestone landmarks
+      calculateProximity(p.x, p.y);
+
+      // Commit frame to React state for UI rendering
+      setCarX(p.x);
+      setCarY(p.y);
+      setCarAngle(p.angle);
+      setIsDriving(p.isDriving);
+      setSpeedKmh(Math.round(Math.hypot(p.vx, p.vy) * 0.28));
 
       animFrameRef.current = requestAnimationFrame(loop);
     };
@@ -193,25 +262,11 @@ export default function JourneyWorld({
     animFrameRef.current = requestAnimationFrame(loop);
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+      if (carPhysics.current.autoCruiseTimer) clearTimeout(carPhysics.current.autoCruiseTimer);
     };
-  }, [carX, carY, checkProximity, totalWorldWidth]);
+  }, [calculateProximity, driveToStation, milestones.length, totalWorldWidth]);
 
-  // ─── Auto Cruise Controller ────────────────────────────────────────────────
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (autoCruise) {
-      timer = setInterval(() => {
-        setActiveStationIdx((prev) => {
-          const next = (prev + 1) % milestones.length;
-          driveToStation(next);
-          return next;
-        });
-      }, 4000);
-    }
-    return () => clearInterval(timer);
-  }, [autoCruise, driveToStation, milestones.length]);
-
-  // ─── Keyboard Listeners (Isolated to Journey Hover) ─────────────────────────
+  // ─── Global Keyboard Listener (Strictly isolated from Arcade) ───────────────
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
@@ -223,40 +278,49 @@ export default function JourneyWorld({
         return;
       }
 
-      if (!isHoveredRef.current) return;
+      // If user is inside Arcade, don't intercept keys
+      if (
+        target?.closest("#arcade") !== null ||
+        document.getElementById("arcade")?.matches(":hover") ||
+        document.activeElement?.closest("#arcade") !== null
+      ) {
+        return;
+      }
 
       const key = e.key;
+      const isNavKey = [
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowLeft",
+        "ArrowRight",
+        "w",
+        "a",
+        "s",
+        "d",
+        "W",
+        "A",
+        "S",
+        "D",
+      ].includes(key);
 
-      if (
-        [
-          "ArrowUp",
-          "ArrowDown",
-          "ArrowLeft",
-          "ArrowRight",
-          "w",
-          "a",
-          "s",
-          "d",
-          "W",
-          "A",
-          "S",
-          "D",
-          " ",
-        ].includes(key)
-      ) {
+      if (isNavKey || key === " ") {
+        // Prevent default window scrolling
         e.preventDefault();
         e.stopPropagation();
       }
 
-      if (key === " " && focusedMilestone) {
-        onInspectMilestone(focusedMilestone);
-      } else {
+      if (key === " ") {
+        if (focusedMilestoneRef.current) {
+          onInspectMilestone(focusedMilestoneRef.current);
+        }
+      } else if (isNavKey) {
         keysPressed.current[key] = true;
       }
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      delete keysPressed.current[e.key];
+      const key = e.key;
+      delete keysPressed.current[key];
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -265,7 +329,21 @@ export default function JourneyWorld({
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [focusedMilestone, onInspectMilestone]);
+  }, [onInspectMilestone]);
+
+  // ─── Toggle Auto Cruise Mode ────────────────────────────────────────────────
+  const toggleAutoCruise = () => {
+    if (autoCruise) {
+      setAutoCruise(false);
+      carPhysics.current.autoCruiseActive = false;
+      carPhysics.current.targetX = null;
+    } else {
+      setAutoCruise(true);
+      carPhysics.current.autoCruiseActive = true;
+      const nextIdx = (activeStationIdxRef.current + 1) % milestones.length;
+      driveToStation(nextIdx);
+    }
+  };
 
   // ─── Camera Offset Calculation ─────────────────────────────────────────────
   const maxScroll = Math.max(0, totalWorldWidth - viewportWidth);
@@ -288,6 +366,7 @@ export default function JourneyWorld({
   return (
     <div
       ref={containerRef}
+      tabIndex={0}
       onMouseEnter={() => {
         isHoveredRef.current = true;
       }}
@@ -295,7 +374,10 @@ export default function JourneyWorld({
         isHoveredRef.current = false;
         keysPressed.current = {};
       }}
-      className="relative w-full h-[780px] sm:h-[840px] overflow-hidden select-none"
+      onClick={() => {
+        isHoveredRef.current = true;
+      }}
+      className="relative w-full h-[780px] sm:h-[840px] overflow-hidden select-none outline-none"
     >
       {/* ── Seamless Top & Bottom Vignette Fades into Page Background ── */}
       <div className="absolute top-0 left-0 right-0 h-36 bg-gradient-to-b from-[#05070f] via-[#05070f]/80 to-transparent pointer-events-none z-30" />
@@ -334,7 +416,7 @@ export default function JourneyWorld({
           </button>
 
           <button
-            onClick={() => setAutoCruise(!autoCruise)}
+            onClick={toggleAutoCruise}
             className={`inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-xs font-mono font-semibold transition-all border shadow-xl backdrop-blur-2xl active:scale-95 ${
               autoCruise
                 ? "bg-amber-500/25 text-amber-300 border-amber-400 shadow-amber-500/20"

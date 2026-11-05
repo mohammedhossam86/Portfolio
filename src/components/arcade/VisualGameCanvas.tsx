@@ -76,6 +76,14 @@ export default function VisualGameCanvas() {
         return;
       }
 
+      // ONLY intercept if user is actively interacting with the Arcade game!
+      const isInsideArcade =
+        target?.closest("#arcade") !== null ||
+        document.getElementById("arcade")?.matches(":hover") ||
+        document.activeElement?.closest("#arcade") !== null;
+
+      if (!isInsideArcade) return;
+
       const k = e.key.toLowerCase();
       const isMoveKey = [
         "arrowup",
