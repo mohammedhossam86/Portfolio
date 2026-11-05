@@ -104,6 +104,12 @@ html.light {
 html.light body,
 html.light main {
   background-color: #fffaf5 !important;
+  background-image: 
+    radial-gradient(rgba(234, 88, 12, 0.16) 1px, transparent 1px),
+    radial-gradient(rgba(245, 158, 11, 0.1) 1.5px, transparent 1.5px) !important;
+  background-size: 40px 40px, 80px 80px !important;
+  background-position: 0 0, 20px 20px !important;
+  background-attachment: fixed !important;
   color: #1c1917 !important;
 }
 
@@ -221,8 +227,16 @@ html {
   color-scheme: dark;
 }
 
+/* Lunar Space Starry Dotted Canvas Across the entire website */
 body {
-  background: var(--color-bg-primary);
+  background-color: var(--color-bg-primary);
+  background-image: 
+    radial-gradient(rgba(255, 255, 255, 0.28) 1px, transparent 1px),
+    radial-gradient(rgba(255, 255, 255, 0.14) 1.5px, transparent 1.5px),
+    radial-gradient(rgba(250, 204, 21, 0.12) 1px, transparent 1px);
+  background-size: 40px 40px, 80px 80px, 160px 160px;
+  background-position: 0 0, 20px 20px, 60px 60px;
+  background-attachment: fixed;
   color: var(--color-text-primary);
   font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
   -webkit-font-smoothing: antialiased;

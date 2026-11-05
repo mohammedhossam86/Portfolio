@@ -8,160 +8,204 @@ interface TopDownCarProps {
 }
 
 /**
- * Photorealistic 2D Top-Down Sports Car (7oskaaa / elgemmy style)
- * Designed for highway navigation and night discovery exploration.
- * Features dual long-range glowing LED high-beams casting forward into the dark,
- * neon underglow, racing stripes, and dual red taillights.
+ * Photorealistic 2D Top-Down Lunar Roving Vehicle (LRV / Moon Buggy)
+ * Designed for lunar exploration across the moon regolith surface.
+ * Features:
+ * - 4 Articulated wire-mesh open lunar rover wheels with chevron treads & suspension
+ * - High-Gain Parabolic Communications Dish (NASA / Apollo style)
+ * - Gold Kapton thermal insulation foil & avionics equipment bay
+ * - Dual astronaut seating station with mission joystick console
+ * - High-power dual lunar floodlights cutting through the deep space darkness
+ * - Micro-thruster dust exhaust when exploring
  */
 export default function TopDownCar({ className = "", isDriving = true }: TopDownCarProps) {
   return (
     <div className={`relative inline-flex flex-col items-center select-none ${className}`}>
-      {/* ── High-Beam Dual Headlight Cones (Casting Forward into the Highway) ── */}
+      {/* ── High-Beam Dual Lunar Floodlight Cones (Penetrating Deep Moon Darkness) ── */}
       <div
-        className="absolute -bottom-64 left-1/2 -translate-x-1/2 w-96 h-72 pointer-events-none"
+        className="absolute -bottom-64 left-1/2 -translate-x-1/2 w-[420px] h-72 pointer-events-none"
         style={{
           background:
-            "conic-gradient(from 180deg at 50% 0%, var(--car-beam, rgba(255, 255, 255, 0.85)) 0deg, var(--car-beam-conic, rgba(254, 243, 199, 0.5)) 28deg, transparent 65deg, transparent 295deg, var(--car-beam-conic, rgba(254, 243, 199, 0.5)) 332deg, var(--car-beam, rgba(255, 255, 255, 0.85)) 360deg)",
+            "conic-gradient(from 180deg at 50% 0%, rgba(255, 255, 255, 0.9) 0deg, rgba(254, 243, 199, 0.45) 32deg, transparent 65deg, transparent 295deg, rgba(254, 243, 199, 0.45) 328deg, rgba(255, 255, 255, 0.9) 360deg)",
           filter: "blur(14px)",
           opacity: 0.95,
         }}
       />
 
-      {/* ── Intense Core Headlight Discovery Beam ── */}
+      {/* ── Intense Core Lunar Terrain Floodlight ── */}
       <div
-        className="absolute -bottom-40 left-1/2 -translate-x-1/2 w-56 h-48 pointer-events-none"
+        className="absolute -bottom-40 left-1/2 -translate-x-1/2 w-64 h-48 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.95), var(--car-underglow, rgba(254, 243, 199, 0.4)) 50%, transparent 80%)",
-          filter: "blur(8px)",
+            "radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.98), rgba(251, 191, 36, 0.35) 45%, transparent 75%)",
+          filter: "blur(9px)",
         }}
       />
 
-      {/* ── Nitro Exhaust Thruster Flames (behind the car / top side) ── */}
+      {/* ── Lunar Regolith Dust & Micro-Thrusters (Behind the Rover when moving) ── */}
       {isDriving && (
-        <div className="absolute -top-5 left-1/2 -translate-x-1/2 flex items-center gap-5 pointer-events-none">
+        <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex items-center gap-7 pointer-events-none">
           <motion.div
-            className="w-2 h-5 rounded-full"
+            className="w-2.5 h-6 rounded-full"
             style={{
-              background: "linear-gradient(to top, var(--car-stripe, #ea580c), #f59e0b, transparent)",
-              filter: "blur(2px)",
+              background: "linear-gradient(to top, rgba(255, 255, 255, 0.7), rgba(251, 191, 36, 0.5), transparent)",
+              filter: "blur(3px)",
             }}
-            animate={{ scaleY: [0.8, 1.4, 0.8], opacity: [0.6, 1, 0.6] }}
-            transition={{ duration: 0.2, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ scaleY: [0.8, 1.5, 0.8], opacity: [0.5, 0.95, 0.5] }}
+            transition={{ duration: 0.22, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.div
-            className="w-2 h-5 rounded-full"
+            className="w-2.5 h-6 rounded-full"
             style={{
-              background: "linear-gradient(to top, var(--car-stripe, #ea580c), #f59e0b, transparent)",
-              filter: "blur(2px)",
+              background: "linear-gradient(to top, rgba(255, 255, 255, 0.7), rgba(251, 191, 36, 0.5), transparent)",
+              filter: "blur(3px)",
             }}
-            animate={{ scaleY: [0.8, 1.4, 0.8], opacity: [0.6, 1, 0.6] }}
-            transition={{ duration: 0.2, repeat: Infinity, ease: "easeInOut", delay: 0.1 }}
+            animate={{ scaleY: [0.8, 1.5, 0.8], opacity: [0.5, 0.95, 0.5] }}
+            transition={{ duration: 0.22, repeat: Infinity, ease: "easeInOut", delay: 0.11 }}
           />
         </div>
       )}
 
-      {/* ── Compact Sleek Top-Down Car Body ── */}
+      {/* ── Authentically Detailed Top-Down Lunar Rover (LRV) ── */}
       <svg
-        viewBox="0 0 76 136"
-        className="w-12 sm:w-14 h-auto drop-shadow-[0_10px_22px_rgba(0,0,0,0.65)]"
+        viewBox="0 0 92 144"
+        className="w-14 sm:w-16 h-auto drop-shadow-[0_12px_28px_rgba(0,0,0,0.8)]"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          {/* Main Body Gradient */}
-          <linearGradient id="bodyGradTop" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="var(--car-body-1, #0a0a0d)" />
-            <stop offset="35%" stopColor="var(--car-body-2, #18181b)" />
-            <stop offset="70%" stopColor="var(--car-body-3, #27272a)" />
-            <stop offset="100%" stopColor="var(--car-body-4, #e4e4e7)" />
+          {/* Gold Kapton Foil Thermal Shield Gradient */}
+          <linearGradient id="lunarGoldFoil" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#fef08a" />
+            <stop offset="35%" stopColor="#f59e0b" />
+            <stop offset="70%" stopColor="#d97706" />
+            <stop offset="100%" stopColor="#b45309" />
           </linearGradient>
 
-          {/* Roof / Windshield Glass */}
-          <linearGradient id="windshieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#09090c" />
-            <stop offset="50%" stopColor="#18181b" />
-            <stop offset="100%" stopColor="var(--car-stripe, #ffffff)" stopOpacity="0.7" />
+          {/* Lunar Titanium Chassis */}
+          <linearGradient id="lunarChassisGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="30%" stopColor="#e4e4e7" />
+            <stop offset="75%" stopColor="#71717a" />
+            <stop offset="100%" stopColor="#27272a" />
           </linearGradient>
 
-          {/* Tire Tread */}
-          <linearGradient id="tireGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#09090c" />
-            <stop offset="50%" stopColor="#27272a" />
-            <stop offset="100%" stopColor="#09090c" />
+          {/* Wire-Mesh Lunar Chevron Tire Texture */}
+          <linearGradient id="meshWheelGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#18181b" />
+            <stop offset="25%" stopColor="#52525b" />
+            <stop offset="50%" stopColor="#a1a1aa" />
+            <stop offset="75%" stopColor="#52525b" />
+            <stop offset="100%" stopColor="#18181b" />
+          </linearGradient>
+
+          {/* Solar Avionics Cell Gradient */}
+          <linearGradient id="solarCellGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#1e3a8a" />
+            <stop offset="50%" stopColor="#0f172a" />
+            <stop offset="100%" stopColor="#0369a1" />
           </linearGradient>
         </defs>
 
-        {/* ── Underglow Neon Aura ── */}
-        <ellipse cx="38" cy="68" rx="34" ry="58" fill="var(--car-underglow, rgba(255, 255, 255, 0.2))" opacity="0.45" filter="blur(6px)" />
+        {/* ── 4 Articulated Suspension Outriggers ── */}
+        {/* Front Left Suspension Arm */}
+        <line x1="28" y1="108" x2="14" y2="108" stroke="#a1a1aa" strokeWidth="2.5" strokeLinecap="round" />
+        {/* Front Right Suspension Arm */}
+        <line x1="64" y1="108" x2="78" y2="108" stroke="#a1a1aa" strokeWidth="2.5" strokeLinecap="round" />
+        {/* Rear Left Suspension Arm */}
+        <line x1="28" y1="36" x2="14" y2="36" stroke="#a1a1aa" strokeWidth="2.5" strokeLinecap="round" />
+        {/* Rear Right Suspension Arm */}
+        <line x1="64" y1="36" x2="78" y2="36" stroke="#a1a1aa" strokeWidth="2.5" strokeLinecap="round" />
 
-        {/* ── 4 Wheels / Tires ── */}
-        {/* Front Left */}
-        <rect x="3" y="88" width="9" height="24" rx="4" fill="url(#tireGrad)" stroke="#475569" strokeWidth="0.75" />
-        {/* Front Right */}
-        <rect x="64" y="88" width="9" height="24" rx="4" fill="url(#tireGrad)" stroke="#475569" strokeWidth="0.75" />
-        {/* Rear Left */}
-        <rect x="3" y="24" width="9" height="24" rx="4" fill="url(#tireGrad)" stroke="#475569" strokeWidth="0.75" />
-        {/* Rear Right */}
-        <rect x="64" y="24" width="9" height="24" rx="4" fill="url(#tireGrad)" stroke="#475569" strokeWidth="0.75" />
+        {/* ── 4 Wire-Mesh Lunar Chevron Tires ── */}
+        {/* Front Left Wheel */}
+        <rect x="5" y="94" width="12" height="28" rx="4" fill="url(#meshWheelGrad)" stroke="#d4d4d8" strokeWidth="0.8" />
+        <line x1="7" y1="99" x2="15" y2="103" stroke="#27272a" strokeWidth="1.2" />
+        <line x1="7" y1="105" x2="15" y2="109" stroke="#27272a" strokeWidth="1.2" />
+        <line x1="7" y1="111" x2="15" y2="115" stroke="#27272a" strokeWidth="1.2" />
 
-        {/* ── Aerodynamic Chassis Silhouette ── */}
-        <path
-          d="
-            M22 10
-            C26 8, 50 8, 54 10
-            C60 12, 64 20, 64 36
-            C64 48, 62 60, 64 80
-            C66 94, 62 116, 56 126
-            C50 133, 44 135, 38 135
-            C32 135, 26 133, 20 126
-            C14 116, 10 94, 12 80
-            C14 60, 12 48, 12 36
-            C12 20, 16 12, 22 10
-            Z
-          "
-          fill="url(#bodyGradTop)"
-          stroke="var(--car-stripe, #ffffff)"
-          strokeWidth="1.2"
-        />
+        {/* Front Right Wheel */}
+        <rect x="75" y="94" width="12" height="28" rx="4" fill="url(#meshWheelGrad)" stroke="#d4d4d8" strokeWidth="0.8" />
+        <line x1="77" y1="99" x2="85" y2="103" stroke="#27272a" strokeWidth="1.2" />
+        <line x1="77" y1="105" x2="85" y2="109" stroke="#27272a" strokeWidth="1.2" />
+        <line x1="77" y1="111" x2="85" y2="115" stroke="#27272a" strokeWidth="1.2" />
 
-        {/* ── Dual Racing Stripes ── */}
-        <line x1="35" y1="12" x2="35" y2="133" stroke="var(--car-stripe, #ffffff)" strokeWidth="1.5" opacity="0.85" />
-        <line x1="41" y1="12" x2="41" y2="133" stroke="var(--car-stripe, #ffffff)" strokeWidth="1.5" opacity="0.85" />
+        {/* Rear Left Wheel */}
+        <rect x="5" y="22" width="12" height="28" rx="4" fill="url(#meshWheelGrad)" stroke="#d4d4d8" strokeWidth="0.8" />
+        <line x1="7" y1="27" x2="15" y2="31" stroke="#27272a" strokeWidth="1.2" />
+        <line x1="7" y1="33" x2="15" y2="37" stroke="#27272a" strokeWidth="1.2" />
+        <line x1="7" y1="39" x2="15" y2="43" stroke="#27272a" strokeWidth="1.2" />
 
-        {/* ── Front Windshield ── */}
-        <path
-          d="M20 78 C25 74, 51 74, 56 78 L53 96 C48 99, 28 99, 23 96 Z"
-          fill="url(#windshieldGrad)"
-          stroke="var(--car-stripe, #ffffff)"
-          strokeWidth="0.8"
-        />
+        {/* Rear Right Wheel */}
+        <rect x="75" y="22" width="12" height="28" rx="4" fill="url(#meshWheelGrad)" stroke="#d4d4d8" strokeWidth="0.8" />
+        <line x1="77" y1="27" x2="85" y2="31" stroke="#27272a" strokeWidth="1.2" />
+        <line x1="77" y1="33" x2="85" y2="37" stroke="#27272a" strokeWidth="1.2" />
+        <line x1="77" y1="39" x2="85" y2="43" stroke="#27272a" strokeWidth="1.2" />
 
-        {/* ── Cabin Roof ── */}
-        <rect x="23" y="52" width="30" height="26" rx="4" fill="#121217" stroke="var(--car-body-2, #27272a)" strokeWidth="0.75" />
+        {/* ── Main Spaceframe Tubular Platform ── */}
+        <rect x="22" y="16" width="48" height="106" rx="8" fill="url(#lunarChassisGrad)" stroke="#ffffff" strokeWidth="1.5" />
 
-        {/* ── Rear Windshield ── */}
-        <path
-          d="M23 48 C28 50, 48 50, 53 48 L55 36 C50 34, 26 34, 21 36 Z"
-          fill="#18181b"
-          stroke="var(--car-body-3, #3f3f46)"
-          strokeWidth="0.8"
-        />
+        {/* ── Gold Kapton Thermal Blanket / Battery Section ── */}
+        <rect x="25" y="20" width="42" height="32" rx="4" fill="url(#lunarGoldFoil)" stroke="#f59e0b" strokeWidth="0.8" />
+        {/* Thermal Foil Quilt Grid Pattern */}
+        <line x1="39" y1="20" x2="39" y2="52" stroke="#b45309" strokeWidth="0.75" strokeDasharray="3 2" />
+        <line x1="53" y1="20" x2="53" y2="52" stroke="#b45309" strokeWidth="0.75" strokeDasharray="3 2" />
+        <line x1="25" y1="36" x2="67" y2="36" stroke="#b45309" strokeWidth="0.75" strokeDasharray="3 2" />
 
-        {/* ── Side Mirrors ── */}
-        <path d="M12 76 L6 73 L6 80 Z" fill="var(--car-body-2, #27272a)" stroke="var(--car-stripe, #ffffff)" strokeWidth="0.5" />
-        <path d="M64 76 L70 73 L70 80 Z" fill="var(--car-body-2, #27272a)" stroke="var(--car-stripe, #ffffff)" strokeWidth="0.5" />
+        {/* ── Rear Solar / Avionics Cell Module ── */}
+        <rect x="29" y="8" width="34" height="12" rx="2" fill="url(#solarCellGrad)" stroke="#38bdf8" strokeWidth="0.8" />
+        <line x1="40" y1="8" x2="40" y2="20" stroke="#60a5fa" strokeWidth="0.5" />
+        <line x1="52" y1="8" x2="52" y2="20" stroke="#60a5fa" strokeWidth="0.5" />
 
-        {/* ── Rear Spoiler ── */}
-        <rect x="15" y="12" width="46" height="5" rx="2" fill="var(--car-body-3, #27272a)" stroke="var(--car-stripe, #ffffff)" strokeWidth="0.75" />
+        {/* ── Astronaut Crew Compartment ── */}
+        {/* Left Astronaut Seat */}
+        <rect x="28" y="58" width="16" height="24" rx="4" fill="#18181b" stroke="#71717a" strokeWidth="0.8" />
+        {/* Astronaut Helmet (Left) */}
+        <ellipse cx="36" cy="70" rx="6" ry="6.5" fill="#f4f4f5" stroke="#e4e4e7" strokeWidth="0.75" />
+        <ellipse cx="36" cy="71" rx="4.5" ry="3.5" fill="#f59e0b" opacity="0.9" />
 
-        {/* ── Dual Glowing Front Headlights (LED White) ── */}
-        <ellipse cx="22" cy="128" rx="4.5" ry="3" fill="#ffffff" filter="drop-shadow(0 0 8px rgba(255, 255, 255, 0.9))" />
-        <ellipse cx="54" cy="128" rx="4.5" ry="3" fill="#ffffff" filter="drop-shadow(0 0 8px rgba(255, 255, 255, 0.9))" />
+        {/* Right Astronaut Seat */}
+        <rect x="48" y="58" width="16" height="24" rx="4" fill="#18181b" stroke="#71717a" strokeWidth="0.8" />
+        {/* Astronaut Helmet (Right) */}
+        <ellipse cx="56" cy="70" rx="6" ry="6.5" fill="#f4f4f5" stroke="#e4e4e7" strokeWidth="0.75" />
+        <ellipse cx="56" cy="71" rx="4.5" ry="3.5" fill="#f59e0b" opacity="0.9" />
 
-        {/* ── Dual Red LED Taillights ── */}
-        <rect x="18" y="10" width="7" height="2.5" rx="1" fill="#ef4444" filter="drop-shadow(0 0 6px #ef4444)" />
-        <rect x="51" y="10" width="7" height="2.5" rx="1" fill="#ef4444" filter="drop-shadow(0 0 6px #ef4444)" />
+        {/* Center T-Handle Navigation Control Console */}
+        <rect x="42" y="74" width="8" height="16" rx="2" fill="#27272a" stroke="#a1a1aa" strokeWidth="0.75" />
+        <circle cx="46" cy="78" r="2" fill="#10b981" />
+        <circle cx="46" cy="84" r="1.5" fill="#f59e0b" />
+
+        {/* ── Front Avionics Equipment Bay ── */}
+        <rect x="26" y="88" width="40" height="28" rx="4" fill="#18181b" stroke="#52525b" strokeWidth="0.8" />
+        {/* Science Payload Pack */}
+        <rect x="30" y="92" width="18" height="16" rx="2" fill="url(#lunarGoldFoil)" stroke="#f59e0b" strokeWidth="0.5" />
+        {/* Telemetry Display */}
+        <rect x="52" y="92" width="10" height="16" rx="1.5" fill="#09090b" stroke="#3f3f46" strokeWidth="0.5" />
+        <line x1="54" y1="96" x2="60" y2="96" stroke="#22c55e" strokeWidth="0.75" />
+        <line x1="54" y1="100" x2="58" y2="100" stroke="#38bdf8" strokeWidth="0.75" />
+
+        {/* ── High-Gain Parabolic Communications Dish (Mounted on Front Mast) ── */}
+        <g transform="translate(62, 108)">
+          {/* Dish Base & Boom */}
+          <line x1="0" y1="0" x2="10" y2="10" stroke="#ffffff" strokeWidth="1.5" />
+          {/* Parabolic Dish Rim */}
+          <ellipse cx="10" cy="10" rx="9" ry="9" fill="#09090b" stroke="#e4e4e7" strokeWidth="1.2" />
+          {/* Mesh Grid Lines */}
+          <line x1="1" y1="10" x2="19" y2="10" stroke="#71717a" strokeWidth="0.75" />
+          <line x1="10" y1="1" x2="10" y2="19" stroke="#71717a" strokeWidth="0.75" />
+          {/* Center Feed Horn Pointing to Earth */}
+          <circle cx="10" cy="10" r="2" fill="#fbbf24" stroke="#ffffff" strokeWidth="0.5" />
+        </g>
+
+        {/* ── Front Dual LED Terrain Floodlights ── */}
+        {/* Left Searchlight */}
+        <ellipse cx="32" cy="122" rx="4.5" ry="3" fill="#ffffff" filter="drop-shadow(0 0 8px rgba(255, 255, 255, 0.95))" />
+        {/* Right Searchlight */}
+        <ellipse cx="60" cy="122" rx="4.5" ry="3" fill="#ffffff" filter="drop-shadow(0 0 8px rgba(255, 255, 255, 0.95))" />
+
+        {/* ── Rear Red Telemetry Beacons ── */}
+        <circle cx="28" cy="18" r="2.5" fill="#ef4444" filter="drop-shadow(0 0 5px #ef4444)" />
+        <circle cx="64" cy="18" r="2.5" fill="#ef4444" filter="drop-shadow(0 0 5px #ef4444)" />
       </svg>
     </div>
   );

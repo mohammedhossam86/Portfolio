@@ -82,17 +82,17 @@ export default function JourneyTimeline() {
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[var(--color-primary-light)] text-xs font-mono uppercase tracking-wider mb-2">
               <Compass size={13} />
-              Career &amp; Learning Odyssey
+              Lunar Career Mission &amp; Odyssey 🚀
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[var(--color-text-primary)]">
               My Professional <span className="text-gradient">Journey</span>
             </h2>
             <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mt-2 font-mono">
-              Explore my work experience, competitive programming milestones, and university graduation. Switch to the interactive Highway Drive to steer a sports car across the career road!
+              Explore my work experience, competitive programming milestones, and engineering outposts. Switch to the interactive Moon Rover to traverse the lunar trail!
             </p>
           </div>
 
-          {/* View Mode Switcher (Highway Drive vs Cards Grid) */}
+          {/* View Mode Switcher (Moon Rover vs Cards Grid) */}
           <div className="flex items-center gap-1.5 bg-orange-50/80 dark:bg-zinc-900/90 border border-orange-200 dark:border-zinc-800 p-1.5 rounded-2xl backdrop-blur-xl shadow-sm">
             <button
               onClick={() => setViewMode("cards")}
@@ -115,7 +115,7 @@ export default function JourneyTimeline() {
               }`}
             >
               <Car size={15} />
-              <span>Highway Drive 🏎️</span>
+              <span>Moon Rover 🌔</span>
             </button>
           </div>
         </div>

@@ -406,17 +406,17 @@ export default function JourneyWorld({
         {/* Speedometer & Station Tracker */}
         <div className="flex items-center gap-3.5 p-2.5 px-4 rounded-2xl bg-white/95 dark:bg-[#0c0c10]/90 border border-orange-200/80 dark:border-zinc-800 backdrop-blur-2xl shadow-xl pointer-events-auto">
           <div className="flex items-center gap-2 font-mono text-xs">
-            <span className="w-2.5 h-2.5 rounded-full bg-orange-500 dark:bg-emerald-400 animate-pulse shadow-sm" />
-            <span className="text-stone-500 dark:text-zinc-400">CRUISE SPEED:</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-orange-500 dark:bg-amber-400 animate-pulse shadow-sm" />
+            <span className="text-stone-500 dark:text-zinc-400">ROVER VELOCITY:</span>
             <strong className="text-stone-900 dark:text-white text-base tracking-tight">{speedKmh}</strong>
-            <span className="text-[11px] text-orange-600 dark:text-zinc-300 font-bold">KM/H</span>
+            <span className="text-[11px] text-orange-600 dark:text-amber-400 font-bold">KM/H</span>
           </div>
 
           <div className="h-5 w-px bg-orange-200 dark:bg-zinc-800" />
 
           <div className="flex items-center gap-2 font-mono text-xs">
-            <span className="text-stone-500 dark:text-zinc-400">LANDMARK:</span>
-            <strong className="text-orange-600 dark:text-zinc-100 text-sm">
+            <span className="text-stone-500 dark:text-zinc-400">LUNAR OUTPOST:</span>
+            <strong className="text-orange-600 dark:text-amber-300 text-sm">
               #{activeStationIdx + 1} of {milestones.length}
             </strong>
           </div>
@@ -428,7 +428,7 @@ export default function JourneyWorld({
             onClick={() => driveToStation(activeStationIdx - 1)}
             disabled={activeStationIdx === 0}
             className="p-3 rounded-2xl bg-white/95 dark:bg-[#0c0c10]/90 border border-orange-200/80 dark:border-zinc-800 text-stone-700 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-white hover:border-orange-400 dark:hover:border-zinc-600 active:scale-95 disabled:opacity-30 transition-all shadow-md backdrop-blur-2xl"
-            title="Drive to Previous Milestone"
+            title="Traverse to Previous Outpost"
           >
             <ChevronLeft size={18} />
           </button>
@@ -437,19 +437,19 @@ export default function JourneyWorld({
             onClick={toggleAutoCruise}
             className={`inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-xs font-mono font-semibold transition-all border shadow-md backdrop-blur-2xl active:scale-95 ${
               autoCruise
-                ? "bg-orange-600 text-white border-orange-600 dark:bg-zinc-100 dark:text-zinc-950 dark:border-zinc-100 shadow-orange-500/20 font-bold"
+                ? "bg-orange-600 text-white border-orange-600 dark:bg-amber-400 dark:text-zinc-950 dark:border-amber-400 shadow-orange-500/20 font-bold"
                 : "bg-white/95 dark:bg-[#0c0c10]/90 border-orange-200/80 dark:border-zinc-800 text-stone-700 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-white hover:border-orange-400 dark:hover:border-zinc-600"
             }`}
           >
             <Play size={14} className={autoCruise ? "animate-spin text-white dark:text-zinc-950" : ""} />
-            <span>{autoCruise ? "Auto-Cruise Active" : "Auto-Cruise Mode"}</span>
+            <span>{autoCruise ? "Auto-Traverse Active 🛰️" : "Auto-Traverse Mode"}</span>
           </button>
 
           <button
             onClick={() => driveToStation(activeStationIdx + 1)}
             disabled={activeStationIdx === milestones.length - 1}
             className="p-3 rounded-2xl bg-white/95 dark:bg-[#0c0c10]/90 border border-orange-200/80 dark:border-zinc-800 text-stone-700 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-white hover:border-orange-400 dark:hover:border-zinc-600 active:scale-95 disabled:opacity-30 transition-all shadow-md backdrop-blur-2xl"
-            title="Drive to Next Milestone"
+            title="Traverse to Next Outpost"
           >
             <ChevronRight size={18} />
           </button>
@@ -464,24 +464,23 @@ export default function JourneyWorld({
           transform: `translateX(-${cameraX}px)`,
         }}
       >
-        {/* ── Background Deep Atmosphere & Night Horizon ── */}
-        <div className="absolute inset-0 bg-[var(--color-bg-primary)]">
-          {/* Subtle Grid Stars & Nebula */}
+        {/* ── Background Cosmic Space Horizon & Starlight Dust ── */}
+        <div className="absolute inset-0 bg-[#060609]">
+          {/* Cosmic Nebula Glow & Stardust Clusters */}
           <div
-            className="absolute top-0 left-0 right-0 h-72 opacity-20 pointer-events-none"
+            className="absolute top-0 left-0 right-0 h-96 opacity-40 pointer-events-none"
             style={{
               backgroundImage:
-                "linear-gradient(to right, rgba(56, 189, 248, 0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(168, 85, 247, 0.08) 1px, transparent 1px)",
-              backgroundSize: "44px 44px",
+                "radial-gradient(circle at 20% 30%, rgba(251, 191, 36, 0.15) 0%, transparent 40%), radial-gradient(circle at 80% 40%, rgba(99, 102, 241, 0.12) 0%, transparent 45%)",
             }}
           />
-          {/* Horizon Aura */}
+          {/* Distant Earthrise & Moon Dust Haze */}
           <div
-            className="absolute top-44 left-0 right-0 h-96 pointer-events-none opacity-20"
+            className="absolute top-36 left-0 right-0 h-80 pointer-events-none opacity-25"
             style={{
               background:
-                "radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.08), rgba(161, 161, 170, 0.04), transparent 70%)",
-              filter: "blur(80px)",
+                "radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.15), rgba(161, 161, 170, 0.05), transparent 75%)",
+              filter: "blur(70px)",
             }}
           />
         </div>
@@ -626,102 +625,102 @@ export default function JourneyWorld({
           );
         })}
 
-        {/* ── Grand Multi-Lane Asphalt Boulevard Highway ── */}
+        {/* ── Lunar Regolith Surface & Expedition Highway ── */}
         <div
           style={{
             top: `${ROAD_MIN_Y - 40}px`,
             bottom: "0px",
           }}
-          className="absolute left-0 right-0 bg-[#101015] dark:bg-[#0d0d12] border-t-2 border-zinc-700/80 shadow-[inset_0_20px_50px_rgba(0,0,0,0.9)]"
+          className="absolute left-0 right-0 bg-[#0a0a0f] border-t-2 border-zinc-700/80 shadow-[inset_0_20px_50px_rgba(0,0,0,0.95)]"
         >
-          {/* Reflective Curbside Guardrail Line (Warm Amber) */}
-          <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-zinc-600 via-amber-400 to-zinc-600 shadow-[0_0_12px_rgba(251,191,36,0.4)]" />
+          {/* Lunar Horizon Guidance Beacons (Gold & Starlight Silver) */}
+          <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-amber-500/80 via-white to-amber-500/80 shadow-[0_0_14px_rgba(251,191,36,0.6)]" />
 
-          {/* Lane Divider 1 (White Dashes) */}
+          {/* Left Lunar Rover Wheel Track (Chevrons pressed into Moon dust) */}
           <div
-            className="absolute top-28 left-0 right-0 h-1.5 opacity-75"
+            className="absolute top-24 left-0 right-0 h-2 opacity-40"
             style={{
               backgroundImage:
-                "repeating-linear-gradient(to right, rgba(255, 255, 255, 0.75) 0px, rgba(255, 255, 255, 0.75) 42px, transparent 42px, transparent 84px)",
+                "repeating-linear-gradient(to right, #71717a 0px, #71717a 8px, transparent 8px, transparent 18px)",
             }}
           />
 
-          {/* Center Double Golden Highway Lines */}
+          {/* Navigational Lunar Route Beacons (Golden Waypoints) */}
           <div className="absolute top-64 left-0 right-0 flex flex-col gap-2">
             <div
               className="h-1.5 opacity-90"
               style={{
                 backgroundImage:
-                  "repeating-linear-gradient(to right, #f59e0b 0px, #f59e0b 52px, transparent 52px, transparent 92px)",
+                  "repeating-linear-gradient(to right, #fbbf24 0px, #fbbf24 48px, transparent 48px, transparent 96px)",
               }}
             />
             <div
               className="h-1.5 opacity-90"
               style={{
                 backgroundImage:
-                  "repeating-linear-gradient(to right, #f59e0b 0px, #f59e0b 52px, transparent 52px, transparent 92px)",
+                  "repeating-linear-gradient(to right, #fbbf24 0px, #fbbf24 48px, transparent 48px, transparent 96px)",
               }}
             />
           </div>
 
-          {/* Lane Divider 2 (White Dashes) */}
+          {/* Right Lunar Rover Wheel Track */}
           <div
-            className="absolute top-100 left-0 right-0 h-1.5 opacity-75"
+            className="absolute top-104 left-0 right-0 h-2 opacity-40"
             style={{
               backgroundImage:
-                "repeating-linear-gradient(to right, rgba(255, 255, 255, 0.75) 0px, rgba(255, 255, 255, 0.75) 42px, transparent 42px, transparent 84px)",
+                "repeating-linear-gradient(to right, #71717a 0px, #71717a 8px, transparent 8px, transparent 18px)",
             }}
           />
 
-          {/* Highway Asphalt Road Signage */}
+          {/* Surface Coordinate Signage in Lunar Dust */}
           {milestones.map((_, i) => (
             <div
               key={i}
-              style={{ left: `${getStationX(i) - 60}px` }}
-              className="absolute top-48 -translate-y-1/2 flex items-center gap-3 font-mono text-xs font-bold text-zinc-500/80 dark:text-zinc-600 tracking-widest pointer-events-none select-none uppercase"
+              style={{ left: `${getStationX(i) - 80}px` }}
+              className="absolute top-48 -translate-y-1/2 flex items-center gap-3 font-mono text-xs font-bold text-zinc-500/80 tracking-widest pointer-events-none select-none uppercase"
             >
-              <span>&gt;&gt;&gt;</span>
-              <span>CAREER HIGHWAY • MILESTONE {i + 1}</span>
-              <span>&gt;&gt;&gt;</span>
+              <span>◆◆◆</span>
+              <span>LUNAR BASE SECTOR {i + 1} • APOLLO REGOLITH WAYPOINT</span>
+              <span>◆◆◆</span>
             </div>
           ))}
         </div>
 
-        {/* ── Dynamic Night Darkness & Headlight Discovery Exploration Mask (Balanced & Clear) ── */}
+        {/* ── Dynamic Cosmic Darkness & Lunar Floodlight Mask ── */}
         <div
           className="absolute inset-0 pointer-events-none z-25"
           style={{
-            background: `radial-gradient(ellipse 720px 480px at ${carX}px ${carY}px, transparent 35%, rgba(10, 10, 14, 0.22) 65%, rgba(6, 6, 9, 0.55) 95%)`,
+            background: `radial-gradient(ellipse 720px 480px at ${carX}px ${carY}px, transparent 35%, rgba(6, 6, 9, 0.25) 65%, rgba(4, 4, 7, 0.65) 95%)`,
           }}
         />
 
-        {/* ── Playable 2D Top-Down Sports Car (Compact Sleek Scale) ── */}
+        {/* ── Top-Down Lunar Rover (Compact Sleek Scale) ── */}
         <div
           style={{
             left: `${carX}px`,
             top: `${carY}px`,
-            transform: `translate(-50%, -50%) rotate(${carAngle - 90}deg) scale(0.8)`,
+            transform: `translate(-50%, -50%) rotate(${carAngle - 90}deg) scale(0.85)`,
           }}
           className="absolute z-30 pointer-events-none will-change-transform"
         >
           <TopDownCar isDriving={isDriving} />
         </div>
 
-        {/* ── Floating Proximity Prompt above Car ── */}
+        {/* ── Floating Proximity Prompt above Rover ── */}
         {focusedMilestone && (
           <div
             style={{
               left: `${carX}px`,
-              top: `${carY - 75}px`,
+              top: `${carY - 78}px`,
             }}
             className="absolute -translate-x-1/2 z-40 pointer-events-auto"
           >
             <button
               onClick={() => onInspectMilestone(focusedMilestone)}
-              className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-stone-900 text-white dark:bg-white dark:text-black font-mono text-xs sm:text-sm font-bold shadow-[0_0_25px_rgba(255,255,255,0.3)] hover:scale-105 active:scale-95 transition-all animate-bounce cursor-pointer border border-stone-700 dark:border-white"
+              className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-stone-900 text-white dark:bg-white dark:text-black font-mono text-xs sm:text-sm font-bold shadow-[0_0_25px_rgba(251,191,36,0.35)] hover:scale-105 active:scale-95 transition-all animate-bounce cursor-pointer border border-amber-400 dark:border-white"
             >
-              <Sparkles size={16} />
-              <span>[SPACE] Press to Inspect Station Details</span>
+              <Sparkles size={16} className="text-amber-400 dark:text-amber-500" />
+              <span>[SPACE] Inspect Lunar Outpost Module</span>
             </button>
           </div>
         )}
