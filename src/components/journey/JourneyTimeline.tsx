@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { journeyMilestones } from "@/data/journey";
 import { JourneyMilestone } from "@/types";
 import JourneyWorld from "./JourneyWorld";
-import { OutlierIcon, AlignerrIcon, DiscoveryAcademyIcon } from "@/components/ui/BrandIcons";
+import { DiscoveryAcademyIcon } from "@/components/ui/BrandIcons";
 import {
   Compass,
   Trophy,
@@ -93,13 +93,13 @@ export default function JourneyTimeline() {
           </div>
 
           {/* View Mode Switcher (Highway Drive vs Cards Grid) */}
-          <div className="flex items-center gap-1.5 bg-orange-50/80 dark:bg-[#0b0e1a]/90 border border-orange-200 dark:border-slate-800 p-1.5 rounded-2xl backdrop-blur-xl shadow-sm">
+          <div className="flex items-center gap-1.5 bg-orange-50/80 dark:bg-zinc-900/90 border border-orange-200 dark:border-zinc-800 p-1.5 rounded-2xl backdrop-blur-xl shadow-sm">
             <button
               onClick={() => setViewMode("cards")}
               className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
                 viewMode === "cards"
-                  ? "bg-[var(--color-primary)] text-white shadow-md shadow-orange-500/25"
-                  : "text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white"
+                  ? "bg-orange-600 text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-md shadow-orange-500/20"
+                  : "text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white"
               }`}
             >
               <LayoutGrid size={15} />
@@ -110,8 +110,8 @@ export default function JourneyTimeline() {
               onClick={() => setViewMode("drive")}
               className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
                 viewMode === "drive"
-                  ? "bg-[var(--color-primary)] text-white shadow-md shadow-orange-500/25"
-                  : "text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white"
+                  ? "bg-orange-600 text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-md shadow-orange-500/20"
+                  : "text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white"
               }`}
             >
               <Car size={15} />
@@ -122,7 +122,7 @@ export default function JourneyTimeline() {
 
         {/* ── Category Filter Tabs (Always visible in cards view) ── */}
         {viewMode === "cards" && (
-          <div className="mt-8 flex flex-wrap items-center gap-2 border-b border-orange-200/80 dark:border-slate-800/80 pb-4">
+          <div className="mt-8 flex flex-wrap items-center gap-2 border-b border-orange-200/80 dark:border-zinc-800/80 pb-4">
             {categories.map((cat) => {
               const Icon = cat.icon;
               const count =
@@ -135,10 +135,10 @@ export default function JourneyTimeline() {
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-semibold transition-all duration-200 ${
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all duration-200 ${
                     isSelected
-                      ? "bg-[var(--color-primary)] text-white shadow-sm"
-                      : "bg-white/80 dark:bg-slate-900/60 border border-orange-200/60 dark:border-slate-800 text-stone-600 dark:text-slate-400 hover:border-[var(--color-primary)]/50 hover:text-stone-900 dark:hover:text-white"
+                      ? "bg-orange-600 text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-sm"
+                      : "bg-white/80 dark:bg-zinc-900/80 border border-orange-200/60 dark:border-zinc-800 text-stone-600 dark:text-zinc-400 hover:border-orange-300 dark:hover:border-zinc-600 hover:text-stone-900 dark:hover:text-white"
                   }`}
                 >
                   <Icon size={14} />
@@ -146,8 +146,8 @@ export default function JourneyTimeline() {
                   <span
                     className={`px-1.5 py-0.5 rounded-full text-[10px] ${
                       isSelected
-                        ? "bg-white/20 text-white"
-                        : "bg-orange-100 dark:bg-slate-800 text-orange-700 dark:text-slate-400"
+                        ? "bg-white/20 text-white dark:bg-zinc-950/20 dark:text-zinc-950 font-bold"
+                        : "bg-orange-100 dark:bg-zinc-800 text-orange-700 dark:text-zinc-400"
                     }`}
                   >
                     {count}
@@ -187,27 +187,23 @@ export default function JourneyTimeline() {
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{ duration: 0.45, delay: mIdx * 0.07, ease: "easeOut" }}
                   onClick={() => openModal(m)}
-                  className="group relative rounded-3xl border border-orange-200/80 dark:border-slate-800 bg-white/90 dark:bg-[#0b0e18]/90 backdrop-blur-xl p-6 transition-all duration-300 hover:border-[var(--color-primary)] hover:shadow-xl hover:shadow-orange-500/10 dark:hover:shadow-cyan-500/10 cursor-pointer flex flex-col justify-between shadow-sm"
+                  className="group relative rounded-3xl border border-orange-200/80 dark:border-zinc-800 bg-white dark:bg-[#0c0c10] backdrop-blur-xl p-6 transition-all duration-300 hover:border-orange-400 dark:hover:border-zinc-600 hover:shadow-xl hover:shadow-orange-500/10 cursor-pointer flex flex-col justify-between shadow-sm"
                 >
                   <div>
                     <div className="flex items-center justify-between gap-3 mb-4">
                       <div className="flex items-center gap-2">
-                        <span className="p-2 rounded-xl bg-orange-50 dark:bg-slate-900 border border-orange-200 dark:border-slate-800">
+                        <span className="p-2 rounded-xl bg-orange-50 dark:bg-zinc-900 border border-orange-200 dark:border-zinc-800">
                           {getCategoryIcon(m.category)}
                         </span>
-                        {/* Outlier & Alignerr Icons */}
+                        {/* Outlier & Alignerr Pill (Clean typography) */}
                         {isAiTrainer && (
-                          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-orange-50 dark:bg-slate-900 border border-orange-200/80 dark:border-slate-800">
-                            <OutlierIcon className="w-4 h-4" />
-                            <span className="text-[10px] font-mono font-bold text-orange-600 dark:text-orange-400">Outlier</span>
-                            <span className="text-stone-300 dark:text-slate-600">/</span>
-                            <AlignerrIcon className="w-4 h-4" />
-                            <span className="text-[10px] font-mono font-bold text-indigo-600 dark:text-indigo-400">Alignerr</span>
+                          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-orange-50 dark:bg-zinc-900 border border-orange-200/80 dark:border-zinc-800">
+                            <span className="text-[10px] font-mono font-bold text-stone-700 dark:text-zinc-300">Outlier &amp; Alignerr</span>
                           </div>
                         )}
                         {/* Discovery Academy Logo */}
                         {isDiscovery && (
-                          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-orange-50 dark:bg-slate-900 border border-orange-200/80 dark:border-slate-800">
+                          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-orange-50 dark:bg-zinc-900 border border-orange-200/80 dark:border-zinc-800">
                             <DiscoveryAcademyIcon className="w-4 h-4" variant="round" />
                             <span className="text-[10px] font-mono font-bold text-purple-600 dark:text-purple-400">Discovery</span>
                           </div>
@@ -228,7 +224,7 @@ export default function JourneyTimeline() {
                   </div>
 
                   {m.imageUrl ? (
-                    <div className="relative w-full h-36 rounded-2xl overflow-hidden border border-orange-200/80 dark:border-slate-800 mt-2 bg-orange-50/50 dark:bg-slate-900/50">
+                    <div className="relative w-full h-36 rounded-2xl overflow-hidden border border-orange-200/80 dark:border-zinc-800 mt-2 bg-orange-50/50 dark:bg-zinc-900/50">
                       <Image
                         src={m.imageUrl}
                         alt={m.title}
@@ -247,7 +243,7 @@ export default function JourneyTimeline() {
                       {m.tags?.map((t, idx) => (
                         <span
                           key={idx}
-                          className="px-2 py-0.5 rounded-lg bg-orange-100/60 dark:bg-slate-900 border border-orange-200/60 dark:border-slate-800 text-[10px] font-mono text-stone-600 dark:text-slate-400"
+                          className="px-2 py-0.5 rounded-lg bg-orange-100/60 dark:bg-zinc-900 border border-orange-200/60 dark:border-zinc-800 text-[10px] font-mono text-stone-600 dark:text-zinc-400"
                         >
                           #{t}
                         </span>
@@ -276,15 +272,15 @@ export default function JourneyTimeline() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-4xl rounded-3xl border border-slate-700 bg-[#0b0e18] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+              className="relative w-full max-w-4xl rounded-3xl border border-orange-200/80 dark:border-zinc-800 bg-white dark:bg-[#0c0c10] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
             >
               {/* Modal Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#0d1220]">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-orange-200/80 dark:border-zinc-800 bg-orange-50/70 dark:bg-[#121217]">
                 <div>
-                  <h3 className="text-base font-bold text-white">
+                  <h3 className="text-base font-bold text-stone-900 dark:text-white">
                     {selectedMilestone.title}
                   </h3>
-                  <span className="text-xs font-mono text-slate-400">
+                  <span className="text-xs font-mono text-stone-500 dark:text-zinc-400">
                     {selectedMilestone.date} • Photo {activePhotoIdx + 1} of{" "}
                     {modalPhotos.length}
                   </span>
@@ -292,7 +288,7 @@ export default function JourneyTimeline() {
                 <button
                   onClick={closeModal}
                   aria-label="Close modal"
-                  className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
+                  className="p-2 rounded-xl bg-orange-100/60 dark:bg-zinc-800 hover:bg-orange-200/60 dark:hover:bg-zinc-700 text-stone-700 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-white transition-colors"
                 >
                   <X size={18} />
                 </button>
@@ -338,8 +334,8 @@ export default function JourneyTimeline() {
               </div>
 
               {/* Modal Bottom */}
-              <div className="px-6 py-4 border-t border-slate-800 bg-[#0d1220] flex flex-col sm:flex-row items-center justify-between gap-4">
-                <p className="text-xs text-slate-300 line-clamp-2 max-w-xl">
+              <div className="px-6 py-4 border-t border-orange-200/80 dark:border-zinc-800 bg-orange-50/70 dark:bg-[#121217] flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p className="text-xs text-stone-600 dark:text-zinc-300 line-clamp-2 max-w-xl">
                   {selectedMilestone.description}
                 </p>
 
@@ -351,8 +347,8 @@ export default function JourneyTimeline() {
                         onClick={() => setActivePhotoIdx(i)}
                         className={`relative w-12 h-12 rounded-lg overflow-hidden border-2 transition-all ${
                           i === activePhotoIdx
-                            ? "border-[var(--color-primary)] scale-105"
-                            : "border-slate-700 opacity-60 hover:opacity-100"
+                            ? "border-orange-500 dark:border-zinc-100 scale-105"
+                            : "border-orange-200 dark:border-zinc-800 opacity-60 hover:opacity-100"
                         }`}
                       >
                         <Image

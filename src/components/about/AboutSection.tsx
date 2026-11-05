@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { aboutData } from "@/data/about";
-import { OutlierIcon, AlignerrIcon, DiscoveryAcademyIcon } from "@/components/ui/BrandIcons";
+import { DiscoveryAcademyIcon } from "@/components/ui/BrandIcons";
 import {
   User,
   MapPin,
@@ -146,13 +146,7 @@ export default function AboutSection() {
                       className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)] text-xs text-[var(--color-text-secondary)] font-medium hover:border-[var(--color-primary)] hover:text-[var(--color-text-primary)] transition-all shadow-sm"
                     >
                       {isAiTrainer ? (
-                        <>
-                          <span className="flex items-center gap-1.5">
-                            <OutlierIcon className="w-3.5 h-3.5" />
-                            <AlignerrIcon className="w-3.5 h-3.5" />
-                          </span>
-                          <span>Outlier &amp; Alignerr AI Trainer (2023 - Present)</span>
-                        </>
+                        <span>Outlier &amp; Alignerr AI Trainer (2023 - Present)</span>
                       ) : isDiscovery ? (
                         <>
                           <DiscoveryAcademyIcon className="w-4 h-4" variant="round" />

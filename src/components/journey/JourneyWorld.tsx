@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { JourneyMilestone } from "@/types";
 import TopDownCar from "./TopDownCar";
-import { OutlierIcon, AlignerrIcon, DiscoveryAcademyIcon } from "@/components/ui/BrandIcons";
+import { DiscoveryAcademyIcon } from "@/components/ui/BrandIcons";
 import {
   Sparkles,
   Trophy,
@@ -540,19 +540,18 @@ export default function JourneyWorld({
                     ? "0 10px 25px rgba(0,0,0,0.6)"
                     : "0 6px 16px rgba(0,0,0,0.4)",
                 }}
-                className="relative w-full rounded-3xl bg-white/95 dark:bg-[#0b0e1a]/95 backdrop-blur-2xl p-4 sm:p-5 transition-all duration-200 border cursor-pointer hover:border-orange-500 dark:hover:border-cyan-400 group/station shadow-xl"
+                className="relative w-full rounded-3xl bg-white/95 dark:bg-[#0c0c10]/95 backdrop-blur-2xl p-4 sm:p-5 transition-all duration-200 border cursor-pointer hover:border-orange-500 dark:hover:border-zinc-500 group/station shadow-xl"
               >
                 {/* Header: Date + Category Badge */}
                 <div className="flex items-center justify-between gap-3 mb-3">
                   <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 dark:bg-slate-900/90 border border-orange-200 dark:border-slate-700/80 text-xs font-mono font-bold text-stone-700 dark:text-slate-200">
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 dark:bg-zinc-900 border border-orange-200 dark:border-zinc-800 text-xs font-mono font-bold text-stone-700 dark:text-zinc-200">
                       {getCategoryIcon(milestone.category)}
                       <span>{milestone.date}</span>
                     </div>
                     {milestone.id === "ai-trainer" && (
-                      <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-orange-500/15 border border-orange-500/30">
-                        <OutlierIcon className="w-3.5 h-3.5" />
-                        <AlignerrIcon className="w-3.5 h-3.5" />
+                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-orange-500/15 border border-orange-500/30">
+                        <span className="text-[10px] font-mono font-bold text-orange-600 dark:text-zinc-300">Outlier &amp; Alignerr</span>
                       </div>
                     )}
                     {milestone.id === "discovery-academy" && (

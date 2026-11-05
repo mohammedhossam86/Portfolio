@@ -66,15 +66,15 @@ export default function ContactSection() {
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-2xl mx-auto rounded-3xl border border-orange-200/80 dark:border-slate-800 bg-white/95 dark:bg-[#0a0d16]/95 backdrop-blur-2xl p-8 sm:p-10 shadow-2xl"
+          className="max-w-2xl mx-auto rounded-3xl border border-orange-200/80 dark:border-zinc-800 bg-white/95 dark:bg-[#0c0c10]/95 backdrop-blur-2xl p-8 sm:p-10 shadow-2xl"
         >
           {/* Status Badge */}
-          <div className="flex items-center justify-between pb-6 mb-6 border-b border-slate-800/80">
+          <div className="flex items-center justify-between pb-6 mb-6 border-b border-orange-200/60 dark:border-zinc-800">
             <div className="flex items-center gap-2 text-xs font-mono text-emerald-400">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
               <span>Available for Full-Time &amp; Freelance Roles</span>
             </div>
-            <div className="flex items-center gap-1.5 text-xs font-mono text-slate-400">
+            <div className="flex items-center gap-1.5 text-xs font-mono text-stone-500 dark:text-zinc-400">
               <MapPin size={13} className="text-rose-400" />
               <span>Cairo, Egypt</span>
             </div>
@@ -124,7 +124,7 @@ export default function ContactSection() {
           </div>
 
           {/* Social Links Row */}
-          <div className="pt-6 border-t border-slate-800/80 flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-slate-400">
+          <div className="pt-6 border-t border-orange-200/60 dark:border-zinc-800 flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-stone-600 dark:text-zinc-400">
             <a
               href="https://www.linkedin.com/in/mohammed-hossam-6705a1302/"
               target="_blank"
@@ -135,18 +135,18 @@ export default function ContactSection() {
               <span>LinkedIn</span>
               <ArrowUpRight size={11} className="opacity-60" />
             </a>
-            <span className="text-slate-700">•</span>
+            <span className="text-stone-300 dark:text-zinc-700">•</span>
             <a
               href="https://github.com/mohammedhossam86"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 hover:text-white transition-colors"
+              className="flex items-center gap-1.5 hover:text-stone-900 dark:hover:text-white transition-colors"
             >
               <FaGithub size={14} />
               <span>GitHub</span>
               <ArrowUpRight size={11} className="opacity-60" />
             </a>
-            <span className="text-slate-700">•</span>
+            <span className="text-stone-300 dark:text-zinc-700">•</span>
             <a
               href="https://gitlab.com/mohammedhossam86"
               target="_blank"
@@ -157,7 +157,7 @@ export default function ContactSection() {
               <span>GitLab</span>
               <ArrowUpRight size={11} className="opacity-60" />
             </a>
-            <span className="text-slate-700">•</span>
+            <span className="text-stone-300 dark:text-zinc-700">•</span>
             <a
               href="https://leetcode.com/u/mohammedhossam86/"
               target="_blank"

@@ -224,7 +224,7 @@ function RoleRotator({ roles }: { roles: string[] }) {
 
   return (
     <div className="flex items-center min-h-[44px] my-1">
-      <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-zinc-900/60 dark:bg-zinc-900/80 border border-orange-200/60 dark:border-zinc-800 shadow-xs backdrop-blur-md max-w-full">
+      <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-orange-100/70 dark:bg-zinc-900/80 border border-orange-200/80 dark:border-zinc-800 shadow-xs backdrop-blur-md max-w-full">
         <span className="relative flex h-2 w-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
           <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />

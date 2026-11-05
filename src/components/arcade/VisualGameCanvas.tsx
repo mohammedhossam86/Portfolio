@@ -129,9 +129,9 @@ export default function VisualGameCanvas() {
   const pathSet = new Set(lastTomPath.map(([i, j]) => `${i},${j}`));
 
   return (
-    <div className="flex flex-col items-center justify-between rounded-3xl border border-orange-200/80 dark:border-slate-800 bg-white dark:bg-[#07090e] shadow-2xl transition-all duration-300 font-mono w-full overflow-hidden">
+    <div className="flex flex-col items-center justify-between rounded-3xl border border-orange-200/80 dark:border-zinc-800 bg-white dark:bg-[#0c0c10] shadow-2xl transition-all duration-300 font-mono w-full overflow-hidden">
       {/* ── Top Window Bar: Title & Controls (Matches CLI window header) ── */}
-      <div className="w-full flex flex-col md:flex-row items-center justify-between gap-4 px-5 py-3 border-b border-orange-200/80 dark:border-slate-800 bg-orange-50/70 dark:bg-[#0d111a] select-none">
+      <div className="w-full flex flex-col md:flex-row items-center justify-between gap-4 px-5 py-3 border-b border-orange-200/80 dark:border-zinc-800 bg-orange-50/70 dark:bg-[#121217] select-none">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5">
             <div className="w-3 h-3 rounded-full bg-[#ef4444]" />
@@ -139,10 +139,10 @@ export default function VisualGameCanvas() {
             <div className="w-3 h-3 rounded-full bg-[#22c55e]" />
           </div>
           <div>
-            <h3 className="text-xs sm:text-sm font-bold text-stone-800 dark:text-slate-200">
+            <h3 className="text-xs sm:text-sm font-bold text-stone-800 dark:text-zinc-200">
               Tom &amp; Jerry Visual 2D Board
             </h3>
-            <span className="text-[11px] font-mono text-stone-500 dark:text-slate-400">
+            <span className="text-[11px] font-mono text-stone-500 dark:text-zinc-400">
               Moves: <strong className="text-stone-900 dark:text-white">{moves}</strong> | Dist to Exit:{" "}
               <strong className="text-blue-600 dark:text-blue-400 font-bold">
                 {manhattanDistance(ratPos, exitPos)} steps
@@ -153,13 +153,13 @@ export default function VisualGameCanvas() {
 
         {/* Level Controls & Path Toggle */}
         <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center rounded-lg bg-orange-100/60 dark:bg-slate-900 border border-orange-200/80 dark:border-slate-800 p-0.5 text-xs">
+          <div className="flex items-center rounded-lg bg-orange-100/60 dark:bg-zinc-900 border border-orange-200/80 dark:border-zinc-800 p-0.5 text-xs">
             <button
               onClick={() => resetGame(0, algorithm)}
               className={`px-2.5 py-0.5 rounded-md transition-colors ${
                 level === 0
                   ? "bg-emerald-500 text-white dark:bg-emerald-500/20 dark:text-emerald-400 font-bold shadow-xs"
-                  : "text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white"
+                  : "text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white"
               }`}
             >
               Easy
@@ -169,7 +169,7 @@ export default function VisualGameCanvas() {
               className={`px-2.5 py-0.5 rounded-md transition-colors ${
                 level === 1
                   ? "bg-amber-500 text-white dark:bg-amber-500/20 dark:text-amber-400 font-bold shadow-xs"
-                  : "text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white"
+                  : "text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white"
               }`}
             >
               Med
@@ -179,7 +179,7 @@ export default function VisualGameCanvas() {
               className={`px-2.5 py-0.5 rounded-md transition-colors ${
                 level === 2
                   ? "bg-rose-500 text-white dark:bg-rose-500/20 dark:text-rose-400 font-bold shadow-xs"
-                  : "text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white"
+                  : "text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white"
               }`}
             >
               Hard
@@ -191,8 +191,8 @@ export default function VisualGameCanvas() {
             title="Toggle Path Trail"
             className={`p-1.5 rounded-lg border transition-colors ${
               showPathTrail
-                ? "bg-[var(--color-primary)] text-white border-[var(--color-primary)] shadow-xs"
-                : "border-orange-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900 text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white"
+                ? "bg-orange-600 text-white dark:bg-zinc-100 dark:text-zinc-950 border-orange-600 dark:border-zinc-100 shadow-xs font-bold"
+                : "border-orange-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900 text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white"
             }`}
           >
             {showPathTrail ? <Eye size={14} /> : <EyeOff size={14} />}
@@ -201,7 +201,7 @@ export default function VisualGameCanvas() {
           <button
             onClick={() => resetGame(level, algorithm)}
             title="Restart Game (R)"
-            className="p-1.5 rounded-lg border border-orange-200 dark:border-slate-800 hover:border-orange-300 dark:hover:border-slate-700 text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white transition-colors bg-white/60 dark:bg-slate-900/60"
+            className="p-1.5 rounded-lg border border-orange-200 dark:border-zinc-800 hover:border-orange-300 dark:hover:border-zinc-700 text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white transition-colors bg-white/60 dark:bg-zinc-900/60"
           >
             <RefreshCw size={14} />
           </button>
@@ -209,16 +209,16 @@ export default function VisualGameCanvas() {
       </div>
 
       {/* ── Algorithm Comparison Switcher Bar (Matches CLI HUD) ── */}
-      <div className="w-full px-5 py-2.5 bg-orange-50/40 dark:bg-[#0a0d16] border-b border-orange-200/80 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div className="w-full px-5 py-2.5 bg-orange-50/40 dark:bg-[#0e0e13] border-b border-orange-200/80 dark:border-zinc-800 flex flex-wrap items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-2">
-          <span className="text-stone-500 dark:text-slate-400 hidden sm:inline">Pathfinding AI:</span>
-          <div className="flex items-center gap-1.5 rounded-lg bg-orange-100/60 dark:bg-slate-900 border border-orange-200/80 dark:border-slate-800 p-0.5 text-[10px]">
+          <span className="text-stone-500 dark:text-zinc-400 hidden sm:inline">Pathfinding AI:</span>
+          <div className="flex items-center gap-1.5 rounded-lg bg-orange-100/60 dark:bg-zinc-900 border border-orange-200/80 dark:border-zinc-800 p-0.5 text-[10px]">
             <button
               onClick={() => handleAlgorithmChange("astar")}
               className={`flex items-center gap-1 px-2.5 py-0.5 rounded transition-all ${
                 algorithm === "astar"
-                  ? "bg-[var(--color-primary)] text-white dark:bg-cyan-500/20 dark:text-cyan-300 font-bold shadow-xs"
-                  : "text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white"
+                  ? "bg-orange-600 text-white dark:bg-zinc-100 dark:text-zinc-950 font-bold shadow-xs"
+                  : "text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white"
               }`}
             >
               <Bot size={12} />
@@ -229,7 +229,7 @@ export default function VisualGameCanvas() {
               className={`flex items-center gap-1 px-2.5 py-0.5 rounded transition-all ${
                 algorithm === "dijkstra"
                   ? "bg-purple-600 text-white dark:bg-purple-500/20 dark:text-purple-300 font-bold shadow-xs"
-                  : "text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white"
+                  : "text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white"
               }`}
             >
               <Cpu size={12} />
@@ -240,7 +240,7 @@ export default function VisualGameCanvas() {
               className={`flex items-center gap-1 px-2.5 py-0.5 rounded transition-all ${
                 algorithm === "bfs"
                   ? "bg-emerald-600 text-white dark:bg-emerald-500/20 dark:text-emerald-300 font-bold shadow-xs"
-                  : "text-stone-600 dark:text-slate-400 hover:text-stone-900 dark:hover:text-white"
+                  : "text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white"
               }`}
             >
               <Network size={12} />
@@ -250,12 +250,12 @@ export default function VisualGameCanvas() {
         </div>
 
         {/* Live Comparison Metrics */}
-        <div className="flex items-center gap-3 text-stone-600 dark:text-slate-300 text-[11px]">
+        <div className="flex items-center gap-3 text-stone-600 dark:text-zinc-300 text-[11px]">
           <span>
             Nodes Evaluated:{" "}
-            <strong className="text-orange-600 dark:text-cyan-400 font-bold">{nodesExplored}</strong>
+            <strong className="text-orange-600 dark:text-zinc-200 font-bold">{nodesExplored}</strong>
           </span>
-          <span className="text-stone-300 dark:text-slate-600">•</span>
+          <span className="text-stone-300 dark:text-zinc-700">•</span>
           <span>
             Tom&apos;s Route:{" "}
             <strong className="text-rose-600 dark:text-rose-400 font-bold">{lastTomPath.length} steps</strong>
@@ -294,8 +294,8 @@ export default function VisualGameCanvas() {
       )}
 
       {/* ── Visual Grid Board (Identical clean white/orange board styling to CLI mode) ── */}
-      <div className="w-full flex-1 p-6 bg-orange-50/20 dark:bg-[#06080d] flex flex-col items-center justify-center select-none overflow-x-auto min-h-[340px]">
-        <div className="inline-block border border-orange-200 dark:border-slate-800/80 rounded-2xl p-4 sm:p-5 bg-white dark:bg-[#090d18] shadow-md dark:shadow-inner">
+      <div className="w-full flex-1 p-6 bg-orange-50/20 dark:bg-[#08080a] flex flex-col items-center justify-center select-none overflow-x-auto min-h-[340px]">
+        <div className="inline-block border border-orange-200 dark:border-zinc-800 rounded-2xl p-4 sm:p-5 bg-white dark:bg-[#0f0f14] shadow-md dark:shadow-inner">
           <div className="flex flex-col gap-1.5 sm:gap-2">
             {grid.map((row, r) => (
               <div key={r} className="flex gap-1.5 sm:gap-2 justify-center">
@@ -322,7 +322,7 @@ export default function VisualGameCanvas() {
                             ? "bg-stone-200 dark:bg-amber-950/40 border border-stone-300 dark:border-amber-600/40 text-stone-700 dark:text-amber-500 shadow-xs"
                             : isPath
                             ? "bg-cyan-100 dark:bg-cyan-500/15 border border-cyan-400 text-cyan-800 dark:text-cyan-300"
-                            : "bg-orange-50/60 dark:bg-slate-900/60 border border-orange-100 dark:border-slate-800/60 text-stone-400 dark:text-slate-700"
+                            : "bg-orange-50/60 dark:bg-zinc-900/60 border border-orange-100 dark:border-zinc-800/60 text-stone-400 dark:text-zinc-600"
                         }
                       `}
                     >
@@ -343,17 +343,17 @@ export default function VisualGameCanvas() {
         </div>
 
         {/* Legend */}
-        <p className="mt-4 text-xs text-stone-500 dark:text-slate-400 text-center max-w-md">
+        <p className="mt-4 text-xs text-stone-500 dark:text-zinc-400 text-center max-w-md">
           Jerry (🐭) must escape to Exit (🚪) before Tom (🐱) catches him. Tom calculates routes in real-time via {algorithm.toUpperCase()}.
         </p>
       </div>
 
       {/* ── Virtual D-Pad Gamepad for Touch & Mobile (Matches CLI D-Pad) ── */}
-      <div className="w-full border-t border-orange-200 dark:border-slate-800 bg-orange-50/30 dark:bg-[#080a12] p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2 text-xs text-stone-600 dark:text-slate-400 font-mono">
-          <Bot size={15} className="text-orange-500 dark:text-cyan-400" />
+      <div className="w-full border-t border-orange-200 dark:border-zinc-800 bg-orange-50/30 dark:bg-[#0e0e13] p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-2 text-xs text-stone-600 dark:text-zinc-400 font-mono">
+          <Bot size={15} className="text-orange-500 dark:text-zinc-300" />
           <span>
-            Controls: <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 border border-orange-200 dark:border-slate-700 text-stone-800 dark:text-white font-mono text-[11px] shadow-xs">W A S D</kbd> / <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 border border-orange-200 dark:border-slate-700 text-stone-800 dark:text-white font-mono text-[11px] shadow-xs">Arrows</kbd> / Touch D-Pad
+            Controls: <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-zinc-800 border border-orange-200 dark:border-zinc-700 text-stone-800 dark:text-white font-mono text-[11px] shadow-xs">W A S D</kbd> / <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-zinc-800 border border-orange-200 dark:border-zinc-700 text-stone-800 dark:text-white font-mono text-[11px] shadow-xs">Arrows</kbd> / Touch D-Pad
           </span>
         </div>
 
@@ -362,7 +362,7 @@ export default function VisualGameCanvas() {
           <button
             onClick={() => move("up")}
             aria-label="Up"
-            className="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 hover:bg-orange-100 dark:hover:bg-slate-700 active:scale-95 text-stone-800 dark:text-slate-200 flex items-center justify-center transition-all border border-orange-200 dark:border-slate-700 shadow-sm"
+            className="w-9 h-9 rounded-xl bg-white dark:bg-zinc-800 hover:bg-orange-100 dark:hover:bg-zinc-700 active:scale-95 text-stone-800 dark:text-zinc-200 flex items-center justify-center transition-all border border-orange-200 dark:border-zinc-700 shadow-sm"
           >
             <ArrowUp size={16} />
           </button>
@@ -370,21 +370,21 @@ export default function VisualGameCanvas() {
           <button
             onClick={() => move("left")}
             aria-label="Left"
-            className="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 hover:bg-orange-100 dark:hover:bg-slate-700 active:scale-95 text-stone-800 dark:text-slate-200 flex items-center justify-center transition-all border border-orange-200 dark:border-slate-700 shadow-sm"
+            className="w-9 h-9 rounded-xl bg-white dark:bg-zinc-800 hover:bg-orange-100 dark:hover:bg-zinc-700 active:scale-95 text-stone-800 dark:text-zinc-200 flex items-center justify-center transition-all border border-orange-200 dark:border-zinc-700 shadow-sm"
           >
             <ArrowLeft size={16} />
           </button>
           <button
             onClick={() => move("down")}
             aria-label="Down"
-            className="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 hover:bg-orange-100 dark:hover:bg-slate-700 active:scale-95 text-stone-800 dark:text-slate-200 flex items-center justify-center transition-all border border-orange-200 dark:border-slate-700 shadow-sm"
+            className="w-9 h-9 rounded-xl bg-white dark:bg-zinc-800 hover:bg-orange-100 dark:hover:bg-zinc-700 active:scale-95 text-stone-800 dark:text-zinc-200 flex items-center justify-center transition-all border border-orange-200 dark:border-zinc-700 shadow-sm"
           >
             <ArrowDown size={16} />
           </button>
           <button
             onClick={() => move("right")}
             aria-label="Right"
-            className="w-9 h-9 rounded-xl bg-white dark:bg-slate-800 hover:bg-orange-100 dark:hover:bg-slate-700 active:scale-95 text-stone-800 dark:text-slate-200 flex items-center justify-center transition-all border border-orange-200 dark:border-slate-700 shadow-sm"
+            className="w-9 h-9 rounded-xl bg-white dark:bg-zinc-800 hover:bg-orange-100 dark:hover:bg-zinc-700 active:scale-95 text-stone-800 dark:text-zinc-200 flex items-center justify-center transition-all border border-orange-200 dark:border-zinc-700 shadow-sm"
           >
             <ArrowRight size={16} />
           </button>
