@@ -402,7 +402,7 @@ export default function TerminalEmulator() {
         />
         <button
           type="submit"
-          className="text-xs px-3 py-1 rounded-lg bg-[var(--color-primary)] hover:bg-[var(--color-primary-light)] text-white font-medium transition-colors"
+          className="text-xs px-3 py-1 rounded-lg bg-orange-600 hover:bg-orange-500 text-white dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-white font-mono font-bold transition-colors"
         >
           Send
         </button>

@@ -189,21 +189,25 @@ export default function VisualGameCanvas() {
           <button
             onClick={() => setShowPathTrail((p) => !p)}
             title="Toggle Path Trail"
-            className={`p-1.5 rounded-lg border transition-colors ${
+            className={`p-1.5 rounded-lg border transition-colors flex items-center justify-center ${
               showPathTrail
                 ? "bg-orange-600 text-white dark:bg-zinc-100 dark:text-zinc-950 border-orange-600 dark:border-zinc-100 shadow-xs font-bold"
                 : "border-orange-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900 text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white"
             }`}
           >
-            {showPathTrail ? <Eye size={14} /> : <EyeOff size={14} />}
+            {showPathTrail ? (
+              <Eye size={14} className="stroke-white dark:stroke-zinc-950" />
+            ) : (
+              <EyeOff size={14} className="stroke-stone-600 dark:stroke-zinc-400" />
+            )}
           </button>
 
           <button
             onClick={() => resetGame(level, algorithm)}
             title="Restart Game (R)"
-            className="p-1.5 rounded-lg border border-orange-200 dark:border-zinc-800 hover:border-orange-300 dark:hover:border-zinc-700 text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white transition-colors bg-white/60 dark:bg-zinc-900/60"
+            className="p-1.5 rounded-lg border border-orange-200 dark:border-zinc-800 hover:border-orange-300 dark:hover:border-zinc-700 text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white transition-colors bg-white/60 dark:bg-zinc-900/60 flex items-center justify-center"
           >
-            <RefreshCw size={14} />
+            <RefreshCw size={14} className="stroke-current" />
           </button>
         </div>
       </div>

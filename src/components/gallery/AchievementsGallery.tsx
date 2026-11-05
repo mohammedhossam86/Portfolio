@@ -86,10 +86,10 @@ export default function AchievementsGallery() {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 ${
+                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-mono font-bold transition-all duration-200 ${
                   selectedCategory === cat.id
-                    ? "bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/25"
-                    : "bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)] hover:text-white border border-[var(--color-border)] hover:border-[var(--color-border-hover)]"
+                    ? "bg-orange-600 text-white dark:bg-zinc-100 dark:text-zinc-950 shadow-md shadow-orange-500/20"
+                    : "bg-white/80 dark:bg-zinc-900/80 text-stone-600 dark:text-zinc-400 border border-orange-200/60 dark:border-zinc-800 hover:text-stone-900 dark:hover:text-white"
                 }`}
               >
                 {cat.label}

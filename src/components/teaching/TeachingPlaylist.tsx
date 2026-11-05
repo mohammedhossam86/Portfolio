@@ -109,8 +109,8 @@ export default function TeachingPlaylist() {
 
                   {/* Pulsing Glowing Play Button */}
                   <div className="relative z-10 flex flex-col items-center gap-3">
-                    <div className="w-18 h-18 sm:w-20 sm:h-20 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center shadow-2xl shadow-[var(--color-primary)]/50 group-hover:scale-110 group-hover:bg-[var(--color-primary-light)] transition-all duration-300">
-                      <Play size={32} className="ml-1 fill-white" />
+                    <div className="w-18 h-18 sm:w-20 sm:h-20 rounded-full bg-orange-600 text-white dark:bg-white dark:text-zinc-950 flex items-center justify-center shadow-2xl shadow-orange-500/40 dark:shadow-white/20 group-hover:scale-110 transition-all duration-300">
+                      <Play size={32} className="ml-1 fill-white dark:fill-zinc-950 stroke-white dark:stroke-zinc-950" />
                     </div>
                     <span className="text-xs sm:text-sm font-semibold text-white/90 font-mono tracking-wider">
                       Click to Watch Session
@@ -209,7 +209,7 @@ export default function TeachingPlaylist() {
                         unoptimized
                       />
                       {isCurrent && (
-                        <div className="absolute inset-0 bg-[var(--color-primary)]/40 flex items-center justify-center">
+                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                           <Play size={16} className="fill-white text-white" />
                         </div>
                       )}

@@ -78,13 +78,13 @@ export default function ProjectsGrid() {
           </div>
 
           {/* Toggle between Projects & Blog */}
-          <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)]">
+          <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-orange-50/80 dark:bg-zinc-900/90 border border-orange-200 dark:border-zinc-800 backdrop-blur-xl shadow-sm">
             <button
               onClick={() => setActiveTab("projects")}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
                 activeTab === "projects"
-                  ? "bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/30"
-                  : "text-[var(--color-text-secondary)] hover:text-white"
+                  ? "bg-orange-600 text-white dark:bg-zinc-100 dark:text-zinc-950 font-bold shadow-md shadow-orange-500/20"
+                  : "text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white"
               }`}
             >
               <Layers size={15} />
@@ -94,8 +94,8 @@ export default function ProjectsGrid() {
               onClick={() => setActiveTab("blog")}
               className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 ${
                 activeTab === "blog"
-                  ? "bg-[var(--color-primary)] text-white shadow-lg shadow-[var(--color-primary)]/30"
-                  : "text-[var(--color-text-secondary)] hover:text-white"
+                  ? "bg-orange-600 text-white dark:bg-zinc-100 dark:text-zinc-950 font-bold shadow-md shadow-orange-500/20"
+                  : "text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white"
               }`}
             >
               <BookOpen size={15} />
@@ -116,8 +116,8 @@ export default function ProjectsGrid() {
                 }}
                 className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 ${
                   selectedCategory === cat.id
-                    ? "bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/25"
-                    : "bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)] hover:text-white border border-[var(--color-border)]"
+                    ? "bg-orange-600 text-white dark:bg-zinc-100 dark:text-zinc-950 font-bold shadow-sm"
+                    : "bg-white/80 dark:bg-zinc-900/80 text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white border border-orange-200/60 dark:border-zinc-800"
                 }`}
               >
                 {cat.label}
