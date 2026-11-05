@@ -66,13 +66,33 @@ export default function VisualGameCanvas() {
   // Keyboard navigation
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      const k = e.key.toLowerCase();
+      // Don't intercept if user is typing in a form input or textarea
+      const target = e.target as HTMLElement;
       if (
-        ["arrowup", "arrowdown", "arrowleft", "arrowright", "w", "a", "s", "d"].includes(
-          k
-        )
+        target?.tagName === "INPUT" ||
+        target?.tagName === "TEXTAREA" ||
+        target?.isContentEditable
       ) {
+        return;
+      }
+
+      const k = e.key.toLowerCase();
+      const isMoveKey = [
+        "arrowup",
+        "arrowdown",
+        "arrowleft",
+        "arrowright",
+        "w",
+        "a",
+        "s",
+        "d",
+      ].includes(k);
+
+      if (isMoveKey) {
+        // Stop default browser page scroll immediately
         e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
       }
 
       if (k === "arrowup" || k === "w") move("up");
@@ -82,8 +102,8 @@ export default function VisualGameCanvas() {
       else if (k === "r") resetGame(level, algorithm);
     };
 
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
+    window.addEventListener("keydown", handleKey, { capture: true });
+    return () => window.removeEventListener("keydown", handleKey, { capture: true });
   }, [algorithm, level, move, resetGame]);
 
   const {

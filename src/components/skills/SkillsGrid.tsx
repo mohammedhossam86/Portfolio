@@ -134,19 +134,19 @@ export default function SkillsGrid() {
         </div>
 
         {/* ── Bento Grid of Categorized Skill Cards ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 items-stretch">
           {visibleGroups.map((group) => (
             <div
               key={group.id}
-              className="relative rounded-3xl border border-slate-800/90 bg-[#0b0e18]/90 backdrop-blur-xl p-5 sm:p-6 shadow-xl hover:border-slate-700/80 hover:shadow-2xl hover:shadow-[var(--color-primary)]/5 transition-all duration-300 flex flex-col justify-between group/card"
+              className="relative rounded-3xl border border-slate-800/90 bg-[#0b0e18]/90 backdrop-blur-xl p-5 sm:p-6 shadow-xl hover:border-slate-700/80 hover:shadow-2xl hover:shadow-[var(--color-primary)]/5 transition-all duration-300 flex flex-col justify-start group/card"
             >
               {/* Category Header with colored bullet */}
-              <div className="flex items-center gap-2.5 mb-5 select-none">
+              <div className="flex items-center gap-2.5 mb-6 select-none">
                 <span
-                  className="w-2 h-2 rounded-full shrink-0 shadow-sm"
+                  className="w-2.5 h-2.5 rounded-full shrink-0 shadow-sm"
                   style={{
                     backgroundColor: group.dotColor,
-                    boxShadow: `0 0 8px ${group.dotColor}`,
+                    boxShadow: `0 0 10px ${group.dotColor}`,
                   }}
                 />
                 <h3 className="text-xs font-mono font-bold tracking-widest text-slate-300 uppercase">
@@ -154,8 +154,8 @@ export default function SkillsGrid() {
                 </h3>
               </div>
 
-              {/* Skills Flex Container — cleanly spaced without text clipping */}
-              <div className="flex flex-wrap items-start gap-3.5 sm:gap-4">
+              {/* Skills 4-Column Grid — perfectly aligned under header with no empty void */}
+              <div className="grid grid-cols-4 gap-y-4 gap-x-2 sm:gap-x-3 items-start justify-items-center w-full">
                 {group.items.map((skill) => {
                   const IconComponent =
                     iconDictionary[skill.iconName] || Cpu;
@@ -163,12 +163,12 @@ export default function SkillsGrid() {
                   return (
                     <div
                       key={skill.name}
-                      className="group/item flex flex-col items-center justify-center gap-1.5 w-[68px] sm:w-[74px] cursor-default"
+                      className="group/item flex flex-col items-center justify-start gap-1.5 w-full max-w-[72px] cursor-default"
                     >
                       {/* Icon Container */}
-                      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-slate-900/80 border border-slate-800/90 flex items-center justify-center text-slate-400 transition-all duration-200 group-hover/item:scale-110 group-hover/item:border-slate-700 group-hover/item:bg-slate-800/70 shadow-sm">
+                      <div className="w-12 h-12 rounded-2xl bg-slate-900/90 border border-slate-800/90 flex items-center justify-center text-slate-400 transition-all duration-200 group-hover/item:scale-110 group-hover/item:border-slate-600 group-hover/item:bg-slate-800/80 shadow-sm">
                         <IconComponent
-                          size={20}
+                          size={22}
                           className="group-hover/item:scale-105 transition-transform"
                           style={{
                             color: skill.color,
@@ -177,7 +177,7 @@ export default function SkillsGrid() {
                       </div>
 
                       {/* Skill Name — cleanly formatted with single line and no overlap */}
-                      <span className="text-[11px] font-mono text-slate-300 group-hover/item:text-white text-center tracking-tight truncate w-full transition-colors">
+                      <span className="text-[10px] sm:text-[11px] font-mono text-slate-300 group-hover/item:text-white text-center tracking-tight truncate w-full transition-colors mt-0.5">
                         {skill.name}
                       </span>
                     </div>

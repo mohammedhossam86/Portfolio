@@ -23,7 +23,7 @@ export const projects: Project[] = [
     ],
     imageUrl: "/images/projects/mindmate.png",
     repoUrl: "https://github.com/MindMate-Project",
-    liveUrl: "https://github.com/MindMate-Project",
+    liveUrl: "https://web-mindmate.vercel.app/",
     isFeatured: true,
     date: "2026-06",
   },

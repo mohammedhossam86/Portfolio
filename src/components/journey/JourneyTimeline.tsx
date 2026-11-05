@@ -29,6 +29,7 @@ export default function JourneyTimeline() {
   const [isAutoCruise, setIsAutoCruise] = useState(false);
   const totalMilestones = journeyMilestones.length;
 
+  const isMouseOverJourney = useRef(false);
   const stationRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // ─── Modal State for Multi-Photo Gallery ───────────────────────────────────
@@ -77,8 +78,15 @@ export default function JourneyTimeline() {
   // ─── Keyboard Controls for Driving ────────────────────────────────────────
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't trigger if user is in an input or modal is open
-      if ((e.target as HTMLElement)?.tagName === "INPUT" || selectedMilestone) {
+      // Only drive the car if the user is hovering or interacting with the Journey section,
+      // and NOT if typing in inputs or interacting with the Arcade game!
+      if (
+        !isMouseOverJourney.current ||
+        (e.target as HTMLElement)?.tagName === "INPUT" ||
+        (e.target as HTMLElement)?.tagName === "TEXTAREA" ||
+        selectedMilestone ||
+        document.getElementById("arcade")?.matches(":hover")
+      ) {
         return;
       }
 
@@ -131,6 +139,12 @@ export default function JourneyTimeline() {
   return (
     <section
       id="journey"
+      onMouseEnter={() => {
+        isMouseOverJourney.current = true;
+      }}
+      onMouseLeave={() => {
+        isMouseOverJourney.current = false;
+      }}
       className="relative py-20 sm:py-32 overflow-hidden border-t border-[var(--color-border)]/50"
     >
       {/* ── Background Atmosphere ── */}

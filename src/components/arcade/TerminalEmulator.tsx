@@ -69,15 +69,31 @@ export default function TerminalEmulator() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Don't intercept if user is typing in an input
-      if ((e.target as HTMLElement)?.tagName === "INPUT") return;
+      const target = e.target as HTMLElement;
+      if (
+        target?.tagName === "INPUT" ||
+        target?.tagName === "TEXTAREA" ||
+        target?.isContentEditable
+      ) {
+        return;
+      }
 
       const k = e.key.toLowerCase();
-      if (
-        ["arrowup", "arrowdown", "arrowleft", "arrowright", "w", "a", "s", "d"].includes(
-          k
-        )
-      ) {
+      const isMoveKey = [
+        "arrowup",
+        "arrowdown",
+        "arrowleft",
+        "arrowright",
+        "w",
+        "a",
+        "s",
+        "d",
+      ].includes(k);
+
+      if (isMoveKey) {
         e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
       }
 
       if (k === "arrowup" || k === "w") handleMove("up");
@@ -90,8 +106,8 @@ export default function TerminalEmulator() {
       else if (k === "3") resetGame(2);
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown, { capture: true });
+    return () => window.removeEventListener("keydown", handleKeyDown, { capture: true });
   }, [handleMove, level, resetGame]);
 
   // Terminal Command Input
