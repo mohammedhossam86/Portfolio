@@ -55,6 +55,7 @@ export function DiscoveryAcademyIcon({ className = "w-5 h-5", variant = "round" 
         src={src}
         alt="Discovery Academy"
         fill
+        sizes="32px"
         className="object-cover"
       />
     </div>
