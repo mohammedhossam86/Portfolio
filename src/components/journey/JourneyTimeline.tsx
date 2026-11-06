@@ -235,6 +235,7 @@ export default function JourneyTimeline() {
                         src={m.imageUrl}
                         alt={m.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, 400px"
                         className={`transition-transform duration-300 ${
                           isDiscovery
                             ? "object-contain p-3.5 bg-white"

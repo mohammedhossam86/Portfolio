@@ -35,3 +35,4 @@ export function useCurrentTheme(): Theme {
 
   return theme;
 }
+
