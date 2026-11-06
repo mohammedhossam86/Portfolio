@@ -421,6 +421,7 @@ export default function JourneyTimeline() {
                           src={photo}
                           alt="Thumbnail"
                           fill
+                          sizes="48px"
                           className="object-cover"
                         />
                       </button>
