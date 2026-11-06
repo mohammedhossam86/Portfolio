@@ -5,6 +5,8 @@ import Image from "next/image";
 import { JourneyMilestone } from "@/types";
 import TopDownCar from "./TopDownCar";
 import { DiscoveryAcademyIcon } from "@/components/ui/BrandIcons";
+import CelestialSphere from "@/components/ui/CelestialSphere";
+import { useCurrentTheme } from "@/hooks/useCurrentTheme";
 import {
   Sparkles,
   Trophy,
@@ -21,6 +23,8 @@ import {
   Maximize2,
   ChevronRight,
   ChevronLeft,
+  Sun,
+  Moon,
 } from "lucide-react";
 
 interface JourneyWorldProps {
@@ -28,19 +32,21 @@ interface JourneyWorldProps {
   onInspectMilestone: (milestone: JourneyMilestone) => void;
 }
 
-// Grand Open-World Geometry & Boundaries
+// Grand Open-World Geometry & Boundaries (Wide Exploration Freedom)
 const STATION_START_X = 420;
 const STATION_GAP = 780;
-const ROAD_MIN_Y = 440;
-const ROAD_MAX_Y = 720;
+const ROAD_MIN_Y = 370;
+const ROAD_MAX_Y = 740;
 const STATION_Y = 240;
 const PROXIMITY_THRESHOLD = 320;
-const MAX_SPEED = 480;
+const MAX_SPEED = 500;
 
 export default function JourneyWorld({
   milestones,
   onInspectMilestone,
 }: JourneyWorldProps) {
+  const currentTheme = useCurrentTheme();
+  const isSunWorld = currentTheme === "light";
   const totalWorldWidth = STATION_START_X + milestones.length * STATION_GAP + 500;
 
   // React state for DOM rendering
@@ -134,10 +140,10 @@ export default function JourneyWorld({
         }
       }
 
-      // Proximity condition: must be in the top lane close to the billboard curb (y <= 515)
-      // and horizontally within reach (dx <= 190), or arriving via auto-cruise
-      const isNearCurb = y <= 515;
-      const isHorizontallyAligned = minDistance < 190;
+      // Proximity condition: must be in the upper area close to the milestone curb (y <= 540)
+      // and horizontally within reach (dx <= 210), or arriving via auto-cruise
+      const isNearCurb = y <= 540;
+      const isHorizontallyAligned = minDistance < 210;
       const isStationNear =
         (isNearCurb && isHorizontallyAligned) ||
         (carPhysics.current.autoCruiseActive && minDistance < 120);
@@ -406,8 +412,14 @@ export default function JourneyWorld({
         {/* Speedometer & Station Tracker */}
         <div className="flex items-center gap-3.5 p-2.5 px-4 rounded-2xl bg-white/95 dark:bg-[#0c0c10]/90 border border-orange-200/80 dark:border-zinc-800 backdrop-blur-2xl shadow-xl pointer-events-auto">
           <div className="flex items-center gap-2 font-mono text-xs">
-            <span className="w-2.5 h-2.5 rounded-full bg-orange-500 dark:bg-amber-400 animate-pulse shadow-sm" />
-            <span className="text-stone-500 dark:text-zinc-400">ROVER VELOCITY:</span>
+            {isSunWorld ? (
+              <Sun size={14} className="text-amber-500 animate-spin" style={{ animationDuration: "12s" }} />
+            ) : (
+              <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse shadow-sm" />
+            )}
+            <span className="text-stone-500 dark:text-zinc-400">
+              {isSunWorld ? "SOLAR SPEED:" : "ROVER VELOCITY:"}
+            </span>
             <strong className="text-stone-900 dark:text-white text-base tracking-tight">{speedKmh}</strong>
             <span className="text-[11px] text-orange-600 dark:text-amber-400 font-bold">KM/H</span>
           </div>
@@ -415,7 +427,9 @@ export default function JourneyWorld({
           <div className="h-5 w-px bg-orange-200 dark:bg-zinc-800" />
 
           <div className="flex items-center gap-2 font-mono text-xs">
-            <span className="text-stone-500 dark:text-zinc-400">LUNAR OUTPOST:</span>
+            <span className="text-stone-500 dark:text-zinc-400">
+              {isSunWorld ? "SOLAR OUTPOST:" : "LUNAR OUTPOST:"}
+            </span>
             <strong className="text-orange-600 dark:text-amber-300 text-sm">
               #{activeStationIdx + 1} of {milestones.length}
             </strong>
@@ -428,7 +442,7 @@ export default function JourneyWorld({
             onClick={() => driveToStation(activeStationIdx - 1)}
             disabled={activeStationIdx === 0}
             className="p-3 rounded-2xl bg-white/95 dark:bg-[#0c0c10]/90 border border-orange-200/80 dark:border-zinc-800 text-stone-700 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-white hover:border-orange-400 dark:hover:border-zinc-600 active:scale-95 disabled:opacity-30 transition-all shadow-md backdrop-blur-2xl"
-            title="Traverse to Previous Outpost"
+            title={isSunWorld ? "Traverse to Previous Solar Outpost" : "Traverse to Previous Lunar Outpost"}
           >
             <ChevronLeft size={18} />
           </button>
@@ -442,14 +456,22 @@ export default function JourneyWorld({
             }`}
           >
             <Play size={14} className={autoCruise ? "animate-spin text-white dark:text-zinc-950" : ""} />
-            <span>{autoCruise ? "Auto-Traverse Active 🛰️" : "Auto-Traverse Mode"}</span>
+            <span>
+              {autoCruise
+                ? isSunWorld
+                  ? "Solar Cruise Active ☀️"
+                  : "Lunar Cruise Active 🌔"
+                : isSunWorld
+                ? "Auto-Traverse Sun ☀️"
+                : "Auto-Traverse Moon 🌔"}
+            </span>
           </button>
 
           <button
             onClick={() => driveToStation(activeStationIdx + 1)}
             disabled={activeStationIdx === milestones.length - 1}
             className="p-3 rounded-2xl bg-white/95 dark:bg-[#0c0c10]/90 border border-orange-200/80 dark:border-zinc-800 text-stone-700 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-white hover:border-orange-400 dark:hover:border-zinc-600 active:scale-95 disabled:opacity-30 transition-all shadow-md backdrop-blur-2xl"
-            title="Traverse to Next Outpost"
+            title={isSunWorld ? "Traverse to Next Solar Outpost" : "Traverse to Next Lunar Outpost"}
           >
             <ChevronRight size={18} />
           </button>
@@ -464,25 +486,42 @@ export default function JourneyWorld({
           transform: `translateX(-${cameraX}px)`,
         }}
       >
-        {/* ── Background Cosmic Space Horizon & Starlight Dust ── */}
-        <div className="absolute inset-0 bg-[#060609]">
-          {/* Cosmic Nebula Glow & Stardust Clusters */}
+        {/* ── Background Cosmic Space Horizon (Moon Sky vs Sun Sky) ── */}
+        <div className={`absolute inset-0 transition-colors duration-500 ${isSunWorld ? "bg-[#fffaf5]" : "bg-[#060609]"}`}>
+          {/* Cosmic Nebula Glow & Stardust (Moon) vs Solar Corona Plasma Waves (Sun) */}
           <div
-            className="absolute top-0 left-0 right-0 h-96 opacity-40 pointer-events-none"
+            className="absolute top-0 left-0 right-0 h-96 opacity-60 pointer-events-none transition-all duration-500"
             style={{
-              backgroundImage:
-                "radial-gradient(circle at 20% 30%, rgba(251, 191, 36, 0.15) 0%, transparent 40%), radial-gradient(circle at 80% 40%, rgba(99, 102, 241, 0.12) 0%, transparent 45%)",
+              backgroundImage: isSunWorld
+                ? "radial-gradient(circle at 25% 30%, rgba(251, 191, 36, 0.45) 0%, transparent 50%), radial-gradient(circle at 80% 40%, rgba(234, 88, 12, 0.25) 0%, transparent 55%)"
+                : "radial-gradient(circle at 20% 30%, rgba(251, 191, 36, 0.15) 0%, transparent 40%), radial-gradient(circle at 80% 40%, rgba(99, 102, 241, 0.12) 0%, transparent 45%)",
             }}
           />
-          {/* Distant Earthrise & Moon Dust Haze */}
+
+          {/* Distant Atmospheric Glow */}
           <div
-            className="absolute top-36 left-0 right-0 h-80 pointer-events-none opacity-25"
+            className="absolute top-28 left-0 right-0 h-80 pointer-events-none opacity-30"
             style={{
-              background:
-                "radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.15), rgba(161, 161, 170, 0.05), transparent 75%)",
-              filter: "blur(70px)",
+              background: isSunWorld
+                ? "radial-gradient(ellipse at 50% 50%, rgba(254, 240, 138, 0.4), rgba(249, 115, 22, 0.2), transparent 75%)"
+                : "radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.15), rgba(161, 161, 170, 0.05), transparent 75%)",
+              filter: "blur(60px)",
             }}
           />
+
+          {/* ── Majestic Celestial Body in the Sky (Moon in Dark Mode / Sun in Light Mode) ── */}
+          <div
+            className="absolute top-8 left-[22%] pointer-events-none z-10 drop-shadow-2xl will-change-transform"
+            style={{
+              transform: `translateX(${cameraX * 0.2}px)`,
+            }}
+          >
+            <CelestialSphere
+              size={180}
+              forceVariant={isSunWorld ? "sun" : "moon"}
+              showRays={true}
+            />
+          </div>
         </div>
 
         {/* ── Curbside Landmark Billboards (Milestone Stations) ── */}
@@ -625,76 +664,98 @@ export default function JourneyWorld({
           );
         })}
 
-        {/* ── Lunar Regolith Surface & Expedition Highway ── */}
+        {/* ── Celestial Ground Surface: Moon Regolith (Dark) vs Solar Corona Surface (Light) ── */}
         <div
           style={{
             top: `${ROAD_MIN_Y - 40}px`,
             bottom: "0px",
           }}
-          className="absolute left-0 right-0 bg-[#0a0a0f] border-t-2 border-zinc-700/80 shadow-[inset_0_20px_50px_rgba(0,0,0,0.95)]"
+          className={`absolute left-0 right-0 border-t-2 transition-colors duration-500 ${
+            isSunWorld
+              ? "bg-[#fff7ed] border-orange-300/90 shadow-[inset_0_20px_50px_rgba(234,88,12,0.12)]"
+              : "bg-[#0a0a0f] border-zinc-700/80 shadow-[inset_0_20px_50px_rgba(0,0,0,0.95)]"
+          }`}
         >
-          {/* Lunar Horizon Guidance Beacons (Gold & Starlight Silver) */}
-          <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-amber-500/80 via-white to-amber-500/80 shadow-[0_0_14px_rgba(251,191,36,0.6)]" />
+          {/* Horizon Guidance Beacons (Solar Gold vs Starlight Silver) */}
+          <div
+            className={`absolute top-0 left-0 right-0 h-2 ${
+              isSunWorld
+                ? "bg-gradient-to-r from-orange-500/80 via-amber-300 to-orange-500/80 shadow-[0_0_14px_rgba(234,88,12,0.5)]"
+                : "bg-gradient-to-r from-amber-500/80 via-white to-amber-500/80 shadow-[0_0_14px_rgba(251,191,36,0.6)]"
+            }`}
+          />
 
-          {/* Left Lunar Rover Wheel Track (Chevrons pressed into Moon dust) */}
+          {/* Left Exploration Wheel Tracks */}
           <div
             className="absolute top-24 left-0 right-0 h-2 opacity-40"
             style={{
-              backgroundImage:
-                "repeating-linear-gradient(to right, #71717a 0px, #71717a 8px, transparent 8px, transparent 18px)",
+              backgroundImage: isSunWorld
+                ? "repeating-linear-gradient(to right, #ea580c 0px, #ea580c 8px, transparent 8px, transparent 18px)"
+                : "repeating-linear-gradient(to right, #71717a 0px, #71717a 8px, transparent 8px, transparent 18px)",
             }}
           />
 
-          {/* Navigational Lunar Route Beacons (Golden Waypoints) */}
+          {/* Navigational Route Beacons (Golden Energy Lines) */}
           <div className="absolute top-64 left-0 right-0 flex flex-col gap-2">
             <div
               className="h-1.5 opacity-90"
               style={{
-                backgroundImage:
-                  "repeating-linear-gradient(to right, #fbbf24 0px, #fbbf24 48px, transparent 48px, transparent 96px)",
+                backgroundImage: isSunWorld
+                  ? "repeating-linear-gradient(to right, #f97316 0px, #f97316 48px, transparent 48px, transparent 96px)"
+                  : "repeating-linear-gradient(to right, #fbbf24 0px, #fbbf24 48px, transparent 48px, transparent 96px)",
               }}
             />
             <div
               className="h-1.5 opacity-90"
               style={{
-                backgroundImage:
-                  "repeating-linear-gradient(to right, #fbbf24 0px, #fbbf24 48px, transparent 48px, transparent 96px)",
+                backgroundImage: isSunWorld
+                  ? "repeating-linear-gradient(to right, #f97316 0px, #f97316 48px, transparent 48px, transparent 96px)"
+                  : "repeating-linear-gradient(to right, #fbbf24 0px, #fbbf24 48px, transparent 48px, transparent 96px)",
               }}
             />
           </div>
 
-          {/* Right Lunar Rover Wheel Track */}
+          {/* Right Exploration Wheel Tracks */}
           <div
             className="absolute top-104 left-0 right-0 h-2 opacity-40"
             style={{
-              backgroundImage:
-                "repeating-linear-gradient(to right, #71717a 0px, #71717a 8px, transparent 8px, transparent 18px)",
+              backgroundImage: isSunWorld
+                ? "repeating-linear-gradient(to right, #ea580c 0px, #ea580c 8px, transparent 8px, transparent 18px)"
+                : "repeating-linear-gradient(to right, #71717a 0px, #71717a 8px, transparent 8px, transparent 18px)",
             }}
           />
 
-          {/* Surface Coordinate Signage in Lunar Dust */}
+          {/* Surface Coordinate Signage in Celestial Terrain */}
           {milestones.map((_, i) => (
             <div
               key={i}
               style={{ left: `${getStationX(i) - 80}px` }}
-              className="absolute top-48 -translate-y-1/2 flex items-center gap-3 font-mono text-xs font-bold text-zinc-500/80 tracking-widest pointer-events-none select-none uppercase"
+              className={`absolute top-48 -translate-y-1/2 flex items-center gap-3 font-mono text-xs font-bold tracking-widest pointer-events-none select-none uppercase ${
+                isSunWorld ? "text-orange-950/60" : "text-zinc-500/80"
+              }`}
             >
               <span>◆◆◆</span>
-              <span>LUNAR BASE SECTOR {i + 1} • APOLLO REGOLITH WAYPOINT</span>
+              <span>
+                {isSunWorld
+                  ? `HELIOS SOLAR BASE SECTOR ${i + 1} • SOLAR CORONA WAYPOINT`
+                  : `LUNAR BASE SECTOR ${i + 1} • APOLLO REGOLITH WAYPOINT`}
+              </span>
               <span>◆◆◆</span>
             </div>
           ))}
         </div>
 
-        {/* ── Dynamic Cosmic Darkness & Lunar Floodlight Mask ── */}
+        {/* ── Dynamic Atmospheric Shadow / Floodlight Mask ── */}
         <div
           className="absolute inset-0 pointer-events-none z-25"
           style={{
-            background: `radial-gradient(ellipse 720px 480px at ${carX}px ${carY}px, transparent 35%, rgba(6, 6, 9, 0.25) 65%, rgba(4, 4, 7, 0.65) 95%)`,
+            background: isSunWorld
+              ? `radial-gradient(ellipse 720px 480px at ${carX}px ${carY}px, transparent 45%, rgba(255, 250, 245, 0.15) 75%, rgba(254, 215, 170, 0.35) 95%)`
+              : `radial-gradient(ellipse 720px 480px at ${carX}px ${carY}px, transparent 35%, rgba(6, 6, 9, 0.25) 65%, rgba(4, 4, 7, 0.65) 95%)`,
           }}
         />
 
-        {/* ── Top-Down Lunar Rover (Compact Sleek Scale) ── */}
+        {/* ── Top-Down Rover (Lunar Rover in Dark / Solar Rover in Light) ── */}
         <div
           style={{
             left: `${carX}px`,
@@ -703,7 +764,7 @@ export default function JourneyWorld({
           }}
           className="absolute z-30 pointer-events-none will-change-transform"
         >
-          <TopDownCar isDriving={isDriving} />
+          <TopDownCar isDriving={isDriving} forceTheme={isSunWorld ? "light" : "dark"} />
         </div>
 
         {/* ── Floating Proximity Prompt above Rover ── */}
@@ -720,7 +781,11 @@ export default function JourneyWorld({
               className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-orange-600 hover:bg-orange-500 text-white dark:bg-white dark:text-zinc-950 font-mono text-xs sm:text-sm font-bold shadow-[0_0_25px_rgba(251,191,36,0.35)] hover:scale-105 active:scale-95 transition-all animate-bounce cursor-pointer border border-amber-400 dark:border-white"
             >
               <Sparkles size={16} className="text-amber-400 dark:text-amber-500" />
-              <span>[SPACE] Inspect Lunar Outpost Module</span>
+              <span>
+                {isSunWorld
+                  ? "[SPACE] Inspect Solar Outpost Station"
+                  : "[SPACE] Inspect Lunar Outpost Module"}
+              </span>
             </button>
           </div>
         )}

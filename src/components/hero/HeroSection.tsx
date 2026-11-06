@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { heroData } from "@/data/hero";
 import type { HeroStat } from "@/types";
+import CelestialSphere from "@/components/ui/CelestialSphere";
 
 // =============================================================================
 // Icon Registry — maps icon name strings from data to Lucide components
@@ -309,6 +310,16 @@ export default function HeroSection() {
 
       {/* ── Floating Particles ────────────────────────────────────────────── */}
       <FloatingParticles count={50} />
+
+      {/* ── Celestial Sphere Visual Graphic (Moon in Dark Mode / Sun in Light Mode) ── */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8, y: -20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        className="absolute top-20 right-4 sm:right-10 md:right-16 lg:right-28 pointer-events-none z-10 opacity-75 sm:opacity-90 drop-shadow-2xl"
+      >
+        <CelestialSphere size={130} className="sm:w-[170px] sm:h-[170px] md:w-[210px] md:h-[210px] lg:w-[250px] lg:h-[250px]" />
+      </motion.div>
 
       {/* ── Content ───────────────────────────────────────────────────────── */}
       <motion.div
