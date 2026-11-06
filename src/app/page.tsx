@@ -10,6 +10,7 @@ import OpenSourceWidget from "@/components/opensource/OpenSourceWidget";
 import ArcadeHub from "@/components/arcade/ArcadeHub";
 import TeachingPlaylist from "@/components/teaching/TeachingPlaylist";
 import ContactSection from "@/components/contact/ContactSection";
+import CelestialAtmosphere from "@/components/ui/CelestialAtmosphere";
 
 // =============================================================================
 // Home Page — Single Page Application (Mohammed Hossam Portfolio)
@@ -18,6 +19,9 @@ import ContactSection from "@/components/contact/ContactSection";
 export default function Home() {
   return (
     <>
+      {/* ── Global Celestial Atmosphere (Moon/Stars vs Sun/Clouds across entire page) ── */}
+      <CelestialAtmosphere />
+
       {/* ── Navigation & Floating Social Dock ── */}
       <Navbar />
       <FloatingSocialDock />

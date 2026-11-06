@@ -351,3 +351,123 @@ html.dark .bg-slate-800\/90 {
 ::view-transition-new(root) {
   z-index: 99999;
 }
+
+/* ─── Celestial World Animations (Stars, Shooting Stars & Clouds) ────────── */
+
+@keyframes celestial-twinkle {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+}
+
+.celestial-twinkle {
+  animation: celestial-twinkle infinite ease-in-out;
+}
+
+@keyframes celestial-cloud-drift {
+  0% {
+    transform: translate3d(-100%, 0, 0);
+  }
+  100% {
+    transform: translate3d(calc(100vw + 100%), 0, 0);
+  }
+}
+
+.celestial-cloud-drift-slow {
+  animation: celestial-cloud-drift 90s linear infinite;
+  will-change: transform;
+}
+
+.celestial-cloud-drift-mid {
+  animation: celestial-cloud-drift 65s linear infinite;
+  animation-delay: -25s;
+  will-change: transform;
+}
+
+.celestial-cloud-drift-fast {
+  animation: celestial-cloud-drift 45s linear infinite;
+  animation-delay: -10s;
+  will-change: transform;
+}
+
+.celestial-cloud-drift-slowest {
+  animation: celestial-cloud-drift 120s linear infinite;
+  animation-delay: -50s;
+  will-change: transform;
+}
+
+@keyframes shooting-star {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(-35deg) scaleX(0);
+    opacity: 0;
+  }
+  10% {
+    transform: translate3d(-50px, 40px, 0) rotate(-35deg) scaleX(1);
+    opacity: 1;
+  }
+  28% {
+    transform: translate3d(-240px, 190px, 0) rotate(-35deg) scaleX(1.4);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(-320px, 250px, 0) rotate(-35deg) scaleX(0);
+    opacity: 0;
+  }
+}
+
+.shooting-star {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(90deg, #ffffff, rgba(255, 255, 255, 0));
+  border-radius: 9999px;
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px #ffffff);
+  opacity: 0;
+}
+
+.shooting-star-1 {
+  top: 15%;
+  right: 18%;
+  width: 120px;
+  animation: shooting-star 11s infinite ease-in-out;
+  animation-delay: 2s;
+}
+
+.shooting-star-2 {
+  top: 42%;
+  right: 32%;
+  width: 90px;
+  animation: shooting-star 16s infinite ease-in-out;
+  animation-delay: 7s;
+}
+
+.shooting-star-3 {
+  top: 72%;
+  right: 14%;
+  width: 110px;
+  animation: shooting-star 14s infinite ease-in-out;
+  animation-delay: 12s;
+}
+
+@keyframes solar-dust-rise {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-35px) translateX(12px);
+  }
+  100% {
+    transform: translateY(-70px) translateX(-8px);
+  }
+}
+
+.solar-dust-rise {
+  animation: solar-dust-rise infinite ease-in-out alternate;
+  will-change: transform;
+}
+
