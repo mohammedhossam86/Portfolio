@@ -454,6 +454,62 @@ html.dark .bg-slate-800\/90 {
   animation-delay: 12s;
 }
 
+/* ─── Daytime Solar Flare Streaks / Golden Shooting Stars (Light Mode) ────── */
+
+@keyframes solar-shooting-flare {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(-35deg) scaleX(0);
+    opacity: 0;
+  }
+  10% {
+    transform: translate3d(-60px, 45px, 0) rotate(-35deg) scaleX(1);
+    opacity: 0.95;
+  }
+  28% {
+    transform: translate3d(-260px, 195px, 0) rotate(-35deg) scaleX(1.5);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(-340px, 255px, 0) rotate(-35deg) scaleX(0);
+    opacity: 0;
+  }
+}
+
+.solar-shooting-flare {
+  position: absolute;
+  height: 2.5px;
+  background: linear-gradient(90deg, #ffffff, #fbbf24 40%, #f97316 75%, transparent);
+  border-radius: 9999px;
+  pointer-events: none;
+  filter: drop-shadow(0 0 8px #f59e0b) drop-shadow(0 0 16px rgba(251, 146, 60, 0.8));
+  opacity: 0;
+}
+
+.solar-shooting-flare-1 {
+  top: 12%;
+  right: 15%;
+  width: 140px;
+  animation: solar-shooting-flare 10s infinite ease-in-out;
+  animation-delay: 1.5s;
+}
+
+.solar-shooting-flare-2 {
+  top: 38%;
+  right: 28%;
+  width: 110px;
+  animation: solar-shooting-flare 15s infinite ease-in-out;
+  animation-delay: 6.5s;
+}
+
+.solar-shooting-flare-3 {
+  top: 68%;
+  right: 18%;
+  width: 130px;
+  animation: solar-shooting-flare 13s infinite ease-in-out;
+  animation-delay: 11s;
+}
+
+
 @keyframes solar-dust-rise {
   0% {
     transform: translateY(0) translateX(0);
