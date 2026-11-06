@@ -207,6 +207,7 @@ html {
 
 /* Lunar Space Starry Dotted Canvas Across the entire website */
 body {
+  transition: background-color 700ms cubic-bezier(0.4, 0, 0.2, 1), color 700ms cubic-bezier(0.4, 0, 0.2, 1);
   background-color: var(--color-bg-primary);
   background-image: 
     radial-gradient(rgba(255, 255, 255, 0.28) 1px, transparent 1px),
@@ -337,19 +338,37 @@ html.dark .bg-slate-800\/90 {
   text-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
 }
 
-/* ─── Circular Theme Spill Transition (View Transitions API) ───────────── */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
+/* ─── Sunrise / Sunset Gradual Lighting Transition ─────────────────────── */
+::view-transition-old(root) {
+  animation: 750ms cubic-bezier(0.4, 0, 0.2, 1) both sunrise-fade-out;
   mix-blend-mode: normal;
 }
 
-::view-transition-old(root) {
-  z-index: 1;
+::view-transition-new(root) {
+  animation: 750ms cubic-bezier(0.4, 0, 0.2, 1) both sunrise-fade-in;
+  mix-blend-mode: normal;
 }
 
-::view-transition-new(root) {
-  z-index: 99999;
+@keyframes sunrise-fade-out {
+  0% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  100% {
+    opacity: 0;
+    filter: brightness(1.15);
+  }
+}
+
+@keyframes sunrise-fade-in {
+  0% {
+    opacity: 0;
+    filter: brightness(0.85);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
 }
 
 /* ─── Celestial World Animations (Stars, Shooting Stars & Clouds) ────────── */
@@ -453,62 +472,6 @@ html.dark .bg-slate-800\/90 {
   animation: shooting-star 14s infinite ease-in-out;
   animation-delay: 12s;
 }
-
-/* ─── Daytime Solar Flare Streaks / Golden Shooting Stars (Light Mode) ────── */
-
-@keyframes solar-shooting-flare {
-  0% {
-    transform: translate3d(0, 0, 0) rotate(-35deg) scaleX(0);
-    opacity: 0;
-  }
-  10% {
-    transform: translate3d(-60px, 45px, 0) rotate(-35deg) scaleX(1);
-    opacity: 0.95;
-  }
-  28% {
-    transform: translate3d(-260px, 195px, 0) rotate(-35deg) scaleX(1.5);
-    opacity: 0;
-  }
-  100% {
-    transform: translate3d(-340px, 255px, 0) rotate(-35deg) scaleX(0);
-    opacity: 0;
-  }
-}
-
-.solar-shooting-flare {
-  position: absolute;
-  height: 2.5px;
-  background: linear-gradient(90deg, #ffffff, #fbbf24 40%, #f97316 75%, transparent);
-  border-radius: 9999px;
-  pointer-events: none;
-  filter: drop-shadow(0 0 8px #f59e0b) drop-shadow(0 0 16px rgba(251, 146, 60, 0.8));
-  opacity: 0;
-}
-
-.solar-shooting-flare-1 {
-  top: 12%;
-  right: 15%;
-  width: 140px;
-  animation: solar-shooting-flare 10s infinite ease-in-out;
-  animation-delay: 1.5s;
-}
-
-.solar-shooting-flare-2 {
-  top: 38%;
-  right: 28%;
-  width: 110px;
-  animation: solar-shooting-flare 15s infinite ease-in-out;
-  animation-delay: 6.5s;
-}
-
-.solar-shooting-flare-3 {
-  top: 68%;
-  right: 18%;
-  width: 130px;
-  animation: solar-shooting-flare 13s infinite ease-in-out;
-  animation-delay: 11s;
-}
-
 
 @keyframes solar-dust-rise {
   0% {

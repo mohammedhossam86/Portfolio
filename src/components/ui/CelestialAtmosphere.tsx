@@ -40,38 +40,28 @@ export default function CelestialAtmosphere() {
             }}
           />
 
-          {/* Daytime Golden Shooting Flares / Solar Streaks */}
-          <div className="solar-shooting-flare solar-shooting-flare-1" />
-          <div className="solar-shooting-flare solar-shooting-flare-2" />
-          <div className="solar-shooting-flare solar-shooting-flare-3" />
-
           {/* Drifting Daylight Cloud Layer 1 (Upper High-Altitude Altocumulus - Slow & Soft) */}
-          <div className="celestial-cloud-drift-slow absolute top-[6%] -left-[300px] w-[620px] h-[190px] opacity-80">
-            <DayCloudSVG className="w-full h-full text-white/85" glow="#fed7aa" />
-          </div>
-
-          {/* Drifting Daylight Cloud Layer 2 (Mid-Level Fluffy Cumulus) */}
-          <div className="celestial-cloud-drift-mid absolute top-[24%] -left-[450px] w-[720px] h-[230px] opacity-75">
-            <DayCloudSVG className="w-full h-full text-white/80" glow="#fef3c7" />
-          </div>
-
-          {/* Drifting Daylight Cloud Layer 3 (Center Atmosphere Drift) */}
-          <div className="celestial-cloud-drift-fast absolute top-[48%] -left-[400px] w-[640px] h-[200px] opacity-70">
-            <DayCloudSVG className="w-full h-full text-white/75" glow="#fed7aa" />
-          </div>
-
-          {/* Drifting Daylight Cloud Layer 4 (Lower Atmosphere Soft Drift) */}
-          <div className="celestial-cloud-drift-slow absolute top-[68%] -left-[380px] w-[690px] h-[210px] opacity-65">
-            <DayCloudSVG className="w-full h-full text-white/70" glow="#fef08a" />
-          </div>
-
-          {/* Drifting Daylight Cloud Layer 5 (Deep Horizon Layer) */}
-          <div className="celestial-cloud-drift-slowest absolute top-[85%] -left-[500px] w-[780px] h-[250px] opacity-70">
+          <div className="celestial-cloud-drift-slow absolute top-[8%] -left-[300px] w-[580px] h-[180px] opacity-75">
             <DayCloudSVG className="w-full h-full text-white/80" glow="#fed7aa" />
           </div>
 
+          {/* Drifting Daylight Cloud Layer 2 (Mid-Level Fluffy Cumulus) */}
+          <div className="celestial-cloud-drift-mid absolute top-[28%] -left-[450px] w-[680px] h-[220px] opacity-65">
+            <DayCloudSVG className="w-full h-full text-white/70" glow="#fef3c7" />
+          </div>
+
+          {/* Drifting Daylight Cloud Layer 3 (Lower Atmosphere Soft Drift) */}
+          <div className="celestial-cloud-drift-fast absolute top-[55%] -left-[400px] w-[620px] h-[200px] opacity-55">
+            <DayCloudSVG className="w-full h-full text-white/60" glow="#fed7aa" />
+          </div>
+
+          {/* Drifting Daylight Cloud Layer 4 (Deep Horizon Layer) */}
+          <div className="celestial-cloud-drift-slowest absolute top-[78%] -left-[500px] w-[750px] h-[240px] opacity-60">
+            <DayCloudSVG className="w-full h-full text-white/75" glow="#fef08a" />
+          </div>
+
           {/* Floating Solar Motes (Warm golden specks rising gently) */}
-          <SolarDustParticles count={32} />
+          <SolarDustParticles count={28} />
         </div>
       ) : (
         /* ══════════════════════════════════════════════════════════════════
@@ -284,4 +274,3 @@ function NightCloudSVG({ className = "", glow = "#e0e7ff" }: { className?: strin
     </svg>
   );
 }
-

@@ -67,7 +67,7 @@ export default function Navbar() {
     }
   }, []);
 
-  const toggleTheme = (e?: React.MouseEvent<HTMLButtonElement>) => {
+  const toggleTheme = () => {
     const isDark = theme === "dark";
     const newTheme = isDark ? "light" : "dark";
 
@@ -85,38 +85,10 @@ export default function Navbar() {
       }
     };
 
-    // Circular liquid spill transition via View Transitions API
-    if (
-      typeof document !== "undefined" &&
-      "startViewTransition" in document &&
-      e &&
-      e.clientX !== undefined
-    ) {
-      const x = e.clientX;
-      const y = e.clientY;
-      const endRadius = Math.hypot(
-        Math.max(x, window.innerWidth - x),
-        Math.max(y, window.innerHeight - y)
-      );
-
-      const transition = (document as unknown as { startViewTransition: (cb: () => void) => { ready: Promise<void> } }).startViewTransition(() => {
+    // Smooth sunrise / sunset gradual lighting transition
+    if (typeof document !== "undefined" && "startViewTransition" in document) {
+      (document as unknown as { startViewTransition: (cb: () => void) => void }).startViewTransition(() => {
         applyTheme();
-      });
-
-      transition.ready.then(() => {
-        document.documentElement.animate(
-          {
-            clipPath: [
-              `circle(0px at ${x}px ${y}px)`,
-              `circle(${endRadius}px at ${x}px ${y}px)`,
-            ],
-          },
-          {
-            duration: 600,
-            easing: "cubic-bezier(0.4, 0, 0.2, 1)",
-            pseudoElement: "::view-transition-new(root)",
-          }
-        );
       });
     } else {
       applyTheme();
@@ -272,13 +244,31 @@ export default function Navbar() {
             <button
               onClick={toggleTheme}
               aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-              className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-orange-200/80 dark:border-zinc-800 bg-orange-50/50 dark:bg-zinc-900/60 text-stone-700 dark:text-zinc-300 hover:border-orange-400 dark:hover:border-zinc-600 transition-all duration-200 active:scale-90"
+              className="relative flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-orange-200/80 dark:border-zinc-800 bg-orange-50/50 dark:bg-zinc-900/60 text-stone-700 dark:text-zinc-300 hover:border-orange-400 dark:hover:border-zinc-600 transition-all duration-200 active:scale-90 overflow-hidden"
             >
-              {theme === "dark" ? (
-                <Sun size={14} className="text-amber-400" />
-              ) : (
-                <Moon size={14} className="text-orange-500" />
-              )}
+              <AnimatePresence mode="wait" initial={false}>
+                {theme === "dark" ? (
+                  <motion.div
+                    key="sun-toggle"
+                    initial={{ y: 14, opacity: 0, rotate: 45 }}
+                    animate={{ y: 0, opacity: 1, rotate: 0 }}
+                    exit={{ y: -14, opacity: 0, rotate: -45 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  >
+                    <Sun size={14} className="text-amber-400" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="moon-toggle"
+                    initial={{ y: 14, opacity: 0, rotate: -45 }}
+                    animate={{ y: 0, opacity: 1, rotate: 0 }}
+                    exit={{ y: -14, opacity: 0, rotate: 45 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  >
+                    <Moon size={14} className="text-orange-500" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </button>
 
             {/* Mobile Menu Hamburger (Visible on small screens) */}

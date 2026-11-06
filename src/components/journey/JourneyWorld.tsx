@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { JourneyMilestone } from "@/types";
 import TopDownCar from "./TopDownCar";
-import CelestialTerrain from "./CelestialTerrain";
 import { DiscoveryAcademyIcon } from "@/components/ui/BrandIcons";
 import CelestialSphere from "@/components/ui/CelestialSphere";
 import { useCurrentTheme } from "@/hooks/useCurrentTheme";
@@ -31,6 +30,7 @@ import {
 interface JourneyWorldProps {
   milestones: JourneyMilestone[];
   onInspectMilestone: (milestone: JourneyMilestone) => void;
+  isModalOpen?: boolean;
 }
 
 // Grand Open-World Geometry & Boundaries (Wide Exploration Freedom)
@@ -45,6 +45,7 @@ const MAX_SPEED = 500;
 export default function JourneyWorld({
   milestones,
   onInspectMilestone,
+  isModalOpen = false,
 }: JourneyWorldProps) {
   const currentTheme = useCurrentTheme();
   const isSunWorld = currentTheme === "light";
@@ -290,10 +291,27 @@ export default function JourneyWorld({
     };
   }, [calculateProximity, driveToStation, milestones.length, totalWorldWidth]);
 
-  // ─── Global Keyboard Listener (Strictly isolated from Arcade) ───────────────
+  // ─── Freeze physics / keys when modal is open and restore focus when closed ──
+  useEffect(() => {
+    if (isModalOpen) {
+      keysPressed.current = {};
+      setIsDriving(false);
+      carPhysics.current.vx = 0;
+      carPhysics.current.vy = 0;
+    } else {
+      keysPressed.current = {};
+      containerRef.current?.focus();
+    }
+  }, [isModalOpen]);
+
+  // ─── Global Keyboard Listener (Strictly isolated from Arcade & Modal) ───────
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      const target = e.target as HTMLElement;
+      if (isModalOpen) return;
+
+      const target = e.target as HTMLElement | null;
+
+      // Ignore inputs & textareas
       if (
         target?.tagName === "INPUT" ||
         target?.tagName === "TEXTAREA" ||
@@ -334,9 +352,13 @@ export default function JourneyWorld({
       }
 
       if (key === " ") {
-        const target = focusedMilestoneRef.current || milestones[activeStationIdxRef.current];
-        if (target) {
-          onInspectMilestone(target);
+        const milestoneTarget = focusedMilestoneRef.current || milestones[activeStationIdxRef.current];
+        if (milestoneTarget) {
+          keysPressed.current = {};
+          setIsDriving(false);
+          carPhysics.current.vx = 0;
+          carPhysics.current.vy = 0;
+          onInspectMilestone(milestoneTarget);
         }
       } else if (isNavKey) {
         keysPressed.current[key] = true;
@@ -344,6 +366,10 @@ export default function JourneyWorld({
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
+      if (isModalOpen) {
+        keysPressed.current = {};
+        return;
+      }
       const key = e.key;
       delete keysPressed.current[key];
     };
@@ -354,7 +380,7 @@ export default function JourneyWorld({
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [onInspectMilestone]);
+  }, [onInspectMilestone, isModalOpen, milestones]);
 
   // ─── Toggle Auto Cruise Mode ────────────────────────────────────────────────
   const toggleAutoCruise = () => {
@@ -665,15 +691,86 @@ export default function JourneyWorld({
           );
         })}
 
-        {/* ── Celestial Ground Surface: Moon Regolith & 3D Craters (Dark) vs Solar Photosphere & Loops (Light) ── */}
-        <CelestialTerrain
-          isSunWorld={isSunWorld}
-          totalWorldWidth={totalWorldWidth}
-          milestones={milestones}
-          getStationX={getStationX}
-          roadMinY={ROAD_MIN_Y}
-          roadMaxY={ROAD_MAX_Y}
-        />
+        {/* ── Celestial Ground Surface: Moon Regolith (Dark) vs Solar Corona Surface (Light) ── */}
+        <div
+          style={{
+            top: `${ROAD_MIN_Y - 40}px`,
+            bottom: "0px",
+          }}
+          className={`absolute left-0 right-0 border-t-2 transition-colors duration-500 ${
+            isSunWorld
+              ? "bg-[#fff7ed] border-orange-300/90 shadow-[inset_0_20px_50px_rgba(234,88,12,0.12)]"
+              : "bg-[#0a0a0f] border-zinc-700/80 shadow-[inset_0_20px_50px_rgba(0,0,0,0.95)]"
+          }`}
+        >
+          {/* Horizon Guidance Beacons (Solar Gold vs Starlight Silver) */}
+          <div
+            className={`absolute top-0 left-0 right-0 h-2 ${
+              isSunWorld
+                ? "bg-gradient-to-r from-orange-500/80 via-amber-300 to-orange-500/80 shadow-[0_0_14px_rgba(234,88,12,0.5)]"
+                : "bg-gradient-to-r from-amber-500/80 via-white to-amber-500/80 shadow-[0_0_14px_rgba(251,191,36,0.6)]"
+            }`}
+          />
+
+          {/* Left Exploration Wheel Tracks */}
+          <div
+            className="absolute top-24 left-0 right-0 h-2 opacity-40"
+            style={{
+              backgroundImage: isSunWorld
+                ? "repeating-linear-gradient(to right, #ea580c 0px, #ea580c 8px, transparent 8px, transparent 18px)"
+                : "repeating-linear-gradient(to right, #71717a 0px, #71717a 8px, transparent 8px, transparent 18px)",
+            }}
+          />
+
+          {/* Navigational Route Beacons (Golden Energy Lines) */}
+          <div className="absolute top-64 left-0 right-0 flex flex-col gap-2">
+            <div
+              className="h-1.5 opacity-90"
+              style={{
+                backgroundImage: isSunWorld
+                  ? "repeating-linear-gradient(to right, #f97316 0px, #f97316 48px, transparent 48px, transparent 96px)"
+                  : "repeating-linear-gradient(to right, #fbbf24 0px, #fbbf24 48px, transparent 48px, transparent 96px)",
+              }}
+            />
+            <div
+              className="h-1.5 opacity-90"
+              style={{
+                backgroundImage: isSunWorld
+                  ? "repeating-linear-gradient(to right, #f97316 0px, #f97316 48px, transparent 48px, transparent 96px)"
+                  : "repeating-linear-gradient(to right, #fbbf24 0px, #fbbf24 48px, transparent 48px, transparent 96px)",
+              }}
+            />
+          </div>
+
+          {/* Right Exploration Wheel Tracks */}
+          <div
+            className="absolute top-104 left-0 right-0 h-2 opacity-40"
+            style={{
+              backgroundImage: isSunWorld
+                ? "repeating-linear-gradient(to right, #ea580c 0px, #ea580c 8px, transparent 8px, transparent 18px)"
+                : "repeating-linear-gradient(to right, #71717a 0px, #71717a 8px, transparent 8px, transparent 18px)",
+            }}
+          />
+
+          {/* Surface Coordinate Signage in Celestial Terrain */}
+          {milestones.map((_, i) => (
+            <div
+              key={i}
+              style={{ left: `${getStationX(i) - 80}px` }}
+              className={`absolute top-48 -translate-y-1/2 flex items-center gap-3 font-mono text-xs font-bold tracking-widest pointer-events-none select-none uppercase ${
+                isSunWorld ? "text-orange-950/60" : "text-zinc-500/80"
+              }`}
+            >
+              <span>◆◆◆</span>
+              <span>
+                {isSunWorld
+                  ? `HELIOS SOLAR BASE SECTOR ${i + 1} • SOLAR CORONA WAYPOINT`
+                  : `LUNAR BASE SECTOR ${i + 1} • APOLLO REGOLITH WAYPOINT`}
+              </span>
+              <span>◆◆◆</span>
+            </div>
+          ))}
+        </div>
 
         {/* ── Dynamic Atmospheric Shadow / Floodlight Mask ── */}
         <div

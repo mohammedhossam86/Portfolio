@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { journeyMilestones } from "@/data/journey";
@@ -49,6 +49,55 @@ export default function JourneyTimeline() {
       ? [selectedMilestone.imageUrl]
       : []
     : [];
+
+  // ── Keyboard Navigation for Modal: Arrow keys browse, ESC closes ──
+  useEffect(() => {
+    if (!selectedMilestone) return;
+
+    const handleModalKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        e.stopPropagation();
+        closeModal();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        e.stopPropagation();
+        if (modalPhotos.length > 1) {
+          setActivePhotoIdx((prev) => (prev + 1) % modalPhotos.length);
+        } else {
+          // Single photo: move to next milestone in journey
+          const currentIdx = journeyMilestones.findIndex(
+            (m) => m.id === selectedMilestone.id
+          );
+          const nextIdx = (currentIdx + 1) % journeyMilestones.length;
+          setSelectedMilestone(journeyMilestones[nextIdx]);
+          setActivePhotoIdx(0);
+        }
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        e.stopPropagation();
+        if (modalPhotos.length > 1) {
+          setActivePhotoIdx((prev) =>
+            prev === 0 ? modalPhotos.length - 1 : prev - 1
+          );
+        } else {
+          // Single photo: move to previous milestone in journey
+          const currentIdx = journeyMilestones.findIndex(
+            (m) => m.id === selectedMilestone.id
+          );
+          const prevIdx =
+            currentIdx <= 0 ? journeyMilestones.length - 1 : currentIdx - 1;
+          setSelectedMilestone(journeyMilestones[prevIdx]);
+          setActivePhotoIdx(0);
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleModalKeyDown, { capture: true });
+    return () => {
+      window.removeEventListener("keydown", handleModalKeyDown, { capture: true });
+    };
+  }, [selectedMilestone, modalPhotos.length]);
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
@@ -176,6 +225,7 @@ export default function JourneyTimeline() {
           <JourneyWorld
             milestones={journeyMilestones}
             onInspectMilestone={openModal}
+            isModalOpen={selectedMilestone !== null}
           />
         </motion.div>
       ) : (
@@ -296,13 +346,18 @@ export default function JourneyTimeline() {
                     {modalPhotos.length}
                   </span>
                 </div>
-                <button
-                  onClick={closeModal}
-                  aria-label="Close modal"
-                  className="p-2 rounded-xl bg-orange-100/60 dark:bg-zinc-800 hover:bg-orange-200/60 dark:hover:bg-zinc-700 text-stone-700 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-white transition-colors"
-                >
-                  <X size={18} />
-                </button>
+                <div className="flex items-center gap-3">
+                  <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-orange-100/60 dark:bg-zinc-800 text-[10px] font-mono text-stone-600 dark:text-zinc-400 border border-orange-200/60 dark:border-zinc-700">
+                    <span className="font-bold">← →</span> Arrows to browse • <kbd className="px-1 py-0.2 bg-white dark:bg-zinc-900 rounded text-stone-900 dark:text-white font-bold">ESC</kbd> to resume drive
+                  </span>
+                  <button
+                    onClick={closeModal}
+                    aria-label="Close modal"
+                    className="p-2 rounded-xl bg-orange-100/60 dark:bg-zinc-800 hover:bg-orange-200/60 dark:hover:bg-zinc-700 text-stone-700 dark:text-zinc-300 hover:text-stone-900 dark:hover:text-white transition-colors"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
               </div>
 
               {/* Photo Display Viewport */}
