@@ -238,10 +238,10 @@ export default function JourneyTimeline() {
               return (
                 <motion.div
                   key={m.id}
-                  initial={{ opacity: 0, y: 35, scale: 0.96 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.45, delay: mIdx * 0.07, ease: "easeOut" }}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.05 }}
+                  transition={{ duration: 0.35, delay: Math.min(mIdx * 0.04, 0.18), ease: "easeOut" }}
                   onClick={() => openModal(m)}
                   className="group relative rounded-3xl border border-orange-200/80 dark:border-zinc-800 bg-white dark:bg-[#0c0c10] backdrop-blur-xl p-6 transition-all duration-300 hover:border-orange-400 dark:hover:border-zinc-600 hover:shadow-xl hover:shadow-orange-500/10 cursor-pointer flex flex-col justify-between shadow-sm"
                 >

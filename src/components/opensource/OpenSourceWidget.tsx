@@ -229,10 +229,10 @@ export default function OpenSourceWidget() {
               return (
                 <motion.div
                   key={mr.id}
-                  initial={{ opacity: 0, x: -25 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.38, delay: (mrIdx % 8) * 0.05, ease: "easeOut" }}
+                  initial={{ opacity: 0, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.05 }}
+                  transition={{ duration: 0.32, delay: Math.min((mrIdx % 6) * 0.04, 0.16), ease: "easeOut" }}
                   className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-secondary)]/90 backdrop-blur-xl p-4 sm:p-5 transition-all duration-200 hover:border-[#FC6D26]/50 w-full overflow-hidden"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full min-w-0">

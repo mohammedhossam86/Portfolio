@@ -26,7 +26,7 @@ export default function Home() {
       <Navbar />
       <FloatingSocialDock />
 
-      <main className="relative min-h-screen overflow-x-hidden">
+      <main className="relative min-h-screen overflow-x-hidden bg-transparent">
         {/* ── Hero Section ── */}
         <HeroSection />
 

@@ -60,12 +60,12 @@ export default function ContactSection() {
           </p>
         </motion.div>
 
-        {/* ── Contact Hero Card (Docks into place with soft scale) ── */}
+        {/* ── Contact Hero Card ── */}
         <motion.div
-          initial={{ opacity: 0, y: 35, scale: 0.94 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.05 }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
           className="max-w-2xl mx-auto rounded-3xl border border-orange-200/80 dark:border-zinc-800 bg-white/95 dark:bg-[#0c0c10]/95 backdrop-blur-2xl p-8 sm:p-10 shadow-2xl"
         >
           {/* Status Badge */}

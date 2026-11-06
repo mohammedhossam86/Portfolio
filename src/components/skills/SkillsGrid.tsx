@@ -153,15 +153,13 @@ export default function SkillsGrid() {
           {visibleGroups.map((group, groupIdx) => (
             <motion.div
               key={group.id}
-              initial={{ opacity: 0, y: 35, scale: 0.94 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.05 }}
               transition={{
-                duration: 0.5,
-                delay: groupIdx * 0.08,
-                type: "spring",
-                stiffness: 240,
-                damping: 22,
+                duration: 0.35,
+                delay: Math.min(groupIdx * 0.04, 0.2),
+                ease: "easeOut",
               }}
               className="relative rounded-3xl border border-orange-200/80 dark:border-zinc-800/90 bg-white/90 dark:bg-[#0c0c10] backdrop-blur-xl p-5 sm:p-6 shadow-sm hover:border-orange-400 dark:hover:border-zinc-600 hover:shadow-xl transition-all duration-300 flex flex-col justify-start group/card"
             >

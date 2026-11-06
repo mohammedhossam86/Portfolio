@@ -101,8 +101,7 @@ html.light {
 
 /* ─── Light Mode Global Element Overrides ─────────────────────────────────── */
 
-html.light body,
-html.light main {
+html.light body {
   background-color: #fffaf5 !important;
   background-image: 
     radial-gradient(rgba(234, 88, 12, 0.16) 1px, transparent 1px),
@@ -111,6 +110,11 @@ html.light main {
   background-position: 0 0, 20px 20px !important;
   background-attachment: fixed !important;
   color: #1c1917 !important;
+}
+
+main {
+  background-color: transparent !important;
+  background: transparent !important;
 }
 
 /* Transform Dark Cards to Crisp White & Warm Orange Cards */
@@ -471,6 +475,66 @@ html.dark .bg-slate-800\/90 {
   width: 110px;
   animation: shooting-star 14s infinite ease-in-out;
   animation-delay: 12s;
+}
+
+/* ─── Daytime Golden Shooting Flares (Solar Streaks in Light Mode) ─────── */
+
+@keyframes solar-shooting-flare {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(-35deg) scaleX(0);
+    opacity: 0;
+  }
+  12% {
+    transform: translate3d(-70px, 50px, 0) rotate(-35deg) scaleX(1);
+    opacity: 1;
+  }
+  28% {
+    transform: translate3d(-280px, 200px, 0) rotate(-35deg) scaleX(1.4);
+    opacity: 0.9;
+  }
+  45% {
+    transform: translate3d(-420px, 300px, 0) rotate(-35deg) scaleX(1);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(-450px, 320px, 0) rotate(-35deg) scaleX(0);
+    opacity: 0;
+  }
+}
+
+.solar-shooting-flare {
+  position: absolute;
+  height: 3px;
+  background: linear-gradient(90deg, #ffffff 0%, #fbbf24 35%, #ea580c 80%, transparent 100%);
+  border-radius: 9999px;
+  pointer-events: none;
+  filter: drop-shadow(0 0 10px #f59e0b) drop-shadow(0 0 20px rgba(234, 88, 12, 0.8));
+  opacity: 0;
+  z-index: 2;
+}
+
+.solar-shooting-flare-1 {
+  top: 14%;
+  right: 12%;
+  width: 170px;
+  animation: solar-shooting-flare 9s infinite ease-out;
+  animation-delay: 1.5s;
+}
+
+.solar-shooting-flare-2 {
+  top: 38%;
+  right: 26%;
+  width: 140px;
+  animation: solar-shooting-flare 13s infinite ease-out;
+  animation-delay: 5.5s;
+}
+
+.solar-shooting-flare-3 {
+  top: 68%;
+  right: 16%;
+  width: 160px;
+  animation: solar-shooting-flare 11s infinite ease-out;
+  animation-delay: 9s;
 }
 
 @keyframes solar-dust-rise {

@@ -56,12 +56,12 @@ export default function AboutSection() {
 
         {/* ── Main Layout: Profile Card + Bio Content ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-          {/* Left Column: Photo Card (Glides in from left and settles into place) */}
+          {/* Left Column: Photo Card */}
           <motion.div
-            initial={{ opacity: 0, x: -45, rotate: -1.5 }}
-            whileInView={{ opacity: 1, x: 0, rotate: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.45, ease: "easeOut" }}
             className="lg:col-span-4"
           >
             <div className="relative group rounded-3xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-secondary)] shadow-xl transition-all duration-300 hover:border-[var(--color-primary)]">
@@ -109,12 +109,12 @@ export default function AboutSection() {
             </div>
           </motion.div>
 
-          {/* Right Column: Narrative + Key Credentials (Glides in from right and docks) */}
+          {/* Right Column: Narrative + Key Credentials */}
           <motion.div
-            initial={{ opacity: 0, x: 45 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.45, delay: 0.1, ease: "easeOut" }}
             className="lg:col-span-8 space-y-6"
           >
             {/* Bio Paragraphs */}

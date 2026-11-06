@@ -75,10 +75,10 @@ export default function TeachingPlaylist() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* ── Active Video Player Frame (8 Cols) ── */}
           <motion.div
-            initial={{ opacity: 0, x: -35 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.45, ease: "easeOut" }}
             className="lg:col-span-8 space-y-5"
           >
             <div className="relative aspect-video w-full rounded-3xl overflow-hidden border border-[var(--color-border)] bg-black/80 shadow-2xl">
@@ -163,12 +163,12 @@ export default function TeachingPlaylist() {
             </div>
           </motion.div>
 
-          {/* ── Playlist Queue Sidebar (4 Cols, Slides in from Right) ── */}
+          {/* ── Playlist Queue Sidebar (4 Cols) ── */}
           <motion.div
-            initial={{ opacity: 0, x: 35 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.45, ease: "easeOut" }}
             className="lg:col-span-4 space-y-3"
           >
             <div className="p-4 rounded-2xl bg-[var(--color-bg-secondary)] border border-[var(--color-border)] flex items-center justify-between">

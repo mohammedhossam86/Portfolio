@@ -94,14 +94,7 @@ export default function ProjectsGrid() {
 
         {/* ── Projects Grid ── */}
         <div className="space-y-8">
-          <motion.div
-            key="projects-grid"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8"
-          >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {displayedProjects.map((project, idx) => (
               <ProjectCard
                 key={project.id}
@@ -110,7 +103,7 @@ export default function ProjectsGrid() {
                 isFeatured={project.isFeatured && idx === 0}
               />
             ))}
-          </motion.div>
+          </div>
 
           {/* Show More / Show Less Collapsible Toggle */}
           {filteredProjects.length > 4 && (
@@ -152,10 +145,10 @@ interface ProjectCardProps {
 function ProjectCard({ project, isFeatured = false, index = 0 }: ProjectCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 35, scale: 0.96 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-45px" }}
-      transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.05 }}
+      transition={{ duration: 0.35, delay: Math.min(index * 0.05, 0.18), ease: "easeOut" }}
       className={`group relative flex flex-col justify-between rounded-3xl border border-orange-200/80 dark:border-zinc-800 bg-white/95 dark:bg-[#0c0c10]/95 backdrop-blur-xl p-6 sm:p-7 transition-all duration-300 hover:border-orange-400 dark:hover:border-zinc-600 hover:shadow-2xl hover:shadow-orange-500/10 shadow-sm ${
         isFeatured ? "md:col-span-2 border-orange-300/80 dark:border-zinc-700" : ""
       }`}
