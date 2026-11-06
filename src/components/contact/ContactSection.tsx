@@ -108,7 +108,7 @@ export default function ContactSection() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
             <a
               href={`mailto:${email}?subject=Collaboration%20Inquiry%20from%20Portfolio`}
-              className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-stone-900 text-white dark:bg-white dark:text-black font-semibold text-sm font-mono transition-all duration-200 shadow-lg active:scale-95"
+              className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-orange-600 hover:bg-orange-500 text-white shadow-lg shadow-orange-500/20 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 font-semibold text-sm font-mono transition-all duration-200 active:scale-95"
             >
               <Send size={16} />
               Send Direct Email

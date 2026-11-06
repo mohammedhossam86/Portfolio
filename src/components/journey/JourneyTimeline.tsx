@@ -224,17 +224,21 @@ export default function JourneyTimeline() {
                   </div>
 
                   {m.imageUrl ? (
-                    <div className="relative w-full h-36 rounded-2xl overflow-hidden border border-orange-200/80 dark:border-zinc-800 mt-2 bg-orange-50/50 dark:bg-zinc-900/50">
+                    <div className="relative w-full h-40 sm:h-44 rounded-2xl overflow-hidden border border-orange-200/80 dark:border-zinc-800 mt-2 bg-white dark:bg-zinc-900/50 flex items-center justify-center">
                       <Image
                         src={m.imageUrl}
                         alt={m.title}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        className={`transition-transform duration-300 ${
+                          isDiscovery
+                            ? "object-contain p-3.5 bg-white"
+                            : "object-cover group-hover:scale-105"
+                        }`}
                       />
                       {m.images && m.images.length > 1 && (
-                        <div className="absolute bottom-2 right-2 px-2 py-1 rounded-lg bg-black/80 text-[10px] font-mono text-white flex items-center gap-1 backdrop-blur-md">
-                          <Images size={12} />
-                          <span>{m.images.length} photos</span>
+                        <div className="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-stone-900/90 dark:bg-black/85 text-[11px] font-mono text-white flex items-center gap-1.5 backdrop-blur-md shadow-md border border-white/20">
+                          <Images size={12} className="text-white shrink-0" />
+                          <span className="text-white font-bold leading-none">{m.images.length} photos</span>
                         </div>
                       )}
                     </div>

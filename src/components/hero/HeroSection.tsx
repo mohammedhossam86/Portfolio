@@ -364,7 +364,7 @@ export default function HeroSection() {
           {/* Primary CTA — View Projects */}
           <a
             href="#projects"
-            className="group inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold bg-stone-900 text-white dark:bg-white dark:text-black hover:bg-stone-800 dark:hover:bg-zinc-200 transition-all duration-300 hover:scale-[1.03] shadow-md font-mono text-sm"
+            className="group inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold bg-orange-600 hover:bg-orange-500 text-white shadow-md shadow-orange-500/20 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 transition-all duration-300 hover:scale-[1.03] font-mono text-sm"
           >
             View Projects
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

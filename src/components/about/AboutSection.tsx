@@ -187,7 +187,7 @@ export default function AboutSection() {
               <a
                 href="/cv.pdf"
                 download="Mohammed_Hossam_CV.pdf"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-stone-900 text-white dark:bg-white dark:text-black hover:bg-stone-800 dark:hover:bg-zinc-200 font-semibold text-sm font-mono transition-all duration-200 shadow-md active:scale-95"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-orange-600 hover:bg-orange-500 text-white shadow-md shadow-orange-500/20 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 font-semibold text-sm font-mono transition-all duration-200 active:scale-95"
               >
                 <Download size={16} />
                 Download CV

@@ -78,6 +78,8 @@ export default function MilestoneStation({
     }
   };
 
+  const isDiscovery = milestone.id === "discovery-academy";
+
   return (
     <div
       onClick={handleClick}
@@ -105,13 +107,17 @@ export default function MilestoneStation({
       >
         {/* ── Photo Preview ── */}
         {milestone.imageUrl ? (
-          <div className="relative h-44 sm:h-52 w-full overflow-hidden bg-slate-900/80">
+          <div className="relative h-44 sm:h-52 w-full overflow-hidden bg-white dark:bg-zinc-900/80 flex items-center justify-center">
             <Image
               src={milestone.imageUrl}
               alt={milestone.title}
               fill
               sizes="(max-width: 640px) 310px, (max-width: 768px) 360px, 400px"
-              className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+              className={`transition-transform duration-700 ${
+                isDiscovery
+                  ? "object-contain p-4 bg-white"
+                  : "object-cover object-center group-hover:scale-105"
+              }`}
             />
             {/* Gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-bg-secondary)] via-transparent to-black/40" />

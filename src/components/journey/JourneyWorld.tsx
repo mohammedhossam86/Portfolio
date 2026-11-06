@@ -717,7 +717,7 @@ export default function JourneyWorld({
           >
             <button
               onClick={() => onInspectMilestone(focusedMilestone)}
-              className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-stone-900 text-white dark:bg-white dark:text-black font-mono text-xs sm:text-sm font-bold shadow-[0_0_25px_rgba(251,191,36,0.35)] hover:scale-105 active:scale-95 transition-all animate-bounce cursor-pointer border border-amber-400 dark:border-white"
+              className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-orange-600 hover:bg-orange-500 text-white dark:bg-white dark:text-zinc-950 font-mono text-xs sm:text-sm font-bold shadow-[0_0_25px_rgba(251,191,36,0.35)] hover:scale-105 active:scale-95 transition-all animate-bounce cursor-pointer border border-amber-400 dark:border-white"
             >
               <Sparkles size={16} className="text-amber-400 dark:text-amber-500" />
               <span>[SPACE] Inspect Lunar Outpost Module</span>

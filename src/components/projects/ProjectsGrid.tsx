@@ -296,7 +296,7 @@ function ProjectCard({ project, isFeatured = false, index = 0 }: ProjectCardProp
               href={project.liveUrl}
               target={project.liveUrl.startsWith("#") ? "_self" : "_blank"}
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-stone-900 text-white dark:bg-white dark:text-black hover:bg-stone-800 dark:hover:bg-zinc-200 text-xs font-semibold font-mono transition-all shadow-sm active:scale-95"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-orange-600 hover:bg-orange-500 text-white shadow-sm shadow-orange-500/20 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 text-xs font-semibold font-mono transition-all active:scale-95"
             >
               <ExternalLink size={12} />
               <span>Live Demo</span>

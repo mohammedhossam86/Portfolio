@@ -205,7 +205,7 @@ export default function Navbar() {
         className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none px-2 sm:px-3 pt-2 sm:pt-4"
       >
         {/* ── Futuristic AI Floating Capsule (Ultra-compact & thumb-friendly on mobile) ── */}
-        <nav className="pointer-events-auto flex items-center justify-between gap-2 sm:gap-6 px-3 sm:px-5 h-10 sm:h-12 rounded-full border border-orange-200/80 dark:border-white/10 bg-white/95 dark:bg-[#08080b]/90 backdrop-blur-2xl shadow-lg shadow-black/5 dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] w-full max-w-5xl transition-all duration-300">
+        <nav className="pointer-events-auto flex items-center justify-between gap-1.5 sm:gap-3 lg:gap-6 px-3 sm:px-4 lg:px-5 h-10 sm:h-12 rounded-full border border-orange-200/90 dark:border-white/10 bg-white/98 dark:bg-[#08080b]/95 backdrop-blur-2xl shadow-lg shadow-orange-950/5 dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] w-full max-w-5xl transition-all duration-300">
           {/* ── Left: AI Status & Monogram ── */}
           <a
             href="#hero"
@@ -217,13 +217,13 @@ export default function Navbar() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
             <span className="font-mono text-xs sm:text-sm font-bold tracking-wider text-stone-900 dark:text-white group-hover:text-stone-600 dark:group-hover:text-zinc-300 transition-colors">
-              <span className="inline sm:hidden">M. Hossam</span>
-              <span className="hidden sm:inline">Mohammed Hossam</span>
+              <span className="inline lg:hidden">M. Hossam</span>
+              <span className="hidden lg:inline">Mohammed Hossam</span>
             </span>
           </a>
 
           {/* ── Center: Desktop Navigation Links (Minimalist AI Pills) ── */}
-          <ul className="hidden md:flex items-center gap-1">
+          <ul className="hidden md:flex items-center gap-0.5 lg:gap-1">
             {navItems.map((item: NavItem) => {
               const Icon = getIcon(item.icon);
               const isActive = activeSection === item.href;
@@ -233,7 +233,7 @@ export default function Navbar() {
                   <a
                     href={item.href}
                     onClick={(e) => handleNavClick(e, item.href)}
-                    className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-medium transition-all duration-200 ${
+                    className={`relative flex items-center gap-1 px-2 lg:px-3 py-1 lg:py-1.5 rounded-full text-xs font-mono font-medium transition-all duration-200 ${
                       isActive
                         ? "text-stone-900 dark:text-white font-semibold"
                         : "text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-zinc-100"
@@ -246,8 +246,8 @@ export default function Navbar() {
                         transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
                     )}
-                    <span className="relative z-10 flex items-center gap-1.5">
-                      {Icon && <Icon size={13} className="opacity-80" />}
+                    <span className="relative z-10 flex items-center gap-1">
+                      {Icon && <Icon size={12} className="hidden xl:inline opacity-80" />}
                       {item.label}
                     </span>
                   </a>
@@ -262,10 +262,10 @@ export default function Navbar() {
             <a
               href="/cv.pdf"
               download="Mohammed_Hossam_CV.pdf"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-stone-900 text-white dark:bg-white dark:text-black font-mono text-[11px] font-semibold hover:bg-stone-800 dark:hover:bg-zinc-200 transition-all shadow-xs active:scale-95"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-orange-600 hover:bg-orange-500 text-white shadow-sm shadow-orange-500/20 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200 font-mono text-[11px] font-bold transition-all active:scale-95"
             >
-              <Download size={12} />
-              <span>CV</span>
+              <Download size={12} className="text-white dark:text-zinc-950" />
+              <span className="text-white dark:text-zinc-950 font-bold">CV</span>
             </a>
 
             {/* Theme Toggle Button */}
@@ -386,9 +386,9 @@ export default function Navbar() {
                 <a
                   href="/cv.pdf"
                   download="Mohammed_Hossam_CV.pdf"
-                  className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-stone-900 dark:bg-white text-white dark:text-black font-mono text-xs font-semibold shadow-sm active:scale-95 transition-all"
+                  className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-orange-600 hover:bg-orange-500 text-white dark:bg-white dark:text-zinc-950 font-mono text-xs font-bold shadow-md shadow-orange-500/20 dark:shadow-none active:scale-95 transition-all"
                 >
-                  <Download size={13} />
+                  <Download size={13} className="text-white dark:text-zinc-950" />
                   <span>Download CV</span>
                 </a>
                 <a
